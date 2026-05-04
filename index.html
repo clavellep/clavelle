@@ -33,27 +33,11 @@
         .estado-opciones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; background: #f9f2eb; padding: 6px 12px; border-radius: 60px; }
         .estado-opcion { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .estado-opcion input { width: auto; margin: 0; transform: scale(1.1); accent-color: #2c3e50; }
-        .estado-opcion label { font-weight: normal; cursor: pointer; margin: 0; }
         .btn-guardar { background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%); color: white; border: none; padding: 14px 24px; border-radius: 40px; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 16px; width: 100%; transition: opacity 0.2s; }
         .btn-guardar:active { transform: scale(0.98); }
-        .btn-guardar:disabled { opacity: 0.6; cursor: not-allowed; }
         .filtros-botones { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .btn-estado { background: #f0ebe5; border: none; padding: 8px 14px; border-radius: 40px; cursor: pointer; font-size: 0.8em; flex: 1; min-width: 80px; font-weight: 500; }
         .btn-estado.activo { background: #2c3e50; color: white; }
-        .estadisticas-fechas { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; background: #f5efe8; padding: 16px; border-radius: 28px; }
-        .fechas-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
-        .fechas-group { flex: 1; min-width: 140px; }
-        .fechas-group label { font-size: 0.7em; color: #7f8c8d; display: block; margin-bottom: 4px; }
-        .fechas-group input { width: 100%; padding: 8px 12px; border: 1.5px solid #e8dfd6; border-radius: 40px; font-size: 0.85em; }
-        .btn-aplicar { background: #2c3e50; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 500; }
-        .radio-monto { margin-top: 6px; font-size: 0.75em; color: #555; display: flex; gap: 16px; align-items: center; background: #f5efe8; padding: 6px 12px; border-radius: 40px; }
-        .buscador-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; flex-direction: column; }
-        @media (min-width: 768px) { .buscador-row { flex-direction: row; } }
-        .buscador-group { flex: 1; }
-        .buscador-group label { font-size: 0.7em; color: #7f8c8d; display: block; margin-bottom: 4px; }
-        .buscador-group input { width: 100%; padding: 10px 14px; border: 1.5px solid #e8dfd6; border-radius: 40px; font-size: 0.9em; }
-        .btn-buscar, .btn-limpiar { background: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; width: 100%; font-weight: 500; }
-        .btn-limpiar { background: #b0a088; }
         .tabla-container { overflow-x: auto; }
         .tabla-pedidos { width: 100%; border-collapse: collapse; font-size: 0.8em; display: none; }
         .tarjetas-container { display: block; }
@@ -76,34 +60,85 @@
         .stat-card h4 { color: #8a7a66; font-size: 0.7em; margin-bottom: 6px; }
         .stat-card .numero { font-size: 1.2em; font-weight: bold; color: #2c3e50; }
         .stat-card .monto { font-size: 1em; color: #27ae60; font-weight: bold; }
-        .stat-card .monto-usd { font-size: 0.8em; color: #2980b9; }
         .detalle-pedido { background: #fdfaf7; margin-top: 20px; padding: 16px; border-radius: 28px; display: none; border: 1px solid #eee5dc; }
         .detalle-pedido.visible { display: block; }
         .detalle-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media (min-width: 768px) { .detalle-grid { grid-template-columns: repeat(2, 1fr); } }
         .detalle-item { font-size: 0.85em; }
-        .detalle-item strong { color: #4a3a2a; }
-        .campo-responsable { background: #f9f2eb; padding: 8px 12px; border-radius: 20px; margin-top: 8px; font-size: 0.85em; }
-        .input-responsable { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 40px; margin-top: 6px; background: white; }
+        .campo-responsable { background: #f9f2eb; padding: 8px 12px; border-radius: 20px; margin-top: 8px; }
+        .input-responsable { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 40px; margin-top: 6px; }
         .btn-confirmar-entrega { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin-top: 8px; }
-        .texto-fijo-entrega { background: #e8f5e9; padding: 8px 12px; border-radius: 20px; color: #2e7d32; font-weight: 500; }
+        .texto-fijo-entrega { background: #e8f5e9; padding: 8px 12px; border-radius: 20px; color: #2e7d32; font-weight: 500; display: inline-block; }
         .cargando { text-align: center; padding: 40px; color: #b0a088; }
         .error { text-align: center; padding: 30px; color: #e74c3c; background: #fef0ef; border-radius: 24px; }
         footer { text-align: center; margin-top: 24px; padding: 16px; color: #b0a088; font-size: 0.7em; }
-        .duplicado { border: 2px solid #e74c3c !important; background-color: #fff5f5 !important; }
-        .mensaje-duplicado { color: #e74c3c; font-size: 0.7em; margin-top: 4px; font-weight: 500; }
+        .fechas-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: flex-end; }
+        .fechas-group { flex: 1; min-width: 140px; }
+        .fechas-group label { font-size: 0.7em; color: #7f8c8d; display: block; margin-bottom: 4px; }
+        .fechas-group input { width: 100%; padding: 8px 12px; border: 1.5px solid #e8dfd6; border-radius: 40px; }
+        .btn-aplicar { background: #2c3e50; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
     </style>
     <script>
         // ==================================================
-        // CONFIGURACIÓN
+        // CONFIGURACIÓN - ¡CAMBIAR ESTA URL!
         // ==================================================
-        const SPREADSHEET_ID = "1BVxjWPqmxDEPjJTSaEs0WtlM6XvjhVcIzL31nnddlwQ";
+        const SCRIPT_URL = "https://script.google.com/macros/s/TU_URL_AQUI/exec"; // 👈 PEGA TU URL DE APPS SCRIPT
+        
         let todosLosPedidos = [];
         let filtroActual = "todos";
-        let busquedaNumero = "", busquedaCliente = "", busquedaFecha = "";
         let tasaBCV = 489.55;
-        let fechaInicio = "";
-        let fechaFin = "";
+        
+        // ==================================================
+        // LEER PEDIDOS DESDE GOOGLE SHEETS
+        // ==================================================
+        async function leerPedidos() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=leer`);
+                const data = await response.json();
+                if (data.success) {
+                    return data.pedidos;
+                } else {
+                    console.error("Error al leer:", data.error);
+                    return [];
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                return [];
+            }
+        }
+        
+        // ==================================================
+        // GUARDAR NUEVO PEDIDO
+        // ==================================================
+        async function guardarPedidoWebApp(pedidoData) {
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(pedidoData)
+                });
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error("Error al guardar:", error);
+                return false;
+            }
+        }
+        
+        // ==================================================
+        // ACTUALIZAR ESTADO Y RESPONSABLE
+        // ==================================================
+        async function actualizarPedidoWebApp(numero, nuevoEstado, responsable) {
+            try {
+                const url = `${SCRIPT_URL}?action=actualizar&numero=${numero}&estado=${encodeURIComponent(nuevoEstado)}&responsable=${encodeURIComponent(responsable)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error("Error al actualizar:", error);
+                return false;
+            }
+        }
         
         // ==================================================
         // OBTENER TASA BCV
@@ -114,201 +149,239 @@
                 const data = await response.json();
                 if (data && data.rates && data.rates.VES) {
                     tasaBCV = data.rates.VES;
-                } else {
-                    tasaBCV = 489.55;
                 }
             } catch(e) {
                 tasaBCV = 489.55;
             }
+            document.getElementById('tasaDisplay').innerText = tasaBCV.toFixed(2);
             return tasaBCV;
         }
         
         // ==================================================
-        // LEER PEDIDOS (Simulado con datos locales)
+        // MOSTRAR PEDIDOS CON FILTROS
         // ==================================================
-        async function leerPedidos() {
-            // Por ahora devolvemos array vacío hasta que conectemos la lectura
-            return [];
-        }
-        
-        // ==================================================
-        // AGREGAR PEDIDO USANDO APPS SCRIPT
-        // ==================================================
-        async function agregarPedido(fila) {
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbyX0LOrVmSIokKOz1lb6Zuw-n3pDUj3BficRXpzsmusWZX5IAm7V8UbMjVHTQ8FhI-8GA/exec";
-            
-            const datos = {
-                numero: fila[0],
-                cliente: fila[1],
-                telefono: fila[2],
-                descripcion: fila[3],
-                monto: fila[4],
-                fechaEntrega: fila[5],
-                horaEntrega: fila[6],
-                estado: fila[7],
-                clienteDetalle: fila[8],
-                responsable: fila[9] || "",
-                fechaRegistro: fila[10],
-                montoUSD: fila[11]
-            };
-            
-            try {
-                const response = await fetch(scriptUrl, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datos)
-                });
-                console.log("Pedido enviado a Google Sheets");
-                return true;
-            } catch (error) {
-                console.error("Error al guardar:", error);
-                return false;
-            }
-        }
-        
-        // ==================================================
-        // ACTUALIZAR ESTADO (RESPONSABLE)
-        // ==================================================
-        async function actualizarPedido(numero, nuevoEstado, responsable = "") {
-            // Función pendiente de implementar con Apps Script
-            alert(`✅ Pedido #${numero} cambiaría a estado: ${nuevoEstado}${responsable ? " por " + responsable : ""}\n\nFuncionalidad en desarrollo.`);
-            return true;
-        }
-        
-        function getBadge(estado) {
-            if (estado === "Pendiente") return "badge-pendiente";
-            if (estado === "En Proceso") return "badge-proceso";
-            return "badge-entregado";
-        }
-        
-        function escapeHtml(t) { if(!t) return "—"; let d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
-        
-        function cambiarSeccion(seccion) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(`seccion-${seccion}`).classList.add('active');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
-        }
-        
         async function mostrarPedidos() {
             const contenedor = document.getElementById('tablaPedidos');
             contenedor.innerHTML = '<div class="cargando">🔄 Cargando pedidos...</div>';
+            
             todosLosPedidos = await leerPedidos();
-            let filtrados = [...todosLosPedidos];
-            if (filtrados.length === 0) {
+            
+            if (todosLosPedidos.length === 0) {
                 contenedor.innerHTML = '<div class="error">📭 No hay pedidos registrados aún.<br>Crea tu primer pedido en la sección Registro.</div>';
                 document.getElementById('detallePedido').classList.remove('visible');
                 return;
             }
-            // Mostrar tabla/tarjetas
+            
+            // Aplicar filtros
+            let filtrados = todosLosPedidos;
+            if (filtroActual !== "todos") {
+                filtrados = filtrados.filter(p => p.estado === filtroActual);
+            }
+            
+            // Ordenar por número descendente
+            filtrados.sort((a,b) => b.numero - a.numero);
+            
+            // Generar HTML
             let htmlTabla = `<table class="tabla-pedidos"><thead><tr><th>N°</th><th>Cliente</th><th>Teléfono</th><th>Descripción</th><th>Monto Bs</th><th>Monto USD</th><th>Estado</th><th>Acción</th></tr></thead><tbody>`;
             let htmlTarjetas = '<div class="tarjetas-container">';
+            
             for (let p of filtrados) {
-                let badge = getBadge(p.estado);
-                let clienteShow = p.clienteDetalle ? `${p.cliente} (${p.clienteDetalle.substring(0,20)})` : p.cliente;
-                htmlTabla += `<tr>}<strong>${p.numero}</strong>${escapeHtml(clienteShow)}${escapeHtml(p.telefono)||"—"}${escapeHtml(p.descripcion).substring(0,30)}Bs ${parseFloat(p.monto).toFixed(2)}$ ${(parseFloat(p.monto)/tasaBCV).toFixed(2)}<span class="${badge}">${p.estado}</span><button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>Ver</button></tr>`;
-                htmlTarjetas += `<div class="tarjeta-pedido"><div class="tarjeta-header"><span class="tarjeta-numero">📋 #${p.numero}</span><span class="${badge}">${p.estado}</span></div>
-                    <div class="tarjeta-contenido"><div><strong>👤</strong> ${escapeHtml(clienteShow)}</div><div><strong>💰 Bs</strong> ${parseFloat(p.monto).toFixed(2)}</div><div><strong>💵 USD</strong> ${(parseFloat(p.monto)/tasaBCV).toFixed(2)}</div><div><strong>📞</strong> ${escapeHtml(p.telefono)||"—"}</div><div><strong>📅</strong> ${escapeHtml(p.fechaEntrega)||"—"}</div><div><strong>📦</strong> ${escapeHtml(p.descripcion).substring(0,40)}</div></div>
-                    <div class="tarjeta-boton"><button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>📋 Ver detalle</button></div>
+                let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
+                let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
+                let clienteMostrar = p.clienteDetalle ? `${p.cliente} (${p.clienteDetalle.substring(0,20)})` : p.cliente;
+                
+                htmlTabla += `<tr>
+                    <td><strong>${p.numero}</strong></td>
+                    <td>${escapeHtml(clienteMostrar)}</td>
+                    <td>${escapeHtml(p.telefono) || "—"}</td>
+                    <td>${escapeHtml(p.descripcion).substring(0,30)}</td>
+                    <td>Bs ${parseFloat(p.monto).toFixed(2)}</td>
+                    <td>$${montoUSD}</td>
+                    <td><span class="${badgeClass}">${p.estado}</span></td>
+                    <td><button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>Ver</button></td>
+                </tr>`;
+                
+                htmlTarjetas += `<div class="tarjeta-pedido">
+                    <div class="tarjeta-header">
+                        <span class="tarjeta-numero">📋 #${p.numero}</span>
+                        <span class="${badgeClass}">${p.estado}</span>
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <div><strong>👤</strong> ${escapeHtml(clienteMostrar)}</div>
+                        <div><strong>💰 Bs</strong> ${parseFloat(p.monto).toFixed(2)}</div>
+                        <div><strong>💵 USD</strong> $${montoUSD}</div>
+                        <div><strong>📞</strong> ${escapeHtml(p.telefono) || "—"}</div>
+                        <div><strong>📅 Entrega</strong> ${escapeHtml(p.fechaEntrega) || "—"}</div>
+                        <div><strong>📦</strong> ${escapeHtml(p.descripcion).substring(0,40)}</div>
+                    </div>
+                    <div class="tarjeta-boton">
+                        <button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>📋 Ver detalle</button>
+                    </div>
                 </div>`;
             }
+            
             htmlTabla += `</tbody></table>`;
             htmlTarjetas += `</div>`;
             contenedor.innerHTML = htmlTabla + htmlTarjetas;
             mostrarEstadisticas(filtrados);
         }
         
+        // ==================================================
+        // MOSTRAR ESTADÍSTICAS
+        // ==================================================
         function mostrarEstadisticas(pedidos) {
             let totalBs = pedidos.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
             let totalUsd = totalBs / tasaBCV;
+            let pendientes = pedidos.filter(p => p.estado === "Pendiente");
+            let proceso = pedidos.filter(p => p.estado === "En Proceso");
+            let entregados = pedidos.filter(p => p.estado === "Entregado");
+            
             document.getElementById('estadisticas').innerHTML = `
-                <div class="stat-card"><h4>📊 Total General</h4><div class="numero">${pedidos.length} pedidos</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto-usd">$ ${totalUsd.toFixed(2)}</div></div>
-                <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero" style="color:#b8324a">${pedidos.filter(p => p.estado === "Pendiente").length}</div><div class="monto">Bs ${pedidos.filter(p => p.estado === "Pendiente").reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pedidos.filter(p => p.estado === "Pendiente").reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
-                <div class="stat-card"><h4>⚙️ En Proceso</h4><div class="numero" style="color:#c47d2e">${pedidos.filter(p => p.estado === "En Proceso").length}</div><div class="monto">Bs ${pedidos.filter(p => p.estado === "En Proceso").reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pedidos.filter(p => p.estado === "En Proceso").reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
-                <div class="stat-card"><h4>✅ Entregados</h4><div class="numero" style="color:#2e7d32">${pedidos.filter(p => p.estado === "Entregado").length}</div><div class="monto">Bs ${pedidos.filter(p => p.estado === "Entregado").reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pedidos.filter(p => p.estado === "Entregado").reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
+                <div class="stat-card">
+                    <h4>📊 Total</h4>
+                    <div class="numero">${pedidos.length} pedidos</div>
+                    <div class="monto">Bs ${totalBs.toFixed(2)}</div>
+                    <div class="monto">$${totalUsd.toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>🕊️ Pendientes</h4>
+                    <div class="numero" style="color:#b8324a">${pendientes.length}</div>
+                    <div class="monto">Bs ${pendientes.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>⚙️ En Proceso</h4>
+                    <div class="numero" style="color:#c47d2e">${proceso.length}</div>
+                    <div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>✅ Entregados</h4>
+                    <div class="numero" style="color:#2e7d32">${entregados.length}</div>
+                    <div class="monto">Bs ${entregados.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div>
+                </div>
             `;
         }
         
+        // ==================================================
+        // MOSTRAR DETALLE DE PEDIDO
+        // ==================================================
         function mostrarDetalle(p) {
             let div = document.getElementById('detallePedido');
             let clienteFull = p.clienteDetalle ? `${p.cliente} - ${p.clienteDetalle}` : p.cliente;
-            let badge = getBadge(p.estado);
+            let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
             let esEntregado = (p.estado === "Entregado");
+            
             let responsableHtml = "";
             if (esEntregado) {
-                responsableHtml = `<div class="detalle-item"><strong>✅ Responsable entrega:</strong> <span class="texto-fijo-entrega">${escapeHtml(p.responsable) || "No registrado"}</span></div>`;
+                responsableHtml = `<div class="detalle-item"><strong>✅ Responsable entrega:</strong> <div class="texto-fijo-entrega">${escapeHtml(p.responsable) || "No registrado"}</div></div>`;
             } else {
-                responsableHtml = `<div class="detalle-item"><strong>✍️ Marcar como Entregado</strong>
-                    <div class="campo-responsable"><input type="text" id="responsableNombre" class="input-responsable" placeholder="Nombre de quien entrega" autocomplete="off">
-                    <button class="btn-confirmar-entrega" onclick="confirmarEntrega(${p.numero})">✅ Confirmar entrega</button></div>
+                responsableHtml = `<div class="detalle-item">
+                    <strong>✍️ Marcar como Entregado</strong>
+                    <div class="campo-responsable">
+                        <input type="text" id="responsableNombre" class="input-responsable" placeholder="Nombre de quien entrega" autocomplete="off">
+                        <button class="btn-confirmar-entrega" onclick="confirmarEntrega(${p.numero})">✅ Confirmar entrega</button>
+                    </div>
                 </div>`;
             }
+            
             document.getElementById('detalleContenido').innerHTML = `
-                <div><strong>🔢 Número:</strong> ${p.numero}</div>
-                <div><strong>👤 Cliente:</strong> ${escapeHtml(clienteFull)}</div>
-                <div><strong>📞 Teléfono:</strong> ${escapeHtml(p.telefono)||"—"}</div>
-                <div><strong>📦 Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
-                <div><strong>💰 Monto Bs:</strong> ${parseFloat(p.monto).toFixed(2)}</div>
-                <div><strong>💵 Monto USD:</strong> $ ${(parseFloat(p.monto)/tasaBCV).toFixed(2)}</div>
-                <div><strong>📅 Fecha Entrega:</strong> ${escapeHtml(p.fechaEntrega)||"—"}</div>
-                <div><strong>⏰ Hora Entrega:</strong> ${escapeHtml(p.horaEntrega)||"—"}</div>
-                <div><strong>📌 Estado:</strong> <span class="${badge}">${p.estado}</span></div>
+                <div class="detalle-item"><strong>🔢 Número:</strong> ${p.numero}</div>
+                <div class="detalle-item"><strong>👤 Cliente:</strong> ${escapeHtml(clienteFull)}</div>
+                <div class="detalle-item"><strong>📞 Teléfono:</strong> ${escapeHtml(p.telefono) || "—"}</div>
+                <div class="detalle-item"><strong>📦 Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
+                <div class="detalle-item"><strong>💰 Monto Bs:</strong> ${parseFloat(p.monto).toFixed(2)}</div>
+                <div class="detalle-item"><strong>💵 Monto USD:</strong> $${(parseFloat(p.monto)/tasaBCV).toFixed(2)}</div>
+                <div class="detalle-item"><strong>📅 Fecha Entrega:</strong> ${escapeHtml(p.fechaEntrega) || "—"}</div>
+                <div class="detalle-item"><strong>⏰ Hora Entrega:</strong> ${escapeHtml(p.horaEntrega) || "—"}</div>
+                <div class="detalle-item"><strong>📌 Estado:</strong> <span class="${badgeClass}">${p.estado}</span></div>
                 ${responsableHtml}
+                <div class="detalle-item"><strong>📅 Registrado:</strong> ${escapeHtml(p.fechaRegistro) || "—"}</div>
             `;
             div.classList.add('visible');
             div.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
+        // ==================================================
+        // GUARDAR NUEVO PEDIDO DESDE FORMULARIO
+        // ==================================================
         async function guardarPedido() {
             let clienteTipo = document.getElementById('clienteTipo').value;
-            let clienteNombre = document.getElementById('clienteNombre').value;
-            let descripcion = document.getElementById('descripcion').value;
+            let clienteNombre = document.getElementById('clienteNombre').value.trim();
+            let descripcion = document.getElementById('descripcion').value.trim();
             let monto = document.getElementById('monto').value;
-            let telefono = document.getElementById('telefono').value || "";
-            let fechaEntrega = document.getElementById('fechaEntrega').value || "";
-            let horaEntrega = document.getElementById('horaEntrega').value || "";
+            let telefono = document.getElementById('telefono').value.trim();
+            let fechaEntrega = document.getElementById('fechaEntrega').value;
+            let horaEntrega = document.getElementById('horaEntrega').value;
             let estadoSeleccionado = document.querySelector('input[name="estadoRegistro"]:checked').value;
             
             if (estadoSeleccionado === "Entregado") {
-                alert("❌ Para registrar como ENTREGADO debes hacerlo desde CONTROL, donde ingresarás responsable.");
+                alert("❌ Para registrar como ENTREGADO debes hacerlo desde CONTROL");
                 return;
             }
-            if (!clienteNombre.trim()) {
+            if (!clienteNombre) {
                 alert("❌ Debes ingresar un identificador para el cliente");
                 return;
             }
-            if (!descripcion.trim()) { alert("❌ Descripción obligatoria"); return; }
-            if (!monto || isNaN(monto) || parseFloat(monto) <= 0) { alert("❌ Monto inválido"); return; }
+            if (!descripcion) {
+                alert("❌ Descripción obligatoria");
+                return;
+            }
+            if (!monto || isNaN(monto) || parseFloat(monto) <= 0) {
+                alert("❌ Monto inválido");
+                return;
+            }
             
-            let clienteCompleto = clienteTipo + (clienteNombre.trim() ? ` - ${clienteNombre.trim()}` : "");
+            // Obtener último número
             let pedidos = await leerPedidos();
-            let ultimoNumero = pedidos.length + 1;
+            let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
+            
+            let clienteCompleto = clienteTipo + (clienteNombre ? ` - ${clienteNombre}` : "");
             let fechaActual = new Date().toISOString().split('T')[0];
             let montoBs = parseFloat(monto);
             let montoUsd = montoBs / tasaBCV;
-            let fila = [ultimoNumero, clienteCompleto, telefono, descripcion, montoBs.toFixed(2), fechaEntrega, horaEntrega, "Pendiente", (clienteTipo === "OTRO" ? clienteNombre : ""), "", fechaActual, montoUsd.toFixed(2)];
             
-            const exito = await agregarPedido(fila);
+            let pedidoData = {
+                numero: ultimoNumero,
+                cliente: clienteCompleto,
+                telefono: telefono,
+                descripcion: descripcion,
+                monto: montoBs.toFixed(2),
+                fechaEntrega: fechaEntrega,
+                horaEntrega: horaEntrega,
+                estado: estadoSeleccionado,
+                clienteDetalle: (clienteTipo === "OTRO" ? clienteNombre : ""),
+                responsable: "",
+                fechaRegistro: fechaActual,
+                montoUSD: montoUsd.toFixed(2)
+            };
+            
+            const exito = await guardarPedidoWebApp(pedidoData);
             if (exito) {
                 alert(`✅ Pedido #${ultimoNumero} guardado exitosamente\nMonto: Bs ${montoBs.toFixed(2)} / USD $${montoUsd.toFixed(2)}`);
+                // Limpiar formulario
+                document.getElementById('clienteNombre').value = "";
                 document.getElementById('telefono').value = "";
+                document.getElementById('descripcion').value = "";
                 document.getElementById('monto').value = "";
                 document.getElementById('fechaEntrega').value = "";
                 document.getElementById('horaEntrega').value = "";
-                document.getElementById('clienteNombre').value = "";
-                document.getElementById('descripcion').value = "";
-                document.getElementById('numeroPedido').value = ultimoNumero;
+                document.getElementById('numeroPedido').value = ultimoNumero + 1;
                 mostrarPedidos();
             } else {
-                alert("❌ Error al guardar. Intenta de nuevo.");
+                alert("❌ Error al guardar. Verifica la conexión con Google Sheets.");
             }
         }
         
+        // ==================================================
+        // CONFIRMAR ENTREGA DE PEDIDO
+        // ==================================================
         async function confirmarEntrega(numero) {
             let responsable = document.getElementById('responsableNombre')?.value.trim();
-            if (!responsable) { alert("❌ Debes escribir el nombre de quien entrega"); return; }
-            const exito = await actualizarPedido(numero, "Entregado", responsable);
+            if (!responsable) {
+                alert("❌ Debes escribir el nombre de quien entrega");
+                return;
+            }
+            
+            const exito = await actualizarPedidoWebApp(numero, "Entregado", responsable);
             if (exito) {
                 alert(`✅ Pedido #${numero} entregado por: ${responsable}`);
                 document.getElementById('detallePedido').classList.remove('visible');
@@ -318,75 +391,194 @@
             }
         }
         
-        function filtrarPorEstado(e) { filtroActual = e; busquedaNumero=busquedaCliente=busquedaFecha=""; document.getElementById('buscarNumero').value = ""; document.getElementById('buscarCliente').value = ""; document.getElementById('buscarFecha').value = ""; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
-        function aplicarBusquedaAvanzada() { busquedaNumero = document.getElementById('buscarNumero').value; busquedaCliente = document.getElementById('buscarCliente').value; busquedaFecha = document.getElementById('buscarFecha').value; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
-        function limpiarFiltros() { filtroActual = "todos"; busquedaNumero=busquedaCliente=busquedaFecha=""; document.getElementById('buscarNumero').value = ""; document.getElementById('buscarCliente').value = ""; document.getElementById('buscarFecha').value = ""; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
+        // ==================================================
+        // FILTROS Y UTILIDADES
+        // ==================================================
+        function escapeHtml(str) {
+            if (!str) return "—";
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+        
+        function filtrarPorEstado(estado) {
+            filtroActual = estado;
+            mostrarPedidos();
+        }
+        
+        function aplicarBusquedaAvanzada() {
+            // Búsqueda por número, cliente o fecha (se puede implementar)
+            mostrarPedidos();
+        }
+        
+        function limpiarFiltros() {
+            filtroActual = "todos";
+            mostrarPedidos();
+        }
+        
+        function cambiarSeccion(seccion) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`seccion-${seccion}`).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.closest('.tab-btn').classList.add('active');
+            
+            if (seccion === 'control') {
+                mostrarPedidos();
+            } else if (seccion === 'estadisticas') {
+                mostrarEstadisticas(todosLosPedidos);
+            }
+        }
         
         async function aplicarEstadisticasPorFecha() {
-            alert("Funcionalidad de filtro por fechas disponible en la versión completa con lectura de datos.");
+            // Implementar filtro por fechas
+            alert("Filtro por fechas disponible en próxima versión");
         }
         
         function limpiarFechas() {
             document.getElementById('fechaInicio').value = "";
             document.getElementById('fechaFin').value = "";
-            mostrarPedidos();
+            mostrarEstadisticas(todosLosPedidos);
         }
         
+        // ==================================================
+        // INICIALIZAR
+        // ==================================================
         async function init() {
             await obtenerTasaBCV();
             await mostrarPedidos();
-            document.getElementById('numeroPedido').value = 1;
-            document.getElementById('tasaDisplay').innerText = tasaBCV.toFixed(4);
+            
+            // Establecer próximo número (placeholder)
+            let pedidos = await leerPedidos();
+            let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
+            document.getElementById('numeroPedido').value = ultimoNumero;
             document.querySelector('input[name="estadoRegistro"][value="Pendiente"]').checked = true;
         }
+        
         init();
     </script>
 </head>
 <body>
     <div class="app-container">
-        <div class="brand-header"><div class="brand-icon">💐</div><div class="brand-name">CLAVELLE</div><div class="brand-tagline">gestión inteligente · trazabilidad · BCV</div></div>
-        <div class="nav-tabs"><button class="tab-btn active" onclick="cambiarSeccion('registro')"><span>📝</span><span>Registro</span></button><button class="tab-btn" onclick="cambiarSeccion('control')"><span>🔍</span><span>Control</span></button><button class="tab-btn" onclick="cambiarSeccion('estadisticas')"><span>📊</span><span>Estadísticas</span></button></div>
+        <div class="brand-header">
+            <div class="brand-icon">💐</div>
+            <div class="brand-name">CLAVELLE</div>
+            <div class="brand-tagline">gestión inteligente · trazabilidad · BCV</div>
+        </div>
         
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="cambiarSeccion('registro')">📝 Registro</button>
+            <button class="tab-btn" onclick="cambiarSeccion('control')">🔍 Control</button>
+            <button class="tab-btn" onclick="cambiarSeccion('estadisticas')">📊 Estadísticas</button>
+        </div>
+        
+        <!-- Sección Registro -->
         <div id="seccion-registro" class="section active">
-            <div class="card"><div class="card-header">📝 Registrar Nuevo Pedido</div><div class="card-body">
-                <div class="form-grid">
-                    <div class="campo"><label>📋 Número <span class="obligatorio">*</span></label><input type="text" id="numeroPedido" readonly style="background:#f4f0eb;"></div>
-                    <div class="campo"><label>👤 Cliente <span class="obligatorio">*</span></label>
-                        <div class="cliente-row"><select id="clienteTipo"><option>APLICACIÓN</option><option>OFICINA</option><option>OTRO</option></select><input type="text" id="clienteNombre" placeholder="Nombre, código o teléfono" autocomplete="off"></div>
-                        <div id="duplicadoMensaje" class="mensaje-duplicado"></div>
+            <div class="card">
+                <div class="card-header">📝 Registrar Nuevo Pedido</div>
+                <div class="card-body">
+                    <div class="form-grid">
+                        <div class="campo">
+                            <label>📋 Número <span class="obligatorio">*</span></label>
+                            <input type="text" id="numeroPedido" readonly style="background:#f4f0eb;">
+                        </div>
+                        <div class="campo">
+                            <label>👤 Cliente <span class="obligatorio">*</span></label>
+                            <div class="cliente-row">
+                                <select id="clienteTipo">
+                                    <option>APLICACIÓN</option>
+                                    <option>OFICINA</option>
+                                    <option>OTRO</option>
+                                </select>
+                                <input type="text" id="clienteNombre" placeholder="Nombre, código o teléfono" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <label>📞 Teléfono (opcional)</label>
+                            <input type="text" id="telefono" placeholder="0412-1234567">
+                        </div>
+                        <div class="campo">
+                            <label>📦 Descripción <span class="obligatorio">*</span></label>
+                            <textarea id="descripcion" rows="2" placeholder="Detalles del pedido..."></textarea>
+                        </div>
+                        <div class="campo">
+                            <label>💰 Monto (Bs) <span class="obligatorio">*</span></label>
+                            <input type="number" id="monto" placeholder="0.00" step="0.01">
+                        </div>
+                        <div class="campo">
+                            <label>📅 Fecha Entrega</label>
+                            <input type="date" id="fechaEntrega">
+                        </div>
+                        <div class="campo">
+                            <label>⏰ Hora Entrega</label>
+                            <input type="time" id="horaEntrega">
+                        </div>
+                        <div class="campo">
+                            <label>📌 Estado Inicial</label>
+                            <div class="estado-opciones">
+                                <label class="estado-opcion">
+                                    <input type="radio" name="estadoRegistro" value="Pendiente" checked> 
+                                    <span>🕊️ Pendiente</span>
+                                </label>
+                                <label class="estado-opcion">
+                                    <input type="radio" name="estadoRegistro" value="En Proceso"> 
+                                    <span>⚙️ En Proceso</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="campo"><label>📞 Teléfono (opcional)</label><input type="text" id="telefono" placeholder="0412-1234567"></div>
-                    <div class="campo"><label>📦 Descripción <span class="obligatorio">*</span></label><textarea id="descripcion" rows="2" placeholder="Detalles del pedido..."></textarea></div>
-                    <div class="campo"><label>💰 Monto <span class="obligatorio">*</span></label><input type="number" id="monto" placeholder="0.00" step="0.01"></div>
-                    <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="fechaEntrega"></div>
-                    <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="horaEntrega"></div>
-                    <div class="campo"><label>📌 Estado Inicial</label><div class="estado-opciones"><label class="estado-opcion"><input type="radio" name="estadoRegistro" value="Pendiente" checked> <span>🕊️ Pendiente</span></label><label class="estado-opcion"><input type="radio" name="estadoRegistro" value="En Proceso"> <span>⚙️ En Proceso</span></label></div></div>
-                </div><button class="btn-guardar" onclick="guardarPedido()">💾 GUARDAR PEDIDO</button>
-                <div class="radio-monto"><span>💱 Tipo de cambio BCV: <strong id="tasaDisplay">Calculando...</strong> Bs/USD</span></div>
-            </div></div>
+                    <button class="btn-guardar" onclick="guardarPedido()">💾 GUARDAR PEDIDO</button>
+                    <div style="margin-top: 12px; text-align: center; font-size: 0.8em;">
+                        💱 Tipo de cambio BCV: <strong id="tasaDisplay">Calculando...</strong> Bs/USD
+                    </div>
+                </div>
+            </div>
         </div>
         
+        <!-- Sección Control -->
         <div id="seccion-control" class="section">
-            <div class="card"><div class="card-header">🔍 Control de Pedidos</div><div class="card-body">
-                <div class="filtros-botones"><button class="btn-estado" onclick="filtrarPorEstado('todos')">📋 Todos</button><button class="btn-estado" onclick="filtrarPorEstado('Pendiente')">🕊️ Pendientes</button><button class="btn-estado" onclick="filtrarPorEstado('En Proceso')">⚙️ Proceso</button><button class="btn-estado" onclick="filtrarPorEstado('Entregado')">✅ Entregados</button></div>
-                <div id="tablaPedidos">Cargando pedidos...</div>
-                <div id="detallePedido" class="detalle-pedido"><h4 style="margin-bottom:12px;">📋 Detalle completo</h4><div id="detalleContenido" class="detalle-grid"></div></div>
-            </div></div>
+            <div class="card">
+                <div class="card-header">🔍 Control de Pedidos</div>
+                <div class="card-body">
+                    <div class="filtros-botones">
+                        <button class="btn-estado" onclick="filtrarPorEstado('todos')">📋 Todos</button>
+                        <button class="btn-estado" onclick="filtrarPorEstado('Pendiente')">🕊️ Pendientes</button>
+                        <button class="btn-estado" onclick="filtrarPorEstado('En Proceso')">⚙️ Proceso</button>
+                        <button class="btn-estado" onclick="filtrarPorEstado('Entregado')">✅ Entregados</button>
+                    </div>
+                    <div id="tablaPedidos">Cargando pedidos...</div>
+                    <div id="detallePedido" class="detalle-pedido">
+                        <h4 style="margin-bottom:12px;">📋 Detalle completo</h4>
+                        <div id="detalleContenido" class="detalle-grid"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         
+        <!-- Sección Estadísticas -->
         <div id="seccion-estadisticas" class="section">
-            <div class="card"><div class="card-header">📊 Estadísticas de Ventas</div><div class="card-body">
-                <div class="estadisticas-fechas"><div class="fechas-row"><div class="fechas-group"><label>📅 Desde</label><input type="date" id="fechaInicio"></div><div class="fechas-group"><label>📅 Hasta</label><input type="date" id="fechaFin"></div><div class="fechas-group" style="display:flex; gap:10px;"><button class="btn-aplicar" onclick="aplicarEstadisticasPorFecha()">📊 Aplicar Fechas</button><button class="btn-aplicar" onclick="limpiarFechas()" style="background:#b0a088;">🗑️ Limpiar</button></div></div></div>
-                <div id="estadisticas" class="stats-grid">Cargando estadísticas...</div>
-            </div></div>
+            <div class="card">
+                <div class="card-header">📊 Estadísticas de Ventas</div>
+                <div class="card-body">
+                    <div class="fechas-row">
+                        <div class="fechas-group">
+                            <label>📅 Desde</label>
+                            <input type="date" id="fechaInicio">
+                        </div>
+                        <div class="fechas-group">
+                            <label>📅 Hasta</label>
+                            <input type="date" id="fechaFin">
+                        </div>
+                        <div class="fechas-group">
+                            <button class="btn-aplicar" onclick="aplicarEstadisticasPorFecha()">📊 Aplicar</button>
+                            <button class="btn-aplicar" onclick="limpiarFechas()" style="background:#b0a088; margin-left:8px;">🗑️ Limpiar</button>
+                        </div>
+                    </div>
+                    <div id="estadisticas" class="stats-grid">Cargando estadísticas...</div>
+                </div>
+            </div>
         </div>
+        
         <footer>💐 Clavelle Floristería · Tipo de cambio BCV integrado</footer>
     </div>
-    <script>
-        setInterval(async () => {
-            await obtenerTasaBCV();
-            document.getElementById('tasaDisplay').innerText = tasaBCV.toFixed(4);
-        }, 60000);
-    </script>
 </body>
 </html>
