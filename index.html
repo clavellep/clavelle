@@ -45,6 +45,10 @@
         .empty-state { text-align: center; padding: 40px; color: #b0a088; }
         .tasa { text-align: center; margin-top: 16px; font-size: 0.8em; color: #8a7a66; }
         footer { text-align: center; margin-top: 24px; padding: 16px; color: #b0a088; font-size: 0.7em; }
+        .diagnostico-bar { background: #fff3e0; border-radius: 20px; padding: 12px; margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: center; }
+        .btn-diagnostico { background: #e67e22; font-size: 0.8em; padding: 8px 16px; }
+        .btn-diagnostico.verde { background: #27ae60; }
+        .btn-diagnostico.azul { background: #3498db; }
     </style>
 </head>
 <body>
@@ -107,6 +111,14 @@
     <!-- Panel Control -->
     <div id="panel-control" class="panel">
         <h2 style="margin-bottom: 20px;">🔍 Control de Pedidos</h2>
+        
+        <!-- BARRA DE DIAGNÓSTICO -->
+        <div class="diagnostico-bar">
+            <button class="btn-diagnostico azul" onclick="verificarConexion()">🔍 Verificar Conexión</button>
+            <button class="btn-diagnostico" onclick="testGuardadoDirecto()">🧪 Test Guardado Directo</button>
+            <button class="btn-diagnostico verde" onclick="verificarEstructuraHoja()">📋 Ver Estructura Hoja</button>
+        </div>
+        
         <div class="filtros">
             <button onclick="filtrarPor('todos')">📋 Todos</button>
             <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
@@ -169,20 +181,39 @@
             return [];
         } catch (error) {
             console.error("Error al leer:", error);
+            mostrarNotificacion("❌ Error de lectura: " + error.message, true);
             return [];
         }
     }
     
     async function guardarPedidoWebApp(pedidoData) {
+        console.log("📤 Enviando a Apps Script:", pedidoData);
+        
         try {
             const response = await fetch(SCRIPT_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(pedidoData)
             });
-            const data = await response.json();
-            return { success: data.success, error: data.error };
+            
+            console.log("📥 Status HTTP:", response.status);
+            
+            const textResponse = await response.text();
+            console.log("📄 Respuesta RAW:", textResponse);
+            
+            let data;
+            try {
+                data = JSON.parse(textResponse);
+            } catch(e) {
+                console.error("No es JSON:", e);
+                return { success: false, error: "Respuesta no es JSON: " + textResponse.substring(0, 100) };
+            }
+            
+            console.log("✅ Respuesta parseada:", data);
+            return { success: data.success === true, error: data.error, data: data };
+            
         } catch (error) {
+            console.error("❌ Error de red:", error);
             return { success: false, error: error.message };
         }
     }
@@ -197,6 +228,95 @@
             return { success: false, error: error.message };
         }
     }
+    
+    // ==================================================
+    // FUNCIONES DE DIAGNÓSTICO
+    // ==================================================
+    
+    async function verificarConexion() {
+        console.log("===== VERIFICANDO CONEXIÓN =====");
+        mostrarNotificacion("🔍 Verificando conexión...");
+        
+        try {
+            const response = await fetch(`${SCRIPT_URL}?action=leer`);
+            console.log("Status:", response.status);
+            const data = await response.json();
+            console.log("Respuesta:", data);
+            
+            if (data.success) {
+                mostrarNotificacion(`✅ Conexión OK! ${data.pedidos.length} pedidos encontrados.`);
+            } else {
+                mostrarNotificacion("❌ Error: " + data.error, true);
+            }
+        } catch(error) {
+            console.error(error);
+            mostrarNotificacion("❌ Error de conexión: " + error.message, true);
+        }
+    }
+    
+    async function testGuardadoDirecto() {
+        console.log("===== TEST GUARDADO DIRECTO =====");
+        mostrarNotificacion("🧪 Ejecutando test de guardado...");
+        
+        const testData = {
+            numero: 999,
+            cliente: "TEST DIRECTO",
+            telefono: "0412-9999999",
+            descripcion: "Prueba desde botón de diagnóstico",
+            monto: "250.00",
+            fechaEntrega: new Date().toISOString().split('T')[0],
+            horaEntrega: "16:00",
+            estado: "Pendiente",
+            clienteDetalle: "",
+            responsable: "",
+            fechaRegistro: new Date().toISOString().split('T')[0],
+            montoUSD: "50.00"
+        };
+        
+        const resultado = await guardarPedidoWebApp(testData);
+        
+        if (resultado.success) {
+            mostrarNotificacion("✅ TEST EXITOSO! Pedido guardado correctamente.");
+            await cargarPedidos();
+            // Mostrar alert con detalles
+            alert("✅ Test exitoso!\n\nRespuesta del servidor:\n" + JSON.stringify(resultado.data, null, 2));
+        } else {
+            mostrarNotificacion("❌ TEST FALLIDO: " + resultado.error, true);
+            alert("❌ Test fallido!\n\nError: " + resultado.error + "\n\nRevisa la consola (F12) para más detalles.");
+        }
+    }
+    
+    async function verificarEstructuraHoja() {
+        console.log("===== VERIFICANDO ESTRUCTURA =====");
+        mostrarNotificacion("📋 Verificando estructura de la hoja...");
+        
+        try {
+            const response = await fetch(`${SCRIPT_URL}?action=leer`);
+            const data = await response.json();
+            
+            if (data.success) {
+                let mensaje = `✅ Hoja conectada correctamente!\n\n`;
+                mensaje += `📊 Pedidos encontrados: ${data.pedidos.length}\n`;
+                mensaje += `🔗 URL: ${SCRIPT_URL.substring(0, 60)}...\n\n`;
+                
+                if (data.pedidos.length > 0) {
+                    mensaje += `📝 Último pedido: #${data.pedidos[data.pedidos.length-1].numero} - ${data.pedidos[data.pedidos.length-1].cliente}`;
+                } else {
+                    mensaje += `💡 No hay pedidos aún. Prueba agregar uno manualmente o usar el test.`;
+                }
+                
+                alert(mensaje);
+            } else {
+                alert("❌ Error al conectar: " + data.error);
+            }
+        } catch(error) {
+            alert("❌ Error: " + error.message);
+        }
+    }
+    
+    // ==================================================
+    // FUNCIONES PRINCIPALES
+    // ==================================================
     
     async function guardarPedido() {
         let clienteNombre = document.getElementById('clienteNombre').value.trim();
@@ -246,6 +366,8 @@
             montoUSD: montoUsd.toFixed(2)
         };
         
+        console.log("📝 Datos del formulario:", pedidoData);
+        
         const resultado = await guardarPedidoWebApp(pedidoData);
         
         btn.innerHTML = textoOriginal;
@@ -262,7 +384,9 @@
             document.getElementById('numeroPedido').value = ultimoNumero + 1;
             await cargarPedidos();
         } else {
+            console.error("Error detallado:", resultado);
             mostrarNotificacion("❌ Error al guardar: " + (resultado.error || "Verifica conexión"), true);
+            alert("❌ Error al guardar!\n\n" + (resultado.error || "Verifica la consola (F12) para más detalles."));
         }
     }
     
@@ -286,7 +410,7 @@
             mostrarNotificacion(`✅ Pedido #${numero} entregado por: ${responsable}`);
             await cargarPedidos();
         } else {
-            mostrarNotificacion("❌ Error al actualizar", true);
+            mostrarNotificacion("❌ Error al actualizar: " + resultado.error, true);
         }
     }
     
@@ -412,6 +536,9 @@
     }
     
     async function init() {
+        console.log("🚀 Iniciando Clavelle...");
+        console.log("🔗 SCRIPT_URL:", SCRIPT_URL);
+        
         await obtenerTasaBCV();
         let pedidos = await leerPedidos();
         let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
