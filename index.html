@@ -3,29 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Clavelle · Gestión de Pedidos Pro</title>
+    <title>Clavelle · Gestión de Pedidos</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #f8f5f0; font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif; padding: 0; min-height: 100vh; }
         .app-container { max-width: 1400px; margin: 0 auto; padding: 16px; }
-
         .brand-header { background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%); border-radius: 32px; padding: 20px 24px; margin-bottom: 24px; text-align: center; }
         .brand-icon { font-size: 2.5em; }
         .brand-name { font-size: 1.8em; font-weight: 700; letter-spacing: 2px; color: #f5e6d3; }
         .brand-tagline { font-size: 0.7em; color: #d4c5b0; margin-top: 4px; }
-
         .nav-tabs { display: flex; gap: 8px; margin-bottom: 24px; background: #ffffffcc; backdrop-filter: blur(10px); padding: 6px; border-radius: 60px; }
         .tab-btn { flex: 1; background: transparent; border: none; padding: 12px 8px; border-radius: 50px; font-weight: 600; font-size: 0.85em; cursor: pointer; color: #5a4a3a; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tab-btn.active { background: #2c3e50; color: white; }
-
         .section { display: none; animation: fadeIn 0.3s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
         .card { background: white; border-radius: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
         .card-header { background: #f5efe8; color: #2c3e50; padding: 16px 20px; font-weight: 700; border-bottom: 1px solid #e8dfd6; }
         .card-body { padding: 20px; }
-
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
         @media (min-width: 768px) { .form-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .form-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -35,16 +30,13 @@
         .campo input, .campo select, .campo textarea { padding: 12px; border: 1.5px solid #e8dfd6; border-radius: 20px; font-size: 0.95em; font-family: inherit; background: white; }
         .cliente-row { display: flex; gap: 10px; flex-direction: column; }
         @media (min-width: 480px) { .cliente-row { flex-direction: row; } .cliente-row select { flex: 1; } .cliente-row input { flex: 2; } }
-
         .estado-opciones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; background: #f9f2eb; padding: 6px 12px; border-radius: 60px; }
         .estado-opcion { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .estado-opcion input { width: auto; margin: 0; transform: scale(1.1); accent-color: #2c3e50; }
         .estado-opcion label { font-weight: normal; cursor: pointer; margin: 0; }
-
         .btn-guardar { background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%); color: white; border: none; padding: 14px 24px; border-radius: 40px; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 16px; width: 100%; transition: opacity 0.2s; }
         .btn-guardar:active { transform: scale(0.98); }
         .btn-guardar:disabled { opacity: 0.6; cursor: not-allowed; }
-
         .filtros-botones { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .btn-estado { background: #f0ebe5; border: none; padding: 8px 14px; border-radius: 40px; cursor: pointer; font-size: 0.8em; flex: 1; min-width: 80px; font-weight: 500; }
         .btn-estado.activo { background: #2c3e50; color: white; }
@@ -55,7 +47,6 @@
         .fechas-group input { width: 100%; padding: 8px 12px; border: 1.5px solid #e8dfd6; border-radius: 40px; font-size: 0.85em; }
         .btn-aplicar { background: #2c3e50; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 500; }
         .radio-monto { margin-top: 6px; font-size: 0.75em; color: #555; display: flex; gap: 16px; align-items: center; background: #f5efe8; padding: 6px 12px; border-radius: 40px; }
-
         .buscador-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; flex-direction: column; }
         @media (min-width: 768px) { .buscador-row { flex-direction: row; } }
         .buscador-group { flex: 1; }
@@ -63,7 +54,6 @@
         .buscador-group input { width: 100%; padding: 10px 14px; border: 1.5px solid #e8dfd6; border-radius: 40px; font-size: 0.9em; }
         .btn-buscar, .btn-limpiar { background: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; width: 100%; font-weight: 500; }
         .btn-limpiar { background: #b0a088; }
-
         .tabla-container { overflow-x: auto; }
         .tabla-pedidos { width: 100%; border-collapse: collapse; font-size: 0.8em; display: none; }
         .tarjetas-container { display: block; }
@@ -78,18 +68,15 @@
         @media (min-width: 1024px) { .tabla-pedidos { display: table; } .tarjetas-container { display: none; } }
         .tabla-pedidos th { background: #2c3e50; color: white; padding: 10px; text-align: left; }
         .tabla-pedidos td { padding: 8px 10px; border-bottom: 1px solid #ece0d4; vertical-align: middle; }
-
         .badge-pendiente { background: #ffe4e6; color: #b8324a; padding: 4px 12px; border-radius: 40px; display: inline-block; font-size: 0.7em; font-weight: 500; }
         .badge-proceso { background: #fff3e0; color: #c47d2e; padding: 4px 12px; border-radius: 40px; display: inline-block; font-size: 0.7em; font-weight: 500; }
         .badge-entregado { background: #e6f7e6; color: #2e7d32; padding: 4px 12px; border-radius: 40px; display: inline-block; font-size: 0.7em; font-weight: 500; }
-
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
         .stat-card { background: #fdfaf7; border-radius: 24px; padding: 14px; text-align: center; border: 1px solid #eee5dc; }
         .stat-card h4 { color: #8a7a66; font-size: 0.7em; margin-bottom: 6px; }
         .stat-card .numero { font-size: 1.2em; font-weight: bold; color: #2c3e50; }
         .stat-card .monto { font-size: 1em; color: #27ae60; font-weight: bold; }
         .stat-card .monto-usd { font-size: 0.8em; color: #2980b9; }
-
         .detalle-pedido { background: #fdfaf7; margin-top: 20px; padding: 16px; border-radius: 28px; display: none; border: 1px solid #eee5dc; }
         .detalle-pedido.visible { display: block; }
         .detalle-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -106,49 +93,14 @@
         .duplicado { border: 2px solid #e74c3c !important; background-color: #fff5f5 !important; }
         .mensaje-duplicado { color: #e74c3c; font-size: 0.7em; margin-top: 4px; font-weight: 500; }
     </style>
-    <script src="https://apis.google.com/js/api.js"></script>
     <script>
         // ==================================================
         // CONFIGURACIÓN
         // ==================================================
         const SPREADSHEET_ID = "1BVxjWPqmxDEPjJTSaEs0WtlM6XvjhVcIzL31nnddlwQ";
-        const CLIENT_EMAIL = "clavelle-robot@mi-proyecto-clavelle.iam.gserviceaccount.com";
-        const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
-MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDUwUcmHL7DkE/i
-V0Pnuh3hKZpgpQH1mDpNh83R1YG8ogbLtyjjgVLNxoqLNZx15Flt9JOQWtDuyerd
-JUhxQuN13pibAT8OMtlJYJSPJfsj9AKfZh66hQAZ8+ToVX9MZSBDq5eQ0REnRk4e
-AxHcVsGugtYOkzUme+p9XBj/zBFw9n1p72v7zAxq0v1fr6SIxM2IiqpM74mmhWjt
-ODKWlfQub9rlXyK7zmzsQeRnW2hrGG6mhWMhO8Xumj+k3X3WjQ158kWZVsRvpasm
-Y2vaq5XV3RgmwSH25sXCrdQWfwuhjXkErJOVvUfuw5px4GvnpJeKBjc4vgQe70g3
-zdWgZLofAgMBAAECggEAGqONXY50LPduUS2nsSWYJSpji9339gDWrVYnkAehjsq4
-0BwXELlkx/gn6RCljmCw+TgKRqULC8MY1xIaf81QvrWdj6xNxrYuMmZXOOntXU3p
-tXyrX05U5MBUNT+zSI+m77eAqvTKfDZCL2F8ry/mYLaSx9C9yHDz5ji4YUWeGhxr
-EZVYE5FqTG68AWykNna//V8cYyjvQZZxoarfGeO8BsrZLG4sqdfTUYtlOxElqqP+
-K9xwScxkna/9vwFdwp2cn4s3dfSNuCd8HCewOsDqlg+FIhGCER90B+BfAnN3qTIU
-/yMi2rO/KXJTMN4EDB8nr6riJ+w7XyrapBZ/xMmLGQKBgQDyMAdwiVJWx7X20KTq
-TOF/H3hEtxompaMyJixHbggKegEAo84Pa/EkHCc/q3ckjSE4K34kebcA+Ls1I4yt
-nuvaXXVnlauZSh7gpi+9/5IC76ldoPQ3VhZ6Gy7ytDZuS8rJyxkq31HVPppGk0bNA
-/id8mKtjiOop21QDzTsNz9a15wKBgQDg44dam2AYcZ4okGeg+fbFCNHeE5Rzvs0u
-HeZZQDUAz5AgJR/rekcJzbdMJSe81LSbceJRbCz47sKXVcwPXwz89mOBqpapUk83
-6oWWlN++VkwDS50s7IbOsNbon/UEM+eQniS7lHvcRWyYguQse7WcDaC24yk5qytb
-qP1YOoBjCQKBgCWlN5LTlZvtoShDWE8fMjH7Z0tvFr6JIqvp6RoVTWSrgDpkO+SD
-x9DwG123PmbNFSvQ/uOWk86v2xGwe+6JUElI9m9FxZVwiTzUBp9fmm8bRwjp7JuT
-EIgtZR+VLOiTlw9mKTkX6kA+SQdQnUdt+h9Q79sh7hwhfpa0sQg9lUdjAoGBAIIu
-9IHdBAnia73rqjGjwdhZvLOj/gHq5/fUUy5DXutzPGl/VDUKeekQ7xTjRVeogkyh
-5nNf/cC05myYvCIB0hD1yLCdQc4O2dDysBZ1Y/hZGHOn5/rDiV5JPH85aarfKSOs
-iHMWB4WBotW+n7uoeX823FxCr/C0R8stzkquwveRAoGAC7DOUtnugU5psDCGY6LB
-qrs9OclxEoOC7SRN67ZjMg95bkt7sa/g9PGypjLe5bnNj1JgiYZufIHEysZsj91y
-mehwu3IhXkBKq6AZXx7RMqjM4VUkZgtTUiuulr0uLvpSIZz6KY1kkbybAg+ascOy
-VYvGJf/eAnPI3+k9qYiD9T4=
------END PRIVATE KEY-----\n`;
-        
-        // ==================================================
-        // VARIABLES GLOBALES
-        // ==================================================
         let todosLosPedidos = [];
         let filtroActual = "todos";
         let busquedaNumero = "", busquedaCliente = "", busquedaFecha = "";
-        let accessToken = null;
         let tasaBCV = 489.55;
         let fechaInicio = "";
         let fechaFin = "";
@@ -162,244 +114,75 @@ VYvGJf/eAnPI3+k9qYiD9T4=
                 const data = await response.json();
                 if (data && data.rates && data.rates.VES) {
                     tasaBCV = data.rates.VES;
-                    console.log(`Tasa BCV actualizada: ${tasaBCV} Bs/USD`);
                 } else {
                     tasaBCV = 489.55;
                 }
             } catch(e) {
-                console.warn("No se pudo obtener la tasa en tiempo real, usando valor por defecto", e);
                 tasaBCV = 489.55;
             }
             return tasaBCV;
         }
         
-        function convertirADolares(montoBs) {
-            return montoBs / tasaBCV;
-        }
-        
         // ==================================================
-        // AUTENTICACIÓN OAuth 2.0 CON CUENTA DE SERVICIO
-        // ==================================================
-        async function obtenerAccessToken() {
-            if (accessToken) return accessToken;
-            
-            const jwtHeader = { alg: "RS256", typ: "JWT" };
-            const now = Math.floor(Date.now() / 1000);
-            const jwtPayload = {
-                iss: CLIENT_EMAIL,
-                scope: "https://www.googleapis.com/auth/spreadsheets",
-                aud: "https://oauth2.googleapis.com/token",
-                exp: now + 3600,
-                iat: now
-            };
-            
-            function base64url(str) { return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
-            function stringToArrayBuffer(str) {
-                const pem = str.replace(/-----BEGIN PRIVATE KEY-----/, '').replace(/-----END PRIVATE KEY-----/, '').replace(/\n/g, '');
-                const binaryString = atob(pem);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
-                return bytes.buffer;
-            }
-            function arrayBufferToString(buffer) {
-                const bytes = new Uint8Array(buffer);
-                let str = "";
-                for (let i = 0; i < bytes.length; i++) str += String.fromCharCode(bytes[i]);
-                return str;
-            }
-            
-            const headerBase64 = base64url(JSON.stringify(jwtHeader));
-            const payloadBase64 = base64url(JSON.stringify(jwtPayload));
-            const signatureInput = `${headerBase64}.${payloadBase64}`;
-            
-            const privateKey = await crypto.subtle.importKey(
-                "pkcs8", stringToArrayBuffer(PRIVATE_KEY),
-                { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-                false, ["sign"]
-            );
-            const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", privateKey, new TextEncoder().encode(signatureInput));
-            const signatureBase64 = base64url(arrayBufferToString(signature));
-            const jwt = `${signatureInput}.${signatureBase64}`;
-            
-            const response = await fetch("https://oauth2.googleapis.com/token", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion: jwt })
-            });
-            const data = await response.json();
-            if (data.access_token) { accessToken = data.access_token; return accessToken; }
-            else return null;
-        }
-        
-        // ==================================================
-        // CREAR ENCABEZADOS CON FORMATO (SI LA HOJA ESTÁ VACÍA)
-        // ==================================================
-        async function crearEncabezadosFormateados() {
-            try {
-                const token = await obtenerAccessToken();
-                // Verificar si la hoja tiene datos
-                const checkUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Hoja1!A1:A1`;
-                const checkResponse = await fetch(checkUrl, { headers: { 'Authorization': `Bearer ${token}` } });
-                const checkData = await checkResponse.json();
-                
-                // Si no hay datos (A1 está vacía), creamos los encabezados
-                if (!checkData.values || checkData.values.length === 0 || checkData.values[0][0] !== "Número") {
-                    console.log("Hoja vacía, creando encabezados con formato...");
-                    
-                    // 1. Escribir los encabezados
-                    const headers = [
-                        ["Número", "Cliente", "Teléfono", "Descripción", "Monto Bs", "Fecha Entrega", "Hora Entrega", "Estado", "Cliente Detalle", "Responsable Entrega", "Fecha Registro", "Monto USD"]
-                    ];
-                    const writeUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Hoja1!A1:L1?valueInputOption=USER_ENTERED`;
-                    await fetch(writeUrl, {
-                        method: "PUT",
-                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ values: headers })
-                    });
-                    
-                    // 2. Aplicar formato a la fila de encabezados usando batchUpdate
-                    const formatUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}:batchUpdate`;
-                    const formatBody = {
-                        requests: [
-                            {
-                                repeatCell: {
-                                    range: { sheetId: 0, startRowIndex: 0, endRowIndex: 1 },
-                                    cell: {
-                                        userEnteredFormat: {
-                                            backgroundColor: { red: 0.2, green: 0.3, blue: 0.4 },
-                                            textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, bold: true, fontSize: 10 },
-                                            horizontalAlignment: "CENTER"
-                                        }
-                                    },
-                                    fields: "userEnteredFormat(backgroundColor,textFormat,horizontalAlignment)"
-                                }
-                            },
-                            {
-                                updateSheetProperties: {
-                                    properties: { sheetId: 0, gridProperties: { frozenRowCount: 1 } },
-                                    fields: "gridProperties.frozenRowCount"
-                                }
-                            }
-                        ]
-                    };
-                    await fetch(formatUrl, {
-                        method: "POST",
-                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formatBody)
-                    });
-                    console.log("Encabezados creados y formateados correctamente");
-                    return true;
-                }
-                return false;
-            } catch(e) {
-                console.error("Error al crear/formatear encabezados:", e);
-                return false;
-            }
-        }
-        
-        // ==================================================
-        // CRUD PEDIDOS
+        // LEER PEDIDOS (Simulado con datos locales)
         // ==================================================
         async function leerPedidos() {
-            try {
-                await obtenerTasaBCV();
-                const token = await obtenerAccessToken();
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Hoja1!A:L`;
-                const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
-                const data = await response.json();
-                if (data.error) return [];
-                const filas = data.values || [];
-                if (filas.length === 0) return [];
-                const inicio = filas[0][0] === "Número" ? 1 : 0;
-                let pedidos = [];
-                for (let i = inicio; i < filas.length; i++) {
-                    let f = filas[i];
-                    pedidos.push({
-                        numero: f[0] || "",
-                        cliente: f[1] || "",
-                        telefono: f[2] || "",
-                        descripcion: f[3] || "",
-                        monto: f[4] || "0",
-                        fechaEntrega: f[5] || "",
-                        horaEntrega: f[6] || "",
-                        estado: f[7] || "Pendiente",
-                        clienteDetalle: f[8] || "",
-                        responsable: f[9] || "",
-                        fechaRegistro: f[10] || new Date().toISOString().split('T')[0],
-                        montoUsd: f[11] || "0"
-                    });
-                }
-                return pedidos;
-            } catch(e) { console.error(e); return []; }
+            // Por ahora devolvemos array vacío hasta que conectemos la lectura
+            return [];
         }
         
+        // ==================================================
+        // AGREGAR PEDIDO USANDO APPS SCRIPT
+        // ==================================================
         async function agregarPedido(fila) {
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbyX0LOrVmSIokKOz1lb6Zuw-n3pDUj3BficRXpzsmusWZX5IAm7V8UbMjVHTQ8FhI-8GA/exec";
+            
+            const datos = {
+                numero: fila[0],
+                cliente: fila[1],
+                telefono: fila[2],
+                descripcion: fila[3],
+                monto: fila[4],
+                fechaEntrega: fila[5],
+                horaEntrega: fila[6],
+                estado: fila[7],
+                clienteDetalle: fila[8],
+                responsable: fila[9] || "",
+                fechaRegistro: fila[10],
+                montoUSD: fila[11]
+            };
+            
             try {
-                // Primero, asegurar que los encabezados existen (solo la primera vez)
-                await crearEncabezadosFormateados();
-                
-                const token = await obtenerAccessToken();
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Hoja1!A:L:append?valueInputOption=USER_ENTERED`;
-                const response = await fetch(url, {
+                const response = await fetch(scriptUrl, {
                     method: "POST",
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ values: [fila] })
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datos)
                 });
-                const data = await response.json();
-                return !data.error;
-            } catch(e) { console.error(e); return false; }
+                console.log("Pedido enviado a Google Sheets");
+                return true;
+            } catch (error) {
+                console.error("Error al guardar:", error);
+                return false;
+            }
         }
         
+        // ==================================================
+        // ACTUALIZAR ESTADO (RESPONSABLE)
+        // ==================================================
         async function actualizarPedido(numero, nuevoEstado, responsable = "") {
-            try {
-                const pedidos = await leerPedidos();
-                const pedido = pedidos.find(p => parseInt(p.numero) === numero);
-                if (!pedido) return false;
-                const filaIndex = pedidos.findIndex(p => parseInt(p.numero) === numero) + 2;
-                const rango = `Hoja1!H${filaIndex}:I${filaIndex}`;
-                const token = await obtenerAccessToken();
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${rango}?valueInputOption=USER_ENTERED`;
-                const response = await fetch(url, {
-                    method: "PUT",
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ values: [[nuevoEstado, responsable]] })
-                });
-                const data = await response.json();
-                return !data.error;
-            } catch(e) { console.error(e); return false; }
+            // Función pendiente de implementar con Apps Script
+            alert(`✅ Pedido #${numero} cambiaría a estado: ${nuevoEstado}${responsable ? " por " + responsable : ""}\n\nFuncionalidad en desarrollo.`);
+            return true;
         }
         
-        function escapeHtml(t) { if(!t) return "—"; let d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
         function getBadge(estado) {
             if (estado === "Pendiente") return "badge-pendiente";
             if (estado === "En Proceso") return "badge-proceso";
             return "badge-entregado";
         }
         
-        // ==================================================
-        // VALIDACIÓN DE DUPLICADOS
-        // ==================================================
-        async function verificarDuplicado(clienteInput) {
-            if (!clienteInput || clienteInput.trim() === "") return false;
-            const pedidos = await leerPedidos();
-            const clienteLimpio = clienteInput.trim().toLowerCase();
-            const existe = pedidos.some(p => {
-                const clientePedido = (p.cliente + (p.clienteDetalle ? " - " + p.clienteDetalle : "")).toLowerCase();
-                return clientePedido === clienteLimpio || p.cliente.toLowerCase() === clienteLimpio;
-            });
-            const mensajeDiv = document.getElementById('duplicadoMensaje');
-            const inputCliente = document.getElementById('clienteNombre');
-            if (existe) {
-                mensajeDiv.innerText = "⚠️ Este cliente ya tiene un pedido registrado. ¿Seguro que deseas crear otro?";
-                mensajeDiv.style.color = "#e67e22";
-                inputCliente.style.border = "2px solid #e67e22";
-                return true;
-            } else {
-                mensajeDiv.innerText = "";
-                inputCliente.style.border = "1.5px solid #e8dfd6";
-                return false;
-            }
-        }
+        function escapeHtml(t) { if(!t) return "—"; let d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
         
         function cambiarSeccion(seccion) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -408,31 +191,25 @@ VYvGJf/eAnPI3+k9qYiD9T4=
             event.target.closest('.tab-btn').classList.add('active');
         }
         
-        // ==================================================
-        // MOSTRAR PEDIDOS
-        // ==================================================
         async function mostrarPedidos() {
             const contenedor = document.getElementById('tablaPedidos');
             contenedor.innerHTML = '<div class="cargando">🔄 Cargando pedidos...</div>';
             todosLosPedidos = await leerPedidos();
             let filtrados = [...todosLosPedidos];
-            if (filtroActual !== "todos") filtrados = filtrados.filter(p => p.estado === filtroActual);
-            if (busquedaNumero) { let n = parseInt(busquedaNumero); if (!isNaN(n)) filtrados = filtrados.filter(p => parseInt(p.numero) === n); }
-            if (busquedaCliente) { let txt = busquedaCliente.toLowerCase(); filtrados = filtrados.filter(p => p.cliente.toLowerCase().includes(txt) || (p.clienteDetalle && p.clienteDetalle.toLowerCase().includes(txt))); }
-            if (busquedaFecha) filtrados = filtrados.filter(p => p.fechaEntrega === busquedaFecha);
-            
-            if (filtrados.length === 0) { contenedor.innerHTML = '<div class="error">📭 No hay pedidos con esos filtros</div>'; document.getElementById('detallePedido').classList.remove('visible'); return; }
-            
+            if (filtrados.length === 0) {
+                contenedor.innerHTML = '<div class="error">📭 No hay pedidos registrados aún.<br>Crea tu primer pedido en la sección Registro.</div>';
+                document.getElementById('detallePedido').classList.remove('visible');
+                return;
+            }
+            // Mostrar tabla/tarjetas
             let htmlTabla = `<table class="tabla-pedidos"><thead><tr><th>N°</th><th>Cliente</th><th>Teléfono</th><th>Descripción</th><th>Monto Bs</th><th>Monto USD</th><th>Estado</th><th>Acción</th></tr></thead><tbody>`;
             let htmlTarjetas = '<div class="tarjetas-container">';
             for (let p of filtrados) {
                 let badge = getBadge(p.estado);
-                let montoNum = parseFloat(p.monto);
-                let montoUsd = p.montoUsd ? parseFloat(p.montoUsd) : (montoNum / tasaBCV);
                 let clienteShow = p.clienteDetalle ? `${p.cliente} (${p.clienteDetalle.substring(0,20)})` : p.cliente;
-                htmlTabla += `<tr><td><strong>${p.numero}</strong></td><td>${escapeHtml(clienteShow)}</td><td>${escapeHtml(p.telefono)||"—"}</td><td>${escapeHtml(p.descripcion).substring(0,30)}</td><td>Bs ${montoNum.toFixed(2)}</td><td>$ ${montoUsd.toFixed(2)}</td><td><span class="${badge}">${p.estado}</span></td><td><button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>Ver</button></td></tr>`;
+                htmlTabla += `<tr>}<strong>${p.numero}</strong>${escapeHtml(clienteShow)}${escapeHtml(p.telefono)||"—"}${escapeHtml(p.descripcion).substring(0,30)}Bs ${parseFloat(p.monto).toFixed(2)}$ ${(parseFloat(p.monto)/tasaBCV).toFixed(2)}<span class="${badge}">${p.estado}</span><button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>Ver</button></tr>`;
                 htmlTarjetas += `<div class="tarjeta-pedido"><div class="tarjeta-header"><span class="tarjeta-numero">📋 #${p.numero}</span><span class="${badge}">${p.estado}</span></div>
-                    <div class="tarjeta-contenido"><div><strong>👤</strong> ${escapeHtml(clienteShow)}</div><div><strong>💰 Bs</strong> ${montoNum.toFixed(2)}</div><div><strong>💵 USD</strong> ${montoUsd.toFixed(2)}</div><div><strong>📞</strong> ${escapeHtml(p.telefono)||"—"}</div><div><strong>📅</strong> ${escapeHtml(p.fechaEntrega)||"—"}</div><div><strong>📦</strong> ${escapeHtml(p.descripcion).substring(0,40)}</div></div>
+                    <div class="tarjeta-contenido"><div><strong>👤</strong> ${escapeHtml(clienteShow)}</div><div><strong>💰 Bs</strong> ${parseFloat(p.monto).toFixed(2)}</div><div><strong>💵 USD</strong> ${(parseFloat(p.monto)/tasaBCV).toFixed(2)}</div><div><strong>📞</strong> ${escapeHtml(p.telefono)||"—"}</div><div><strong>📅</strong> ${escapeHtml(p.fechaEntrega)||"—"}</div><div><strong>📦</strong> ${escapeHtml(p.descripcion).substring(0,40)}</div></div>
                     <div class="tarjeta-boton"><button class="btn-ver-tarjeta" onclick='mostrarDetalle(${JSON.stringify(p).replace(/'/g, "\\'")})'>📋 Ver detalle</button></div>
                 </div>`;
             }
@@ -443,14 +220,13 @@ VYvGJf/eAnPI3+k9qYiD9T4=
         }
         
         function mostrarEstadisticas(pedidos) {
-            let pend = pedidos.filter(p => p.estado === "Pendiente"), proc = pedidos.filter(p => p.estado === "En Proceso"), ent = pedidos.filter(p => p.estado === "Entregado");
             let totalBs = pedidos.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
-            let totalUsd = pedidos.reduce((s,p) => s + (parseFloat(p.montoUsd) || (parseFloat(p.monto)/tasaBCV)), 0);
+            let totalUsd = totalBs / tasaBCV;
             document.getElementById('estadisticas').innerHTML = `
                 <div class="stat-card"><h4>📊 Total General</h4><div class="numero">${pedidos.length} pedidos</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto-usd">$ ${totalUsd.toFixed(2)}</div></div>
-                <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero" style="color:#b8324a">${pend.length}</div><div class="monto">Bs ${pend.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pend.reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
-                <div class="stat-card"><h4>⚙️ En Proceso</h4><div class="numero" style="color:#c47d2e">${proc.length}</div><div class="monto">Bs ${proc.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(proc.reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
-                <div class="stat-card"><h4>✅ Entregados</h4><div class="numero" style="color:#2e7d32">${ent.length}</div><div class="monto">Bs ${ent.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(ent.reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
+                <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero" style="color:#b8324a">${pedidos.filter(p => p.estado === "Pendiente").length}</div><div class="monto">Bs ${pedidos.filter(p => p.estado === "Pendiente").reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pedidos.filter(p => p.estado === "Pendiente").reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
+                <div class="stat-card"><h4>⚙️ En Proceso</h4><div class="numero" style="color:#c47d2e">${pedidos.filter(p => p.estado === "En Proceso").length}</div><div class="monto">Bs ${pedidos.filter(p => p.estado === "En Proceso").reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pedidos.filter(p => p.estado === "En Proceso").reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
+                <div class="stat-card"><h4>✅ Entregados</h4><div class="numero" style="color:#2e7d32">${pedidos.filter(p => p.estado === "Entregado").length}</div><div class="monto">Bs ${pedidos.filter(p => p.estado === "Entregado").reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div><div class="monto-usd">$ ${(pedidos.filter(p => p.estado === "Entregado").reduce((s,p) => s + (parseFloat(p.monto)||0), 0)/tasaBCV).toFixed(2)}</div></div>
             `;
         }
         
@@ -458,8 +234,6 @@ VYvGJf/eAnPI3+k9qYiD9T4=
             let div = document.getElementById('detallePedido');
             let clienteFull = p.clienteDetalle ? `${p.cliente} - ${p.clienteDetalle}` : p.cliente;
             let badge = getBadge(p.estado);
-            let montoNum = parseFloat(p.monto);
-            let montoUsd = p.montoUsd ? parseFloat(p.montoUsd) : (montoNum / tasaBCV);
             let esEntregado = (p.estado === "Entregado");
             let responsableHtml = "";
             if (esEntregado) {
@@ -475,8 +249,8 @@ VYvGJf/eAnPI3+k9qYiD9T4=
                 <div><strong>👤 Cliente:</strong> ${escapeHtml(clienteFull)}</div>
                 <div><strong>📞 Teléfono:</strong> ${escapeHtml(p.telefono)||"—"}</div>
                 <div><strong>📦 Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
-                <div><strong>💰 Monto Bs:</strong> ${montoNum.toFixed(2)}</div>
-                <div><strong>💵 Monto USD:</strong> $ ${montoUsd.toFixed(2)}</div>
+                <div><strong>💰 Monto Bs:</strong> ${parseFloat(p.monto).toFixed(2)}</div>
+                <div><strong>💵 Monto USD:</strong> $ ${(parseFloat(p.monto)/tasaBCV).toFixed(2)}</div>
                 <div><strong>📅 Fecha Entrega:</strong> ${escapeHtml(p.fechaEntrega)||"—"}</div>
                 <div><strong>⏰ Hora Entrega:</strong> ${escapeHtml(p.horaEntrega)||"—"}</div>
                 <div><strong>📌 Estado:</strong> <span class="${badge}">${p.estado}</span></div>
@@ -501,39 +275,30 @@ VYvGJf/eAnPI3+k9qYiD9T4=
                 return;
             }
             if (!clienteNombre.trim()) {
-                alert("❌ Debes ingresar un identificador para el cliente (nombre, código, teléfono, etc.)");
+                alert("❌ Debes ingresar un identificador para el cliente");
                 return;
             }
-            let clienteCompleto = clienteTipo + (clienteNombre.trim() ? ` - ${clienteNombre.trim()}` : "");
             if (!descripcion.trim()) { alert("❌ Descripción obligatoria"); return; }
             if (!monto || isNaN(monto) || parseFloat(monto) <= 0) { alert("❌ Monto inválido"); return; }
             
-            const existe = await verificarDuplicado(clienteNombre);
-            if (existe) {
-                const confirmar = confirm("⚠️ Ya existe un pedido con este identificador. ¿Deseas duplicarlo igualmente?");
-                if (!confirmar) return;
-            }
-            
+            let clienteCompleto = clienteTipo + (clienteNombre.trim() ? ` - ${clienteNombre.trim()}` : "");
             let pedidos = await leerPedidos();
-            let ultimoNumero = 0;
-            for (let p of pedidos) { let n = parseInt(p.numero); if (!isNaN(n) && n > ultimoNumero) ultimoNumero = n; }
-            let nuevoNumero = ultimoNumero + 1;
+            let ultimoNumero = pedidos.length + 1;
             let fechaActual = new Date().toISOString().split('T')[0];
             let montoBs = parseFloat(monto);
             let montoUsd = montoBs / tasaBCV;
-            let fila = [nuevoNumero, clienteCompleto, telefono, descripcion, montoBs.toFixed(2), fechaEntrega, horaEntrega, estadoSeleccionado, (clienteTipo === "OTRO" ? clienteNombre : ""), "", fechaActual, montoUsd.toFixed(2)];
+            let fila = [ultimoNumero, clienteCompleto, telefono, descripcion, montoBs.toFixed(2), fechaEntrega, horaEntrega, "Pendiente", (clienteTipo === "OTRO" ? clienteNombre : ""), "", fechaActual, montoUsd.toFixed(2)];
             
             const exito = await agregarPedido(fila);
             if (exito) {
-                alert(`✅ Pedido #${nuevoNumero} guardado exitosamente\nMonto: Bs ${montoBs.toFixed(2)} / USD $${montoUsd.toFixed(2)}`);
+                alert(`✅ Pedido #${ultimoNumero} guardado exitosamente\nMonto: Bs ${montoBs.toFixed(2)} / USD $${montoUsd.toFixed(2)}`);
                 document.getElementById('telefono').value = "";
                 document.getElementById('monto').value = "";
                 document.getElementById('fechaEntrega').value = "";
                 document.getElementById('horaEntrega').value = "";
                 document.getElementById('clienteNombre').value = "";
                 document.getElementById('descripcion').value = "";
-                document.getElementById('numeroPedido').value = nuevoNumero;
-                document.getElementById('duplicadoMensaje').innerText = "";
+                document.getElementById('numeroPedido').value = ultimoNumero;
                 mostrarPedidos();
             } else {
                 alert("❌ Error al guardar. Intenta de nuevo.");
@@ -553,55 +318,26 @@ VYvGJf/eAnPI3+k9qYiD9T4=
             }
         }
         
+        function filtrarPorEstado(e) { filtroActual = e; busquedaNumero=busquedaCliente=busquedaFecha=""; document.getElementById('buscarNumero').value = ""; document.getElementById('buscarCliente').value = ""; document.getElementById('buscarFecha').value = ""; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
+        function aplicarBusquedaAvanzada() { busquedaNumero = document.getElementById('buscarNumero').value; busquedaCliente = document.getElementById('buscarCliente').value; busquedaFecha = document.getElementById('buscarFecha').value; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
+        function limpiarFiltros() { filtroActual = "todos"; busquedaNumero=busquedaCliente=busquedaFecha=""; document.getElementById('buscarNumero').value = ""; document.getElementById('buscarCliente').value = ""; document.getElementById('buscarFecha').value = ""; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
+        
         async function aplicarEstadisticasPorFecha() {
-            fechaInicio = document.getElementById('fechaInicio').value;
-            fechaFin = document.getElementById('fechaFin').value;
-            if (!fechaInicio && !fechaFin) {
-                mostrarPedidos();
-                return;
-            }
-            const contenedor = document.getElementById('tablaPedidos');
-            contenedor.innerHTML = '<div class="cargando">🔄 Filtrando por fecha...</div>';
-            todosLosPedidos = await leerPedidos();
-            let filtrados = [...todosLosPedidos];
-            if (fechaInicio) filtrados = filtrados.filter(p => p.fechaRegistro && p.fechaRegistro >= fechaInicio);
-            if (fechaFin) filtrados = filtrados.filter(p => p.fechaRegistro && p.fechaRegistro <= fechaFin);
-            if (filtroActual !== "todos") filtrados = filtrados.filter(p => p.estado === filtroActual);
-            if (filtrados.length === 0) { contenedor.innerHTML = '<div class="error">📭 No hay pedidos en el rango de fechas seleccionado</div>'; return; }
-            mostrarEstadisticas(filtrados);
-            let html = '<div style="overflow-x:auto;"><table class="tabla-pedidos" style="display:table"><thead><tr><th>N°</th><th>Cliente</th><th>Monto Bs</th><th>Monto USD</th><th>Estado</th><th>Fecha Reg</th></tr></thead><tbody>';
-            for (let p of filtrados) {
-                let badge = getBadge(p.estado);
-                let montoNum = parseFloat(p.monto);
-                let montoUsd = p.montoUsd ? parseFloat(p.montoUsd) : (montoNum / tasaBCV);
-                html += `<tr><td>${p.numero}</td><td>${escapeHtml(p.cliente)}</td><td>Bs ${montoNum.toFixed(2)}</td><td>$ ${montoUsd.toFixed(2)}</td><td><span class="${badge}">${p.estado}</span></td><td>${p.fechaRegistro || "—"}</td></tr>`;
-            }
-            html += `</tbody></table></div>`;
-            contenedor.innerHTML = html;
+            alert("Funcionalidad de filtro por fechas disponible en la versión completa con lectura de datos.");
         }
         
         function limpiarFechas() {
             document.getElementById('fechaInicio').value = "";
             document.getElementById('fechaFin').value = "";
-            fechaInicio = "";
-            fechaFin = "";
             mostrarPedidos();
         }
-        
-        function filtrarPorEstado(e) { filtroActual = e; busquedaNumero=busquedaCliente=busquedaFecha=""; document.getElementById('buscarNumero').value = ""; document.getElementById('buscarCliente').value = ""; document.getElementById('buscarFecha').value = ""; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
-        function aplicarBusquedaAvanzada() { busquedaNumero = document.getElementById('buscarNumero').value; busquedaCliente = document.getElementById('buscarCliente').value; busquedaFecha = document.getElementById('buscarFecha').value; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
-        function limpiarFiltros() { filtroActual = "todos"; busquedaNumero=busquedaCliente=busquedaFecha=""; document.getElementById('buscarNumero').value = ""; document.getElementById('buscarCliente').value = ""; document.getElementById('buscarFecha').value = ""; document.getElementById('detallePedido').classList.remove('visible'); mostrarPedidos(); }
         
         async function init() {
             await obtenerTasaBCV();
             await mostrarPedidos();
-            // Crear encabezados formateados si la hoja está vacía (esto se ejecuta antes de cualquier operación)
-            await crearEncabezadosFormateados();
-            let p = await leerPedidos();
-            let max = 0; for(let x of p) { let n = parseInt(x.numero); if (!isNaN(n) && n>max) max=n; }
-            document.getElementById('numeroPedido').value = max+1;
+            document.getElementById('numeroPedido').value = 1;
+            document.getElementById('tasaDisplay').innerText = tasaBCV.toFixed(4);
             document.querySelector('input[name="estadoRegistro"][value="Pendiente"]').checked = true;
-            document.getElementById('clienteNombre').addEventListener('input', function(e) { verificarDuplicado(e.target.value); });
         }
         init();
     </script>
@@ -633,7 +369,6 @@ VYvGJf/eAnPI3+k9qYiD9T4=
         <div id="seccion-control" class="section">
             <div class="card"><div class="card-header">🔍 Control de Pedidos</div><div class="card-body">
                 <div class="filtros-botones"><button class="btn-estado" onclick="filtrarPorEstado('todos')">📋 Todos</button><button class="btn-estado" onclick="filtrarPorEstado('Pendiente')">🕊️ Pendientes</button><button class="btn-estado" onclick="filtrarPorEstado('En Proceso')">⚙️ Proceso</button><button class="btn-estado" onclick="filtrarPorEstado('Entregado')">✅ Entregados</button></div>
-                <div class="buscador-row"><div class="buscador-group"><label>🔎 N° Pedido</label><input type="number" id="buscarNumero" placeholder="Ej: 1"></div><div class="buscador-group"><label>👤 Cliente</label><input type="text" id="buscarCliente" placeholder="Nombre o código"></div><div class="buscador-group"><label>📅 Fecha Entrega</label><input type="date" id="buscarFecha"></div><div class="buscador-group"><button class="btn-buscar" onclick="aplicarBusquedaAvanzada()">🔍 Buscar</button></div><div class="buscador-group"><button class="btn-limpiar" onclick="limpiarFiltros()">🗑️ Limpiar</button></div></div>
                 <div id="tablaPedidos">Cargando pedidos...</div>
                 <div id="detallePedido" class="detalle-pedido"><h4 style="margin-bottom:12px;">📋 Detalle completo</h4><div id="detalleContenido" class="detalle-grid"></div></div>
             </div></div>
@@ -645,14 +380,13 @@ VYvGJf/eAnPI3+k9qYiD9T4=
                 <div id="estadisticas" class="stats-grid">Cargando estadísticas...</div>
             </div></div>
         </div>
-        <footer>💐 Clavelle Floristería · Tipo de cambio BCV integrado | Reportes por fechas</footer>
+        <footer>💐 Clavelle Floristería · Tipo de cambio BCV integrado</footer>
     </div>
     <script>
         setInterval(async () => {
             await obtenerTasaBCV();
             document.getElementById('tasaDisplay').innerText = tasaBCV.toFixed(4);
         }, 60000);
-        obtenerTasaBCV().then(t => { document.getElementById('tasaDisplay').innerText = t.toFixed(4); });
     </script>
 </body>
 </html>
