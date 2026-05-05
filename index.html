@@ -25,12 +25,17 @@
         button:hover { opacity: 0.9; }
         button:disabled { opacity: 0.6; cursor: not-allowed; }
         .btn-success { background: #27ae60; }
+        .btn-danger { background: #e74c3c; }
+        .btn-warning { background: #e67e22; }
         .btn-primary { background: #2c3e50; width: 100%; margin-top: 20px; padding: 14px; font-size: 1em; }
         .badge-pendiente { background: #ffe4e6; color: #b8324a; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .badge-proceso { background: #fff3e0; color: #c47d2e; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .badge-entregado { background: #e6f7e6; color: #2e7d32; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
-        .pedido-item { background: #fdfaf7; border: 1px solid #eee5dc; border-radius: 24px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .pedido-item { background: #fdfaf7; border: 1px solid #eee5dc; border-radius: 24px; padding: 16px; margin-bottom: 12px; transition: box-shadow 0.2s; }
         .pedido-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .pedido-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+        .pedido-detalle { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; font-size: 0.85em; color: #5a4a3a; }
+        .pedido-acciones { display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid #efe3d7; padding-top: 12px; margin-top: 8px; flex-wrap: wrap; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
         .stat-card { background: #fdfaf7; border-radius: 24px; padding: 20px; text-align: center; border: 1px solid #eee5dc; }
         .stat-card h4 { color: #8a7a66; font-size: 0.8em; margin-bottom: 8px; }
@@ -47,7 +52,52 @@
         .diagnostico-bar { background: #fff3e0; border-radius: 20px; padding: 12px; margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         .btn-diagnostico { background: #e67e22; font-size: 0.8em; padding: 8px 16px; }
         .btn-diagnostico.azul { background: #3498db; }
-        .btn-diagnostico.verde { background: #27ae60; }
+        .hidden-test { display: none; }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 24px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee5dc;
+        }
+        .modal-header h3 { color: #2c3e50; }
+        .close-modal {
+            background: none;
+            color: #8a7a66;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+        .close-modal:hover { color: #e74c3c; }
+        .modal .campo { margin-bottom: 15px; }
+        .password-input { border: 2px solid #e67e22 !important; background: #fff8f0 !important; }
+        .ayuda { font-size: 0.7em; color: #e67e22; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -88,10 +138,12 @@
     <!-- Panel Control -->
     <div id="panel-control" class="panel">
         <h2 style="margin-bottom: 20px;">🔍 Control de Pedidos</h2>
+        
         <div class="diagnostico-bar">
             <button class="btn-diagnostico azul" onclick="verificarConexion()">🔍 Verificar Conexión</button>
-            <button class="btn-diagnostico" onclick="testGuardadoDirecto()">🧪 Test Guardado Directo</button>
+            <button class="btn-diagnostico hidden-test" onclick="testGuardadoDirecto()">🧪 Test Guardado Directo</button>
         </div>
+        
         <div class="filtros">
             <button onclick="filtrarPor('todos')">📋 Todos</button>
             <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
@@ -110,15 +162,49 @@
     <footer>💐 Clavelle Floristería · Datos sincronizados con Google Sheets</footer>
 </div>
 
+<!-- Modal para EDITAR pedido -->
+<div id="modalEditar" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>✏️ Editar Pedido #<span id="editNumero"></span></h3>
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+        </div>
+        <div class="campo"><label>🔐 Contraseña de Autorización *</label>
+            <input type="password" id="editPassword" class="password-input" placeholder="Ingresa la contraseña para editar">
+            <div class="ayuda">⚠️ Se requiere autorización para modificar pedidos</div>
+        </div>
+        <div class="campo"><label>👤 Cliente</label><input type="text" id="editCliente" placeholder="Cliente"></div>
+        <div class="campo"><label>📞 Teléfono</label><input type="text" id="editTelefono" placeholder="Teléfono"></div>
+        <div class="campo"><label>📦 Descripción</label><textarea id="editDescripcion" rows="2" placeholder="Descripción"></textarea></div>
+        <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01" placeholder="Monto"></div>
+        <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
+        <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
+        <div class="campo"><label>📌 Estado</label>
+            <select id="editEstado">
+                <option value="Pendiente">🕊️ Pendiente</option>
+                <option value="En Proceso">⚙️ En Proceso</option>
+                <option value="Entregado">✅ Entregado</option>
+            </select>
+        </div>
+        <div class="campo"><label>👤 Responsable Entrega</label><input type="text" id="editResponsable" placeholder="Responsable"></div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="guardarEdicion()" style="background: #27ae60; flex:1;">💾 Guardar Cambios</button>
+            <button onclick="cerrarModal()" style="background: #95a5a6; flex:1;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
 <script>
     // ==================================================
     // URL DE GOOGLE APPS SCRIPT - ACTUALIZA CON TU URL
     // ==================================================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-KjH_lnHNTN7Gkd_E6tbNaphMQ1DSP8-Qg2kPVftkn02vpD0F8KrmZCyBjpT8rUD-ww/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzhM91tUMBi7EBwtnKuOUQV_e53yULvRAtr-91Y5P5fCw-nDTwmLQVQSTNu9v6ViirztA/exec";
     
     let todosLosPedidos = [];
     let filtroActual = "todos";
     let tasaBCV = 489.55;
+    let numeroEditando = null;
+    let USUARIO_ACTUAL = "Pili Pérez"; // Nombre de la usuaria
     
     function mostrarNotificacion(mensaje, esError = false) {
         const toast = document.createElement('div');
@@ -139,7 +225,6 @@
         return tasaBCV;
     }
     
-    // Función para hacer peticiones JSONP
     function jsonpRequest(url, callbackName = 'jsonpCallback') {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
@@ -202,7 +287,58 @@
         });
     }
     
-    async function actualizarPedidoWebApp(numero, nuevoEstado, responsable) {
+    async function actualizarPedidoCompleto(pedidoData, password) {
+        return new Promise((resolve, reject) => {
+            const callbackName = `jsonp_callback_${Date.now()}`;
+            const script = document.createElement('script');
+            
+            window[callbackName] = function(response) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve({ success: response.success === true, error: response.error });
+            };
+            
+            const params = new URLSearchParams();
+            params.append('action', 'actualizarCompleto');
+            params.append('data', JSON.stringify(pedidoData));
+            params.append('password', password);
+            params.append('usuario', USUARIO_ACTUAL);
+            params.append('callback', callbackName);
+            
+            script.src = `${SCRIPT_URL}?${params.toString()}`;
+            script.onerror = () => {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                reject(new Error('Network error'));
+            };
+            
+            document.body.appendChild(script);
+        });
+    }
+    
+    async function eliminarPedido(numero, password) {
+        return new Promise((resolve, reject) => {
+            const callbackName = `jsonp_callback_${Date.now()}`;
+            const script = document.createElement('script');
+            
+            window[callbackName] = function(response) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve({ success: response.success === true, error: response.error });
+            };
+            
+            script.src = `${SCRIPT_URL}?action=eliminar&numero=${numero}&password=${encodeURIComponent(password)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${callbackName}`;
+            script.onerror = () => {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                reject(new Error('Network error'));
+            };
+            
+            document.body.appendChild(script);
+        });
+    }
+    
+    async function actualizarEstadoPedido(numero, nuevoEstado, responsable) {
         return new Promise((resolve, reject) => {
             const callbackName = `jsonp_callback_${Date.now()}`;
             const script = document.createElement('script');
@@ -224,17 +360,118 @@
         });
     }
     
-    // ==================================================
-    // FUNCIONES DE DIAGNÓSTICO
-    // ==================================================
+    function abrirModalEditar(pedido) {
+        numeroEditando = pedido.numero;
+        document.getElementById('editNumero').innerText = pedido.numero;
+        document.getElementById('editPassword').value = "";
+        document.getElementById('editCliente').value = pedido.cliente || "";
+        document.getElementById('editTelefono').value = pedido.telefono || "";
+        document.getElementById('editDescripcion').value = pedido.descripcion || "";
+        document.getElementById('editMonto').value = pedido.monto || "";
+        document.getElementById('editFechaEntrega').value = pedido.fechaEntrega || "";
+        document.getElementById('editHoraEntrega').value = pedido.horaEntrega || "";
+        document.getElementById('editEstado').value = pedido.estado || "Pendiente";
+        document.getElementById('editResponsable').value = pedido.responsable || "";
+        document.getElementById('modalEditar').style.display = 'flex';
+    }
+    
+    function cerrarModal() {
+        document.getElementById('modalEditar').style.display = 'none';
+        numeroEditando = null;
+    }
+    
+    async function guardarEdicion() {
+        if (!numeroEditando) return;
+        
+        const password = document.getElementById('editPassword').value;
+        if (!password) {
+            mostrarNotificacion("❌ Debes ingresar la contraseña de autorización", true);
+            document.getElementById('editPassword').focus();
+            return;
+        }
+        
+        const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
+        const montoUsd = montoBs / tasaBCV;
+        
+        const pedidoActualizado = {
+            numero: numeroEditando,
+            cliente: document.getElementById('editCliente').value,
+            telefono: document.getElementById('editTelefono').value,
+            descripcion: document.getElementById('editDescripcion').value,
+            monto: montoBs.toFixed(2),
+            fechaEntrega: document.getElementById('editFechaEntrega').value,
+            horaEntrega: document.getElementById('editHoraEntrega').value,
+            estado: document.getElementById('editEstado').value,
+            clienteDetalle: "",
+            responsable: document.getElementById('editResponsable').value,
+            fechaRegistro: new Date().toISOString().split('T')[0],
+            montoUSD: montoUsd.toFixed(2),
+            observaciones: `Editado por ${USUARIO_ACTUAL}`
+        };
+        
+        const btn = event.target;
+        const textoOriginal = btn.innerHTML;
+        btn.innerHTML = '<span class="loading"></span> Verificando autorización...';
+        btn.disabled = true;
+        
+        try {
+            const resultado = await actualizarPedidoCompleto(pedidoActualizado, password);
+            if (resultado.success) {
+                mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado correctamente`);
+                cerrarModal();
+                await cargarPedidos();
+            } else {
+                mostrarNotificacion("❌ " + (resultado.error || "Error al actualizar"), true);
+                if (resultado.error && resultado.error.includes("contraseña")) {
+                    document.getElementById('editPassword').value = "";
+                    document.getElementById('editPassword').focus();
+                }
+            }
+        } catch(error) {
+            mostrarNotificacion("❌ Error de red: " + error.message, true);
+        }
+        
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+    }
+    
+    async function confirmarEliminar(numero, cliente) {
+        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nPedido #${numero} - "${cliente}"\n\nIngresa la contraseña para eliminar este registro.\n\n⚠️ Atención: Solo se pueden eliminar pedidos en estado "Pendiente" o "En Proceso".`);
+        
+        if (!password) {
+            mostrarNotificacion("❌ Se requiere contraseña para eliminar", true);
+            return;
+        }
+        
+        if (password !== "piliperezbele") {
+            mostrarNotificacion("❌ Contraseña incorrecta. No tienes permiso para eliminar.", true);
+            return;
+        }
+        
+        const confirmar = confirm(`⚠️ ¿Estás SEGURA de eliminar el pedido #${numero} de "${cliente}"?\n\nEsta acción registrará quién lo eliminó y cuándo, pero NO se borrará físicamente de la hoja (quedará marcado como eliminado).`);
+        
+        if (confirmar) {
+            try {
+                const resultado = await eliminarPedido(numero, password);
+                if (resultado.success) {
+                    mostrarNotificacion(`🗑️ Pedido #${numero} marcado como eliminado por ${USUARIO_ACTUAL}`);
+                    await cargarPedidos();
+                } else {
+                    mostrarNotificacion("❌ " + (resultado.error || "Error al eliminar"), true);
+                }
+            } catch(error) {
+                mostrarNotificacion("❌ Error de red: " + error.message, true);
+            }
+        }
+    }
     
     async function verificarConexion() {
         mostrarNotificacion("🔍 Verificando conexión...");
         try {
             const data = await jsonpRequest(`${SCRIPT_URL}?action=leer`);
             if (data.success) {
-                mostrarNotificacion(`✅ Conexión OK! ${data.pedidos.length} pedidos encontrados.`);
-                alert(`✅ Conexión exitosa!\n\nPedidos en la hoja: ${data.pedidos.length}`);
+                mostrarNotificacion(`✅ Conexión OK! ${data.pedidos.length} pedidos activos.`);
+                alert(`✅ Conexión exitosa!\n\nPedidos activos: ${data.pedidos.length}\n\n⚠️ Los pedidos eliminados no aparecen en esta lista.`);
             } else {
                 mostrarNotificacion("❌ Error: " + data.error, true);
             }
@@ -258,7 +495,8 @@
             clienteDetalle: "",
             responsable: "",
             fechaRegistro: new Date().toISOString().split('T')[0],
-            montoUSD: "50.00"
+            montoUSD: "50.00",
+            observaciones: "Test de diagnóstico"
         };
         
         try {
@@ -276,10 +514,6 @@
             alert("❌ Error: " + error.message);
         }
     }
-    
-    // ==================================================
-    // FUNCIONES PRINCIPALES
-    // ==================================================
     
     async function guardarPedido() {
         let clienteNombre = document.getElementById('clienteNombre').value.trim();
@@ -316,7 +550,8 @@
             clienteDetalle: "",
             responsable: "",
             fechaRegistro: new Date().toISOString().split('T')[0],
-            montoUSD: montoUsd.toFixed(2)
+            montoUSD: montoUsd.toFixed(2),
+            observaciones: `Creado por ${USUARIO_ACTUAL}`
         };
         
         try {
@@ -354,7 +589,7 @@
         elemento.disabled = true;
         
         try {
-            const resultado = await actualizarPedidoWebApp(numero, "Entregado", responsable);
+            const resultado = await actualizarEstadoPedido(numero, "Entregado", responsable);
             elemento.innerHTML = textoOriginal;
             elemento.disabled = false;
             
@@ -398,14 +633,29 @@
         for (let p of filtrados) {
             let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
             let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
+            let puedeEditar = (p.estado !== "Entregado");
+            let puedeEliminar = (p.estado !== "Entregado");
             
             html += `
                 <div class="pedido-item">
-                    <div style="min-width: 80px;"><strong style="font-size: 1.1em;">#${p.numero}</strong><br><small style="color:#8a7a66;">${escapeHtml(p.cliente.substring(0,25))}</small></div>
-                    <div style="flex:1;"><div>${escapeHtml(p.descripcion.substring(0,40))}${p.descripcion.length > 40 ? '...' : ''}</div><small style="color:#8a7a66;">📞 ${escapeHtml(p.telefono) || '—'}</small></div>
-                    <div style="text-align:right;"><div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong></div><small>$${montoUSD}</small></div>
-                    <div><span class="${badgeClass}">${p.estado}</span></div>
-                    <div>${p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Entregar</button>` : `<small style="color:#27ae60;">👤 ${escapeHtml(p.responsable) || '—'}</small>`}</div>
+                    <div class="pedido-header">
+                        <div><strong style="font-size: 1.1em;">📋 #${p.numero}</strong> <span class="${badgeClass}">${p.estado}</span></div>
+                        <div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${montoUSD})</small></div>
+                    </div>
+                    <div class="pedido-detalle">
+                        <div>👤 <strong>Cliente:</strong> ${escapeHtml(p.cliente)}</div>
+                        <div>📞 <strong>Teléfono:</strong> ${escapeHtml(p.telefono) || '—'}</div>
+                        <div>📦 <strong>Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
+                        <div>📅 <strong>Fecha Entrega:</strong> ${escapeHtml(p.fechaEntrega) || '—'}</div>
+                        <div>⏰ <strong>Hora Entrega:</strong> ${escapeHtml(p.horaEntrega) || '—'}</div>
+                        ${p.responsable ? `<div>👤 <strong>Responsable Entrega:</strong> ${escapeHtml(p.responsable)}</div>` : ''}
+                        ${p.modificadoPor ? `<div>✏️ <strong>Última modificación:</strong> ${escapeHtml(p.modificadoPor)} (${escapeHtml(p.fechaModificacion) || '—'})</div>` : ''}
+                    </div>
+                    <div class="pedido-acciones">
+                        ${puedeEditar ? `<button class="btn-warning" onclick="abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})">✏️ Editar</button>` : `<button disabled style="background:#95a5a6; opacity:0.5;">🔒 Editado</button>`}
+                        ${puedeEliminar ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}')">🗑️ Eliminar</button>` : `<button disabled style="background:#95a5a6; opacity:0.5;">🔒 Eliminar</button>`}
+                        ${p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
+                    </div>
                 </div>
             `;
         }
@@ -459,7 +709,8 @@
     }
     
     async function init() {
-        console.log("🚀 Iniciando Clavelle con JSONP...");
+        console.log("🚀 Iniciando Clavelle con trazabilidad y autorización");
+        console.log("👤 Usuario:", USUARIO_ACTUAL);
         await obtenerTasaBCV();
         let pedidos = await leerPedidos();
         let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
