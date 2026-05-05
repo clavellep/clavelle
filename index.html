@@ -34,7 +34,6 @@
         .badge-entregado { background: #e6f7e6; color: #2e7d32; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .badge-eliminado { background: #e0e0e0; color: #7f8c8d; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .pedido-item { background: #fdfaf7; border: 1px solid #eee5dc; border-radius: 24px; padding: 16px; margin-bottom: 12px; transition: box-shadow 0.2s; }
-        .pedido-item.eliminado { background: #f5f5f5; opacity: 0.7; border-color: #ddd; }
         .pedido-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
         .pedido-detalle { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; font-size: 0.85em; color: #5a4a3a; }
         .pedido-acciones { display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid #efe3d7; padding-top: 12px; margin-top: 8px; flex-wrap: wrap; }
@@ -108,7 +107,7 @@
 <div class="container">
     <div class="header">
         <h1>💐 CLAVELLE</h1>
-        <p>gestión inteligente · trazabilidad · BCV</p>
+        <p>Gestión Administrativa · Trazabilidad </p>
     </div>
     
     <div class="tabs">
@@ -122,7 +121,7 @@
         <h2 style="margin-bottom: 20px;">📝 Registrar Nuevo Pedido</h2>
         <div class="form-grid">
             <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f4f0eb;"></div>
-            <div class="campo"><label>👤 Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente" autocomplete="off"></div>
+            <div class="campo"><label>👤 Cliente/Código *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente/Aplicación" autocomplete="off"></div>
             <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567" autocomplete="off"></div>
             <div class="campo"><label>📦 Descripción *</label><textarea id="descripcion" rows="2" placeholder="Detalles del pedido..."></textarea></div>
             <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" placeholder="0.00" step="0.01"></div>
@@ -143,31 +142,14 @@
     <div id="panel-control" class="panel">
         <h2 style="margin-bottom: 20px;">🔍 Control de Pedidos</h2>
         
-        <!-- FILTROS POR FECHA -->
         <div class="filtros-fechas">
-            <div class="grupo-fecha">
-                <label>📅 Fecha Desde (Registro)</label>
-                <input type="date" id="fechaDesde" value="">
-            </div>
-            <div class="grupo-fecha">
-                <label>📅 Fecha Hasta (Registro)</label>
-                <input type="date" id="fechaHasta" value="">
-            </div>
-            <div class="grupo-fecha">
-                <label>&nbsp;</label>
-                <button class="btn-info" onclick="aplicarFiltros()">🔍 Aplicar Fechas</button>
-            </div>
-            <div class="grupo-fecha">
-                <label>&nbsp;</label>
-                <button onclick="limpiarFechas()" style="background:#95a5a6;">🗑️ Limpiar Fechas</button>
-            </div>
-            <div class="grupo-fecha">
-                <label>&nbsp;</label>
-                <button id="btnMostrarEliminados" class="switch-boton" onclick="toggleMostrarEliminados()">🗑️ Mostrar Eliminados</button>
-            </div>
+            <div class="grupo-fecha"><label>📅 Fecha Desde (Registro)</label><input type="date" id="fechaDesde"></div>
+            <div class="grupo-fecha"><label>📅 Fecha Hasta (Registro)</label><input type="date" id="fechaHasta"></div>
+            <div class="grupo-fecha"><label>&nbsp;</label><button class="btn-info" onclick="aplicarFiltros()">🔍 Aplicar Fechas</button></div>
+            <div class="grupo-fecha"><label>&nbsp;</label><button onclick="limpiarFechas()" style="background:#95a5a6;">🗑️ Limpiar Fechas</button></div>
+            <div class="grupo-fecha"><label>&nbsp;</label><button id="btnMostrarEliminados" class="switch-boton" onclick="toggleMostrarEliminados()">🗑️ Mostrar Eliminados</button></div>
         </div>
         
-        <!-- FILTROS POR ESTADO -->
         <div class="filtros">
             <button onclick="filtrarPor('todos')">📋 Todos</button>
             <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
@@ -175,9 +157,7 @@
             <button onclick="filtrarPor('Entregado')">✅ Entregados</button>
         </div>
         
-        <!-- INDICADORES DE FILTRO ACTIVO -->
         <div id="indicadoresFiltro" style="margin-bottom: 16px; font-size: 0.75em; color: #8a7a66; display: flex; gap: 16px; flex-wrap: wrap;"></div>
-        
         <div id="listaPedidos"></div>
     </div>
     
@@ -188,7 +168,7 @@
             <div class="grupo-fecha"><label>📅 Desde</label><input type="date" id="statsFechaDesde"></div>
             <div class="grupo-fecha"><label>📅 Hasta</label><input type="date" id="statsFechaHasta"></div>
             <div class="grupo-fecha"><label>&nbsp;</label><button onclick="actualizarEstadisticasConFechas()">📊 Actualizar</button></div>
-            <div class="grupo-fecha"><label>&nbsp;</label><button onclick="limpiarStatsFechas()">🗑️ Limpiar</button></div>
+            <div class="grupo-fecha"><label>&nbsp;</label><button onclick="limpiarStatsFechas()" style="background:#95a5a6;">🗑️ Limpiar</button></div>
         </div>
         <div id="statsContainer" class="stats-grid"></div>
     </div>
@@ -196,44 +176,28 @@
     <footer>💐 Clavelle Floristería · Datos sincronizados con Google Sheets</footer>
 </div>
 
-<!-- Modal para EDITAR pedido -->
+<!-- Modal para EDITAR -->
 <div id="modalEditar" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3>✏️ Editar Pedido #<span id="editNumero"></span></h3>
-            <span class="close-modal" onclick="cerrarModal()">&times;</span>
-        </div>
-        <div class="campo"><label>🔐 Contraseña de Autorización *</label>
-            <input type="password" id="editPassword" class="password-input" placeholder="Ingresa la contraseña para editar">
-            <div class="ayuda">⚠️ Se requiere autorización para modificar pedidos</div>
-        </div>
-        <div class="campo"><label>👤 Cliente</label><input type="text" id="editCliente" placeholder="Cliente"></div>
-        <div class="campo"><label>📞 Teléfono</label><input type="text" id="editTelefono" placeholder="Teléfono"></div>
-        <div class="campo"><label>📦 Descripción</label><textarea id="editDescripcion" rows="2" placeholder="Descripción"></textarea></div>
-        <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01" placeholder="Monto"></div>
+        <div class="modal-header"><h3>✏️ Editar Pedido #<span id="editNumero"></span></h3><span class="close-modal" onclick="cerrarModal()">&times;</span></div>
+        <div class="campo"><label>🔐 Contraseña de Autorización *</label><input type="password" id="editPassword" class="password-input" placeholder="Contraseña"><div class="ayuda">⚠️ Se requiere autorización</div></div>
+        <div class="campo"><label>👤 Cliente</label><input type="text" id="editCliente"></div>
+        <div class="campo"><label>📞 Teléfono</label><input type="text" id="editTelefono"></div>
+        <div class="campo"><label>📦 Descripción</label><textarea id="editDescripcion" rows="2"></textarea></div>
+        <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01"></div>
         <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
         <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
-        <div class="campo"><label>📌 Estado</label>
-            <select id="editEstado">
-                <option value="Pendiente">🕊️ Pendiente</option>
-                <option value="En Proceso">⚙️ En Proceso</option>
-                <option value="Entregado">✅ Entregado</option>
-            </select>
-        </div>
-        <div class="campo"><label>👤 Responsable Entrega</label><input type="text" id="editResponsable" placeholder="Responsable"></div>
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button onclick="guardarEdicion()" style="background: #27ae60; flex:1;">💾 Guardar Cambios</button>
-            <button onclick="cerrarModal()" style="background: #95a5a6; flex:1;">Cancelar</button>
-        </div>
+        <div class="campo"><label>📌 Estado</label><select id="editEstado"><option value="Pendiente">Pendiente</option><option value="En Proceso">En Proceso</option><option value="Entregado">Entregado</option></select></div>
+        <div class="campo"><label>👤 Responsable Entrega</label><input type="text" id="editResponsable"></div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;"><button onclick="guardarEdicion()" style="background:#27ae60; flex:1;">💾 Guardar</button><button onclick="cerrarModal()" style="background:#95a5a6; flex:1;">Cancelar</button></div>
     </div>
 </div>
 
 <script>
-    // ==================================================
-    // URL DE GOOGLE APPS SCRIPT - ACTUALIZA CON TU URL
-    // ==================================================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxyNSZd_wTsbxotA8X7jSyr44vTwuINO1rON02wQ0vmwNPax-HadtXwxRZ3hGJBhs8Gtw/exec";
-    
+    // ===== CONFIGURACIÓN =====
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzg4gkGCsYmX0Ddp2OfCkKJIhBu7JW9p20_cBWcSLV2yDDVkOgFyMxFjMNE937tYRQxxA/exec";
+    const CLAVE_AUTORIZACION = "piliperezbele";
+    let USUARIO_ACTUAL = "Pili Pérez";
     let todosLosPedidos = [];
     let filtroActual = "todos";
     let mostrarEliminados = false;
@@ -241,7 +205,53 @@
     let fechaHasta = "";
     let tasaBCV = 489.55;
     let numeroEditando = null;
-    let USUARIO_ACTUAL = "Pili Pérez";
+    
+    // ===== FUNCIONES DE FORMATO (dd/mm/aaaa y hora am/pm) =====
+    function formatearFechaLocal(fechaIso) {
+        if (!fechaIso || fechaIso === "") return "—";
+        try {
+            if (fechaIso.includes('/')) return fechaIso;
+            const partes = fechaIso.split('-');
+            if (partes.length === 3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            return fechaIso;
+        } catch(e) { return fechaIso; }
+    }
+    
+    function formatearHoraLocal(horaStr) {
+        if (!horaStr || horaStr === "") return "—";
+        try {
+            if (horaStr.includes('am') || horaStr.includes('pm')) return horaStr;
+            const partes = horaStr.split(':');
+            let horas = parseInt(partes[0]);
+            const minutos = partes[1] || "00";
+            const ampm = horas >= 12 ? 'pm' : 'am';
+            horas = horas % 12;
+            horas = horas === 0 ? 12 : horas;
+            return `${horas}:${minutos} ${ampm}`;
+        } catch(e) { return horaStr; }
+    }
+    
+    function formatearFechaHoraLocal(fechaHoraStr) {
+        if (!fechaHoraStr || fechaHoraStr === "") return "—";
+        try {
+            if (fechaHoraStr.includes('T')) {
+                const fecha = formatearFechaLocal(fechaHoraStr.split('T')[0]);
+                const hora = formatearHoraLocal(fechaHoraStr.split('T')[1]?.split('.')[0] || "");
+                return `${fecha} ${hora}`;
+            }
+            if (fechaHoraStr.includes(',')) {
+                const partes = fechaHoraStr.split(',');
+                let fechaParte = partes[0].trim();
+                const horaParte = partes[1].trim();
+                if (fechaParte.includes('/')) {
+                    const fp = fechaParte.split('/');
+                    if (fp.length === 3 && parseInt(fp[0]) <= 12) fechaParte = `${fp[1]}/${fp[0]}/${fp[2]}`;
+                }
+                return `${fechaParte} ${formatearHoraLocal(horaParte.split(' ')[0])}`;
+            }
+            return fechaHoraStr;
+        } catch(e) { return fechaHoraStr; }
+    }
     
     function mostrarNotificacion(mensaje, esError = false) {
         const toast = document.createElement('div');
@@ -262,25 +272,18 @@
         return tasaBCV;
     }
     
-    function jsonpRequest(url, callbackName = 'jsonpCallback') {
+    function jsonpRequest(url) {
         return new Promise((resolve, reject) => {
+            const callbackName = `__jsonp_${Date.now()}`;
             const script = document.createElement('script');
-            const callbackFunction = `__jsonp_${Date.now()}`;
-            
-            window[callbackFunction] = function(data) {
-                delete window[callbackFunction];
+            window[callbackName] = function(data) {
+                delete window[callbackName];
                 document.body.removeChild(script);
                 resolve(data);
             };
-            
             const separator = url.includes('?') ? '&' : '?';
-            script.src = `${url}${separator}callback=${callbackFunction}`;
-            script.onerror = () => {
-                delete window[callbackFunction];
-                document.body.removeChild(script);
-                reject(new Error('JSONP request failed'));
-            };
-            
+            script.src = `${url}${separator}callback=${callbackName}`;
+            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
             document.body.appendChild(script);
         });
     }
@@ -291,29 +294,11 @@
             if (mostrarEliminados) url += `&mostrarEliminados=true`;
             if (fechaDesde) url += `&fechaDesde=${fechaDesde}`;
             if (fechaHasta) url += `&fechaHasta=${fechaHasta}`;
-            
             const data = await jsonpRequest(url);
-            if (data.success) return data.pedidos || [];
-            return [];
-        } catch (error) {
+            return data.success ? (data.pedidos || []) : [];
+        } catch(error) {
             console.error("Error al leer:", error);
-            mostrarNotificacion("❌ Error de lectura: " + error.message, true);
-            return [];
-        }
-    }
-    
-    async function leerPedidosParaEstadisticas(fDesde, fHasta) {
-        try {
-            let url = `${SCRIPT_URL}?action=leer`;
-            url += `&mostrarEliminados=false`;
-            if (fDesde) url += `&fechaDesde=${fDesde}`;
-            if (fHasta) url += `&fechaHasta=${fHasta}`;
-            
-            const data = await jsonpRequest(url);
-            if (data.success) return data.pedidos || [];
-            return [];
-        } catch (error) {
-            console.error("Error al leer:", error);
+            mostrarNotificacion("❌ Error de lectura", true);
             return [];
         }
     }
@@ -322,25 +307,17 @@
         return new Promise((resolve, reject) => {
             const callbackName = `jsonp_callback_${Date.now()}`;
             const script = document.createElement('script');
-            
             window[callbackName] = function(response) {
                 delete window[callbackName];
                 document.body.removeChild(script);
-                resolve({ success: response.success === true, error: response.error, data: response });
+                resolve({ success: response.success === true, error: response.error });
             };
-            
             const params = new URLSearchParams();
             params.append('action', 'guardar');
             params.append('data', JSON.stringify(pedidoData));
             params.append('callback', callbackName);
-            
             script.src = `${SCRIPT_URL}?${params.toString()}`;
-            script.onerror = () => {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                reject(new Error('Network error'));
-            };
-            
+            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
             document.body.appendChild(script);
         });
     }
@@ -349,27 +326,19 @@
         return new Promise((resolve, reject) => {
             const callbackName = `jsonp_callback_${Date.now()}`;
             const script = document.createElement('script');
-            
             window[callbackName] = function(response) {
                 delete window[callbackName];
                 document.body.removeChild(script);
                 resolve({ success: response.success === true, error: response.error });
             };
-            
             const params = new URLSearchParams();
             params.append('action', 'actualizarCompleto');
             params.append('data', JSON.stringify(pedidoData));
             params.append('password', password);
             params.append('usuario', USUARIO_ACTUAL);
             params.append('callback', callbackName);
-            
             script.src = `${SCRIPT_URL}?${params.toString()}`;
-            script.onerror = () => {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                reject(new Error('Network error'));
-            };
-            
+            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
             document.body.appendChild(script);
         });
     }
@@ -378,20 +347,13 @@
         return new Promise((resolve, reject) => {
             const callbackName = `jsonp_callback_${Date.now()}`;
             const script = document.createElement('script');
-            
             window[callbackName] = function(response) {
                 delete window[callbackName];
                 document.body.removeChild(script);
                 resolve({ success: response.success === true, error: response.error });
             };
-            
             script.src = `${SCRIPT_URL}?action=eliminar&numero=${numero}&password=${encodeURIComponent(password)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${callbackName}`;
-            script.onerror = () => {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                reject(new Error('Network error'));
-            };
-            
+            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
             document.body.appendChild(script);
         });
     }
@@ -400,233 +362,15 @@
         return new Promise((resolve, reject) => {
             const callbackName = `jsonp_callback_${Date.now()}`;
             const script = document.createElement('script');
-            
             window[callbackName] = function(response) {
                 delete window[callbackName];
                 document.body.removeChild(script);
                 resolve({ success: response.success === true, error: response.error });
             };
-            
             script.src = `${SCRIPT_URL}?action=actualizar&numero=${numero}&estado=${encodeURIComponent(nuevoEstado)}&responsable=${encodeURIComponent(responsable)}&callback=${callbackName}`;
-            script.onerror = () => {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                reject(new Error('Network error'));
-            };
-            
+            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
             document.body.appendChild(script);
         });
-    }
-    
-    function aplicarFiltros() {
-        fechaDesde = document.getElementById('fechaDesde').value;
-        fechaHasta = document.getElementById('fechaHasta').value;
-        actualizarIndicadoresFiltro();
-        cargarPedidos();
-    }
-    
-    function limpiarFechas() {
-        document.getElementById('fechaDesde').value = "";
-        document.getElementById('fechaHasta').value = "";
-        fechaDesde = "";
-        fechaHasta = "";
-        actualizarIndicadoresFiltro();
-        cargarPedidos();
-    }
-    
-    function toggleMostrarEliminados() {
-        mostrarEliminados = !mostrarEliminados;
-        const btn = document.getElementById('btnMostrarEliminados');
-        if (mostrarEliminados) {
-            btn.innerHTML = "✅ Mostrando Eliminados";
-            btn.classList.add('activo');
-        } else {
-            btn.innerHTML = "🗑️ Mostrar Eliminados";
-            btn.classList.remove('activo');
-        }
-        actualizarIndicadoresFiltro();
-        cargarPedidos();
-    }
-    
-    function actualizarIndicadoresFiltro() {
-        const container = document.getElementById('indicadoresFiltro');
-        if (!container) return;
-        
-        let indicadores = [];
-        
-        if (fechaDesde) indicadores.push(`📅 Desde: ${fechaDesde}`);
-        if (fechaHasta) indicadores.push(`📅 Hasta: ${fechaHasta}`);
-        if (mostrarEliminados) indicadores.push(`🗑️ Incluyendo Eliminados`);
-        if (filtroActual !== "todos") {
-            let texto = filtroActual === "Pendiente" ? "🕊️ Pendientes" : (filtroActual === "En Proceso" ? "⚙️ Proceso" : "✅ Entregados");
-            indicadores.push(`📌 Estado: ${texto}`);
-        }
-        
-        if (indicadores.length === 0) {
-            container.innerHTML = '<span>📋 Mostrando todos los pedidos activos</span>';
-        } else {
-            container.innerHTML = indicadores.map(i => `<span style="background:#f0ebe5; padding:4px 12px; border-radius:40px;">🔍 ${i}</span>`).join('');
-        }
-    }
-    
-    function abrirModalEditar(pedido) {
-        if (pedido.estado === "Entregado") {
-            mostrarNotificacion("❌ No se puede editar un pedido que ya está ENTREGADO", true);
-            return;
-        }
-        numeroEditando = pedido.numero;
-        document.getElementById('editNumero').innerText = pedido.numero;
-        document.getElementById('editPassword').value = "";
-        document.getElementById('editCliente').value = pedido.cliente || "";
-        document.getElementById('editTelefono').value = pedido.telefono || "";
-        document.getElementById('editDescripcion').value = pedido.descripcion || "";
-        document.getElementById('editMonto').value = pedido.monto || "";
-        document.getElementById('editFechaEntrega').value = pedido.fechaEntrega || "";
-        document.getElementById('editHoraEntrega').value = pedido.horaEntrega || "";
-        document.getElementById('editEstado').value = pedido.estado || "Pendiente";
-        document.getElementById('editResponsable').value = pedido.responsable || "";
-        document.getElementById('modalEditar').style.display = 'flex';
-    }
-    
-    function cerrarModal() {
-        document.getElementById('modalEditar').style.display = 'none';
-        numeroEditando = null;
-    }
-    
-    async function guardarEdicion() {
-        if (!numeroEditando) return;
-        
-        const password = document.getElementById('editPassword').value;
-        if (!password) {
-            mostrarNotificacion("❌ Debes ingresar la contraseña de autorización", true);
-            document.getElementById('editPassword').focus();
-            return;
-        }
-        
-        const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
-        const montoUsd = montoBs / tasaBCV;
-        
-        const pedidoActualizado = {
-            numero: numeroEditando,
-            cliente: document.getElementById('editCliente').value,
-            telefono: document.getElementById('editTelefono').value,
-            descripcion: document.getElementById('editDescripcion').value,
-            monto: montoBs.toFixed(2),
-            fechaEntrega: document.getElementById('editFechaEntrega').value,
-            horaEntrega: document.getElementById('editHoraEntrega').value,
-            estado: document.getElementById('editEstado').value,
-            clienteDetalle: "",
-            responsable: document.getElementById('editResponsable').value,
-            fechaRegistro: new Date().toISOString().split('T')[0],
-            montoUSD: montoUsd.toFixed(2),
-            observaciones: `Editado por ${USUARIO_ACTUAL}`
-        };
-        
-        const btn = event.target;
-        const textoOriginal = btn.innerHTML;
-        btn.innerHTML = '<span class="loading"></span> Verificando autorización...';
-        btn.disabled = true;
-        
-        try {
-            const resultado = await actualizarPedidoCompleto(pedidoActualizado, password);
-            if (resultado.success) {
-                mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado correctamente`);
-                cerrarModal();
-                await cargarPedidos();
-            } else {
-                mostrarNotificacion("❌ " + (resultado.error || "Error al actualizar"), true);
-                if (resultado.error && resultado.error.includes("contraseña")) {
-                    document.getElementById('editPassword').value = "";
-                    document.getElementById('editPassword').focus();
-                }
-            }
-        } catch(error) {
-            mostrarNotificacion("❌ Error de red: " + error.message, true);
-        }
-        
-        btn.innerHTML = textoOriginal;
-        btn.disabled = false;
-    }
-    
-    async function confirmarEliminar(numero, cliente, estado) {
-        if (estado === "Entregado") {
-            mostrarNotificacion("❌ No se puede eliminar un pedido que ya está ENTREGADO", true);
-            return;
-        }
-        
-        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nPedido #${numero} - "${cliente}"\n\nIngresa la contraseña para eliminar este registro.`);
-        
-        if (!password) {
-            mostrarNotificacion("❌ Se requiere contraseña para eliminar", true);
-            return;
-        }
-        
-        if (password !== "piliperezbele") {
-            mostrarNotificacion("❌ Contraseña incorrecta. No tienes permiso para eliminar.", true);
-            return;
-        }
-        
-        const confirmar = confirm(`⚠️ ¿Estás SEGURA de eliminar el pedido #${numero} de "${cliente}"?\n\nEsta acción registrará quién lo eliminó y cuándo.`);
-        
-        if (confirmar) {
-            try {
-                const resultado = await eliminarPedido(numero, password);
-                if (resultado.success) {
-                    mostrarNotificacion(`🗑️ Pedido #${numero} marcado como eliminado por ${USUARIO_ACTUAL}`);
-                    await cargarPedidos();
-                } else {
-                    mostrarNotificacion("❌ " + (resultado.error || "Error al eliminar"), true);
-                }
-            } catch(error) {
-                mostrarNotificacion("❌ Error de red: " + error.message, true);
-            }
-        }
-    }
-    
-    async function verificarConexion() {
-        mostrarNotificacion("🔍 Verificando conexión...");
-        try {
-            const data = await jsonpRequest(`${SCRIPT_URL}?action=leer`);
-            if (data.success) {
-                mostrarNotificacion(`✅ Conexión OK! ${data.pedidos.length} pedidos activos.`);
-                alert(`✅ Conexión exitosa!\n\nPedidos activos: ${data.pedidos.length}`);
-            } else {
-                mostrarNotificacion("❌ Error: " + data.error, true);
-            }
-        } catch(error) {
-            mostrarNotificacion("❌ Error de conexión: " + error.message, true);
-        }
-    }
-    
-    async function testGuardadoDirecto() {
-        mostrarNotificacion("🧪 Ejecutando test...");
-        const testData = {
-            numero: 999,
-            cliente: "TEST JSONP",
-            telefono: "0412-9999999",
-            descripcion: "Prueba con JSONP",
-            monto: "250.00",
-            fechaEntrega: new Date().toISOString().split('T')[0],
-            horaEntrega: "16:00",
-            estado: "Pendiente",
-            clienteDetalle: "",
-            responsable: "",
-            fechaRegistro: new Date().toISOString().split('T')[0],
-            montoUSD: "50.00",
-            observaciones: "Test de diagnóstico"
-        };
-        try {
-            const resultado = await guardarPedidoWebApp(testData);
-            if (resultado.success) {
-                mostrarNotificacion("✅ TEST EXITOSO!");
-                alert("✅ Test exitoso!\n\nEl pedido se guardó correctamente.");
-                await cargarPedidos();
-            } else {
-                mostrarNotificacion("❌ TEST FALLIDO: " + resultado.error, true);
-            }
-        } catch(error) {
-            mostrarNotificacion("❌ Error: " + error.message, true);
-        }
     }
     
     async function guardarPedido() {
@@ -672,9 +416,8 @@
             const resultado = await guardarPedidoWebApp(pedidoData);
             btn.innerHTML = textoOriginal;
             btn.disabled = false;
-            
             if (resultado.success) {
-                mostrarNotificacion(`✅ Pedido #${ultimoNumero} guardado: Bs ${montoBs.toFixed(2)}`);
+                mostrarNotificacion(`✅ Pedido #${ultimoNumero} guardado`);
                 document.getElementById('clienteNombre').value = "";
                 document.getElementById('telefono').value = "";
                 document.getElementById('descripcion').value = "";
@@ -693,19 +436,65 @@
         }
     }
     
+    async function cargarPedidos() {
+        const container = document.getElementById('listaPedidos');
+        if (!container) return;
+        container.innerHTML = '<div class="empty-state"><span class="loading"></span> Cargando...</div>';
+        todosLosPedidos = await leerPedidos();
+        if (!todosLosPedidos || todosLosPedidos.length === 0) {
+            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con los filtros seleccionados</div>';
+            actualizarEstadisticas();
+            return;
+        }
+        let filtrados = filtroActual === "todos" ? todosLosPedidos : todosLosPedidos.filter(p => p.estado === filtroActual);
+        filtrados.sort((a,b) => b.numero - a.numero);
+        if (filtrados.length === 0) {
+            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con este filtro de estado</div>';
+            actualizarEstadisticas();
+            return;
+        }
+        let html = '';
+        for (let p of filtrados) {
+            let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
+            let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
+            html += `
+                <div class="pedido-item">
+                    <div class="pedido-header">
+                        <div><strong>📋 #${p.numero}</strong> <span class="${badgeClass}">${p.estado}</span></div>
+                        <div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${montoUSD})</small></div>
+                    </div>
+                    <div class="pedido-detalle">
+                        <div>👤 <strong>Cliente:</strong> ${escapeHtml(p.cliente)}</div>
+                        <div>📞 <strong>Teléfono:</strong> ${escapeHtml(p.telefono) || '—'}</div>
+                        <div>📦 <strong>Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
+                        <div>📅 <strong>Fecha Entrega:</strong> ${formatearFechaLocal(p.fechaEntrega)}</div>
+                        <div>⏰ <strong>Hora Entrega:</strong> ${formatearHoraLocal(p.horaEntrega)}</div>
+                        <div>📆 <strong>Registrado:</strong> ${formatearFechaLocal(p.fechaRegistro)}</div>
+                        ${p.responsable ? `<div>👤 <strong>Responsable Entrega:</strong> ${escapeHtml(p.responsable)}</div>` : ''}
+                        ${p.modificadoPor ? `<div>✏️ <strong>Modificado:</strong> ${escapeHtml(p.modificadoPor)} (${formatearFechaHoraLocal(p.fechaModificacion)})</div>` : ''}
+                    </div>
+                    <div class="pedido-acciones">
+                        ${p.estado !== "Entregado" ? `<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Editar</button>` : `<button disabled>🔒 Editado</button>`}
+                        ${p.estado !== "Entregado" ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : `<button disabled>🔒 Eliminar</button>`}
+                        ${p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+        actualizarEstadisticas();
+    }
+    
     async function confirmarEntrega(numero, elemento) {
         let responsable = prompt("✍️ Nombre de quien entrega el pedido:");
         if (!responsable) { mostrarNotificacion("❌ Nombre obligatorio", true); return; }
-        
         const textoOriginal = elemento.innerHTML;
         elemento.innerHTML = '<span class="loading"></span>';
         elemento.disabled = true;
-        
         try {
             const resultado = await actualizarEstadoPedido(numero, "Entregado", responsable);
             elemento.innerHTML = textoOriginal;
             elemento.disabled = false;
-            
             if (resultado.success) {
                 mostrarNotificacion(`✅ Pedido #${numero} entregado por: ${responsable}`);
                 await cargarPedidos();
@@ -715,176 +504,150 @@
         } catch(error) {
             elemento.innerHTML = textoOriginal;
             elemento.disabled = false;
-            mostrarNotificacion("❌ Error de red: " + error.message, true);
+            mostrarNotificacion("❌ Error de red", true);
         }
     }
     
-    async function cargarPedidos() {
-        const container = document.getElementById('listaPedidos');
-        if (!container) return;
-        
-        container.innerHTML = '<div class="empty-state"><span class="loading" style="border-top-color:#b0a088"></span> Cargando pedidos...</div>';
-        
-        todosLosPedidos = await leerPedidos();
-        
-        if (!todosLosPedidos || todosLosPedidos.length === 0) {
-            container.innerHTML = '<div class="empty-state">📭 No hay pedidos registrados con los filtros seleccionados.<br>Prueba a cambiar el rango de fechas o a mostrar eliminados.</div>';
-            actualizarEstadisticas();
-            return;
+    async function confirmarEliminar(numero, cliente, estado) {
+        if (estado === "Entregado") { mostrarNotificacion("❌ No se puede eliminar un pedido entregado", true); return; }
+        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nPedido #${numero} - "${cliente}"\n\nIngresa la contraseña:`);
+        if (!password) { mostrarNotificacion("❌ Se requiere contraseña", true); return; }
+        if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
+        if (confirm(`⚠️ ¿Eliminar pedido #${numero} de "${cliente}"?`)) {
+            try {
+                const resultado = await eliminarPedido(numero, password);
+                if (resultado.success) {
+                    mostrarNotificacion(`🗑️ Pedido #${numero} eliminado`);
+                    await cargarPedidos();
+                } else {
+                    mostrarNotificacion("❌ Error al eliminar: " + resultado.error, true);
+                }
+            } catch(error) { mostrarNotificacion("❌ Error de red", true); }
         }
-        
-        let filtrados = filtroActual === "todos" ? todosLosPedidos : todosLosPedidos.filter(p => p.estado === filtroActual);
-        filtrados.sort((a,b) => b.numero - a.numero);
-        
-        if (filtrados.length === 0) {
-            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con este filtro de estado.</div>';
-            actualizarEstadisticas();
-            return;
-        }
-        
-        let html = '';
-        for (let p of filtrados) {
-            let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
-            let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
-            let puedeEditar = (p.estado !== "Entregado");
-            let puedeEliminar = (p.estado !== "Entregado");
-            let esEliminadoMostrado = mostrarEliminados;
-            
-            html += `
-                <div class="pedido-item">
-                    <div class="pedido-header">
-                        <div><strong style="font-size: 1.1em;">📋 #${p.numero}</strong> <span class="${badgeClass}">${p.estado}</span></div>
-                        <div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${montoUSD})</small></div>
-                    </div>
-                    <div class="pedido-detalle">
-                        <div>👤 <strong>Cliente:</strong> ${escapeHtml(p.cliente)}</div>
-                        <div>📞 <strong>Teléfono:</strong> ${escapeHtml(p.telefono) || '—'}</div>
-                        <div>📦 <strong>Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
-                        <div>📅 <strong>Fecha Entrega:</strong> ${escapeHtml(p.fechaEntrega) || '—'}</div>
-                        <div>⏰ <strong>Hora Entrega:</strong> ${escapeHtml(p.horaEntrega) || '—'}</div>
-                        <div>📆 <strong>Registrado:</strong> ${escapeHtml(p.fechaRegistro) || '—'}</div>
-                        ${p.responsable ? `<div>👤 <strong>Responsable Entrega:</strong> ${escapeHtml(p.responsable)}</div>` : ''}
-                        ${p.modificadoPor ? `<div>✏️ <strong>Modificado:</strong> ${escapeHtml(p.modificadoPor)} (${escapeHtml(p.fechaModificacion) || '—'})</div>` : ''}
-                    </div>
-                    <div class="pedido-acciones">
-                        ${puedeEditar ? `<button class="btn-warning" onclick="abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})">✏️ Editar</button>` : `<button disabled style="background:#95a5a6; opacity:0.5;">🔒 Editado</button>`}
-                        ${puedeEliminar ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : `<button disabled style="background:#95a5a6; opacity:0.5;">🔒 Eliminar</button>`}
-                        ${p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-        
-        container.innerHTML = html;
-        actualizarEstadisticas();
     }
     
-    async function actualizarEstadisticasConFechas() {
-        const fDesde = document.getElementById('statsFechaDesde').value;
-        const fHasta = document.getElementById('statsFechaHasta').value;
-        const pedidosStats = await leerPedidosParaEstadisticas(fDesde, fHasta);
-        
-        const statsDiv = document.getElementById('statsContainer');
-        if (!statsDiv) return;
-        
-        if (!pedidosStats || pedidosStats.length === 0) {
-            statsDiv.innerHTML = '<div class="empty-state">📊 Sin datos en el rango seleccionado</div>';
-            return;
-        }
-        
-        let totalBs = pedidosStats.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
-        let totalUsd = totalBs / tasaBCV;
-        let pendientes = pedidosStats.filter(p => p.estado === "Pendiente");
-        let proceso = pedidosStats.filter(p => p.estado === "En Proceso");
-        let entregados = pedidosStats.filter(p => p.estado === "Entregado");
-        
-        let rangoTexto = "";
-        if (fDesde || fHasta) {
-            rangoTexto = `<div style="text-align:center; margin-bottom:16px; font-size:0.8em; color:#8a7a66;">📅 Rango: ${fDesde || 'inicio'} → ${fHasta || 'hoy'}</div>`;
-        }
-        
-        statsDiv.innerHTML = rangoTexto + `
-            <div class="stat-card"><h4>📊 Total General</h4><div class="numero">${pedidosStats.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div>
-            <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero" style="color:#b8324a">${pendientes.length}</div><div class="monto">Bs ${pendientes.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>⚙️ En Proceso</h4><div class="numero" style="color:#c47d2e">${proceso.length}</div><div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>✅ Entregados</h4><div class="numero" style="color:#2e7d32">${entregados.length}</div><div class="monto">Bs ${entregados.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-        `;
+    function abrirModalEditar(pedido) {
+        if (pedido.estado === "Entregado") { mostrarNotificacion("❌ No se puede editar un pedido entregado", true); return; }
+        numeroEditando = pedido.numero;
+        document.getElementById('editNumero').innerText = pedido.numero;
+        document.getElementById('editPassword').value = "";
+        document.getElementById('editCliente').value = pedido.cliente || "";
+        document.getElementById('editTelefono').value = pedido.telefono || "";
+        document.getElementById('editDescripcion').value = pedido.descripcion || "";
+        document.getElementById('editMonto').value = pedido.monto || "";
+        document.getElementById('editFechaEntrega').value = pedido.fechaEntrega || "";
+        document.getElementById('editHoraEntrega').value = pedido.horaEntrega || "";
+        document.getElementById('editEstado').value = pedido.estado || "Pendiente";
+        document.getElementById('editResponsable').value = pedido.responsable || "";
+        document.getElementById('modalEditar').style.display = 'flex';
     }
     
-    function limpiarStatsFechas() {
-        document.getElementById('statsFechaDesde').value = "";
-        document.getElementById('statsFechaHasta').value = "";
-        actualizarEstadisticasConFechas();
+    function cerrarModal() { document.getElementById('modalEditar').style.display = 'none'; numeroEditando = null; }
+    
+    async function guardarEdicion() {
+        if (!numeroEditando) return;
+        const password = document.getElementById('editPassword').value;
+        if (!password) { mostrarNotificacion("❌ Contraseña requerida", true); return; }
+        if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
+        const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
+        const montoUsd = montoBs / tasaBCV;
+        const pedidoActualizado = {
+            numero: numeroEditando,
+            cliente: document.getElementById('editCliente').value,
+            telefono: document.getElementById('editTelefono').value,
+            descripcion: document.getElementById('editDescripcion').value,
+            monto: montoBs.toFixed(2),
+            fechaEntrega: document.getElementById('editFechaEntrega').value,
+            horaEntrega: document.getElementById('editHoraEntrega').value,
+            estado: document.getElementById('editEstado').value,
+            responsable: document.getElementById('editResponsable').value,
+            montoUSD: montoUsd.toFixed(2)
+        };
+        const btn = event.target;
+        const textoOriginal = btn.innerHTML;
+        btn.innerHTML = '<span class="loading"></span> Guardando...';
+        btn.disabled = true;
+        try {
+            const resultado = await actualizarPedidoCompleto(pedidoActualizado, password);
+            btn.innerHTML = textoOriginal;
+            btn.disabled = false;
+            if (resultado.success) {
+                mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`);
+                cerrarModal();
+                await cargarPedidos();
+            } else {
+                mostrarNotificacion("❌ Error: " + resultado.error, true);
+            }
+        } catch(error) {
+            btn.innerHTML = textoOriginal;
+            btn.disabled = false;
+            mostrarNotificacion("❌ Error de red", true);
+        }
     }
     
     function actualizarEstadisticas() {
         const statsDiv = document.getElementById('statsContainer');
         if (!statsDiv) return;
-        
-        if (!todosLosPedidos || todosLosPedidos.length === 0) {
-            statsDiv.innerHTML = '<div class="empty-state">📊 Sin datos para mostrar</div>';
-            return;
-        }
-        
+        if (!todosLosPedidos || todosLosPedidos.length === 0) { statsDiv.innerHTML = '<div class="empty-state">📊 Sin datos</div>'; return; }
         let totalBs = todosLosPedidos.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
         let totalUsd = totalBs / tasaBCV;
         let pendientes = todosLosPedidos.filter(p => p.estado === "Pendiente");
         let proceso = todosLosPedidos.filter(p => p.estado === "En Proceso");
         let entregados = todosLosPedidos.filter(p => p.estado === "Entregado");
-        
         statsDiv.innerHTML = `
-            <div class="stat-card"><h4>📊 Total General</h4><div class="numero">${todosLosPedidos.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div>
+            <div class="stat-card"><h4>📊 Total</h4><div class="numero">${todosLosPedidos.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div>
             <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero" style="color:#b8324a">${pendientes.length}</div><div class="monto">Bs ${pendientes.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>⚙️ En Proceso</h4><div class="numero" style="color:#c47d2e">${proceso.length}</div><div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
+            <div class="stat-card"><h4>⚙️ Proceso</h4><div class="numero" style="color:#c47d2e">${proceso.length}</div><div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
             <div class="stat-card"><h4>✅ Entregados</h4><div class="numero" style="color:#2e7d32">${entregados.length}</div><div class="monto">Bs ${entregados.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
         `;
     }
     
-    function escapeHtml(str) {
-        if (!str) return "—";
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+    async function actualizarEstadisticasConFechas() {
+        const fDesde = document.getElementById('statsFechaDesde').value;
+        const fHasta = document.getElementById('statsFechaHasta').value;
+        let url = `${SCRIPT_URL}?action=leer&mostrarEliminados=false`;
+        if (fDesde) url += `&fechaDesde=${fDesde}`;
+        if (fHasta) url += `&fechaHasta=${fHasta}`;
+        const data = await jsonpRequest(url);
+        const pedidosStats = data.success ? (data.pedidos || []) : [];
+        const statsDiv = document.getElementById('statsContainer');
+        if (!pedidosStats.length) { statsDiv.innerHTML = '<div class="empty-state">📊 Sin datos en el rango</div>'; return; }
+        let totalBs = pedidosStats.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
+        let totalUsd = totalBs / tasaBCV;
+        let pendientes = pedidosStats.filter(p => p.estado === "Pendiente");
+        let proceso = pedidosStats.filter(p => p.estado === "En Proceso");
+        let entregados = pedidosStats.filter(p => p.estado === "Entregado");
+        statsDiv.innerHTML = `
+            <div class="stat-card"><h4>📊 Total</h4><div class="numero">${pedidosStats.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div>
+            <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero">${pendientes.length}</div><div class="monto">Bs ${pendientes.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
+            <div class="stat-card"><h4>⚙️ Proceso</h4><div class="numero">${proceso.length}</div><div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
+            <div class="stat-card"><h4>✅ Entregados</h4><div class="numero">${entregados.length}</div><div class="monto">Bs ${entregados.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
+        `;
     }
     
-    function filtrarPor(estado) {
-        filtroActual = estado;
-        actualizarIndicadoresFiltro();
-        cargarPedidos();
-    }
-    
-    function mostrarPanel(panel) {
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(`panel-${panel}`).classList.add('active');
-        event.target.classList.add('active');
-        if (panel === 'control') cargarPedidos();
-        if (panel === 'estadisticas') actualizarEstadisticasConFechas();
-    }
+    function limpiarStatsFechas() { document.getElementById('statsFechaDesde').value = ""; document.getElementById('statsFechaHasta').value = ""; actualizarEstadisticasConFechas(); }
+    function aplicarFiltros() { fechaDesde = document.getElementById('fechaDesde').value; fechaHasta = document.getElementById('fechaHasta').value; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function limpiarFechas() { document.getElementById('fechaDesde').value = ""; document.getElementById('fechaHasta').value = ""; fechaDesde = ""; fechaHasta = ""; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function toggleMostrarEliminados() { mostrarEliminados = !mostrarEliminados; const btn = document.getElementById('btnMostrarEliminados'); if (mostrarEliminados) { btn.innerHTML = "✅ Mostrando Eliminados"; btn.classList.add('activo'); } else { btn.innerHTML = "🗑️ Mostrar Eliminados"; btn.classList.remove('activo'); } actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function actualizarIndicadoresFiltro() { const container = document.getElementById('indicadoresFiltro'); if (!container) return; let indicadores = []; if (fechaDesde) indicadores.push(`📅 Desde: ${formatearFechaLocal(fechaDesde)}`); if (fechaHasta) indicadores.push(`📅 Hasta: ${formatearFechaLocal(fechaHasta)}`); if (mostrarEliminados) indicadores.push(`🗑️ Incluyendo Eliminados`); if (filtroActual !== "todos") indicadores.push(`📌 Estado: ${filtroActual === "Pendiente" ? "🕊️ Pendientes" : (filtroActual === "En Proceso" ? "⚙️ Proceso" : "✅ Entregados")}`); container.innerHTML = indicadores.length ? indicadores.map(i => `<span style="background:#f0ebe5; padding:4px 12px; border-radius:40px;">🔍 ${i}</span>`).join('') : '<span>📋 Mostrando todos los pedidos activos</span>'; }
+    function filtrarPor(estado) { filtroActual = estado; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function escapeHtml(str) { if (!str) return "—"; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+    function mostrarPanel(panel) { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById(`panel-${panel}`).classList.add('active'); event.target.classList.add('active'); if (panel === 'control') cargarPedidos(); }
     
     async function init() {
-        console.log("🚀 Iniciando Clavelle con filtros por fechas");
         await obtenerTasaBCV();
         let pedidos = await leerPedidos();
         let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
         document.getElementById('numeroPedido').value = ultimoNumero;
         await cargarPedidos();
-        
-        // Fijar fechas por defecto para estadísticas (últimos 30 días)
         const hoy = new Date();
-        const hace30Dias = new Date();
-        hace30Dias.setDate(hoy.getDate() - 30);
+        const hace30Dias = new Date(); hace30Dias.setDate(hoy.getDate() - 30);
         document.getElementById('statsFechaDesde').value = hace30Dias.toISOString().split('T')[0];
         document.getElementById('statsFechaHasta').value = hoy.toISOString().split('T')[0];
         actualizarEstadisticasConFechas();
-        
-        setInterval(async () => {
-            await obtenerTasaBCV();
-            if (document.getElementById('panel-control').classList.contains('active')) await cargarPedidos();
-        }, 300000);
+        setInterval(async () => { await obtenerTasaBCV(); if (document.getElementById('panel-control').classList.contains('active')) await cargarPedidos(); }, 300000);
     }
-    
     init();
 </script>
 </body>
-</html>
+<html>
