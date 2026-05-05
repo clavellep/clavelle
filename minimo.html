@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Clavelle - Prueba</title>
+</head>
+<body>
+    <h1>🌸 Clavelle - Prueba de Filtros</h1>
+    
+    <label>Fecha Desde:</label>
+    <input type="date" id="fechaDesde">
+    <label>Fecha Hasta:</label>
+    <input type="date" id="fechaHasta">
+    <button onclick="aplicarFiltro()">Filtrar</button>
+    <button onclick="mostrarTodos()">Todos</button>
+    <button onclick="mostrarEliminados()">Eliminados</button>
+    
+    <pre id="resultado">Cargando...</pre>
+
+    <script>
+        // CAMBIA ESTA URL POR LA QUE TE DIO APPS SCRIPT
+        const SCRIPT_URL = "https://script.google.com/macros/s/TU_URL_AQUI/exec";
+        
+        let mostrarEliminados = false;
+        let fechaDesde = "";
+        let fechaHasta = "";
+        
+        async function cargarPedidos() {
+            let url = `${SCRIPT_URL}?action=leer`;
+            if (mostrarEliminados) url += `&mostrarEliminados=true`;
+            if (fechaDesde) url += `&fechaDesde=${fechaDesde}`;
+            if (fechaHasta) url += `&fechaHasta=${fechaHasta}`;
+            
+            document.getElementById('resultado').innerText = "Cargando...";
+            
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                // Limpiar callback si existe
+                const jsonText = text.replace(/^[^(]*\(/, '').replace(/\);?$/, '');
+                const data = JSON.parse(jsonText);
+                document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+            } catch(e) {
+                document.getElementById('resultado').innerText = "Error: " + e.message;
+            }
+        }
+        
+        function aplicarFiltro() {
+            fechaDesde = document.getElementById('fechaDesde').value;
+            fechaHasta = document.getElementById('fechaHasta').value;
+            cargarPedidos();
+        }
+        
+        function mostrarTodos() {
+            mostrarEliminados = false;
+            fechaDesde = "";
+            fechaHasta = "";
+            document.getElementById('fechaDesde').value = "";
+            document.getElementById('fechaHasta').value = "";
+            cargarPedidos();
+        }
+        
+        function mostrarEliminados() {
+            mostrarEliminados = true;
+            fechaDesde = "";
+            fechaHasta = "";
+            document.getElementById('fechaDesde').value = "";
+            document.getElementById('fechaHasta').value = "";
+            cargarPedidos();
+        }
+        
+        cargarPedidos();
+    </script>
+</body>
+</html>
