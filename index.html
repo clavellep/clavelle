@@ -244,7 +244,6 @@
 
 <script>
     // ===== CONFIGURACIÓN =====
-    // 👇 CAMBIA ESTA URL POR LA QUE TE DIO APPS SCRIPT
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkrJgvG8SRDbmbCsy4TOvZE7ObwdbrNeBl_tXivh-tdSTpA6qFVXSfnK-gzjxsNIhPjQ/exec";
     const CLAVE = "piliperezbele";
     let USUARIO = "Pili Pérez";
@@ -254,6 +253,17 @@
     let fechaHasta = "";
     let tasa = 489.55;
     let editandoNumero = null;
+    
+    // ===== FUNCIÓN PARA LIMPIAR FECHAS (eliminar zona horaria) =====
+    function limpiarFecha(fecha) {
+        if (!fecha) return "";
+        let f = String(fecha);
+        // Si tiene T (formato ISO), tomar solo la parte antes de T
+        if (f.includes('T')) {
+            return f.split('T')[0];
+        }
+        return f;
+    }
     
     // Funciones auxiliares
     function mostrarNotificacion(msg, error=false) {
@@ -297,7 +307,19 @@
             if (fechaDesde) url += `&fechaDesde=${fechaDesde}`;
             if (fechaHasta) url += `&fechaHasta=${fechaHasta}`;
             let data = await jsonp(url);
-            return data.success ? (data.pedidos || []) : [];
+            if (data.success && data.pedidos) {
+                // Limpiar fechas de los pedidos recibidos
+                for (let i = 0; i < data.pedidos.length; i++) {
+                    if (data.pedidos[i].fechaRegistro) {
+                        data.pedidos[i].fechaRegistro = limpiarFecha(data.pedidos[i].fechaRegistro);
+                    }
+                    if (data.pedidos[i].fechaEntrega) {
+                        data.pedidos[i].fechaEntrega = limpiarFecha(data.pedidos[i].fechaEntrega);
+                    }
+                }
+                return data.pedidos;
+            }
+            return [];
         } catch(e) {
             mostrarNotificacion("Error de lectura", true);
             return [];
@@ -402,18 +424,22 @@
         let montoBs = parseFloat(monto);
         let montoUsd = montoBs / tasa;
         
+        // Limpiar fechas antes de guardar
+        let fechaEntrega = document.getElementById('fechaEntrega').value;
+        let fechaRegistro = new Date().toISOString().split('T')[0];
+        
         let data = {
             numero: nuevoNum,
             cliente: cliente,
             telefono: document.getElementById('telefono').value,
             descripcion: desc,
             monto: montoBs.toFixed(2),
-            fechaEntrega: document.getElementById('fechaEntrega').value,
+            fechaEntrega: fechaEntrega,
             horaEntrega: document.getElementById('horaEntrega').value,
             estado: document.getElementById('estadoRegistro').value,
             clienteDetalle: "",
             responsable: "",
-            fechaRegistro: new Date().toISOString().split('T')[0],
+            fechaRegistro: fechaRegistro,
             montoUSD: montoUsd.toFixed(2),
             observaciones: `Creado por ${USUARIO}`
         };
@@ -427,6 +453,8 @@
             document.getElementById('telefono').value = "";
             document.getElementById('descripcion').value = "";
             document.getElementById('monto').value = "";
+            document.getElementById('fechaEntrega').value = "";
+            document.getElementById('horaEntrega').value = "";
             document.getElementById('numeroPedido').value = nuevoNum + 1;
             await cargarPedidos();
         } else {
@@ -463,6 +491,10 @@
             let esElim = (filtroActual === "eliminados");
             let esEnt = (p.estado === "Entregado");
             
+            // Mostrar fechas limpias
+            let fechaEntregaMostrar = p.fechaEntrega ? limpiarFecha(p.fechaEntrega) : '—';
+            let fechaRegistroMostrar = p.fechaRegistro ? limpiarFecha(p.fechaRegistro) : '—';
+            
             html += `
                 <div class="pedido-item">
                     <div class="pedido-header">
@@ -473,8 +505,8 @@
                         <div>👤 ${escapeHtml(p.cliente)}</div>
                         <div>📞 ${escapeHtml(p.telefono) || '—'}</div>
                         <div>📦 ${escapeHtml(p.descripcion)}</div>
-                        <div>📅 Entrega: ${p.fechaEntrega || '—'} ${p.horaEntrega || ''}</div>
-                        <div>📆 Registro: ${p.fechaRegistro || '—'}</div>
+                        <div>📅 Entrega: ${fechaEntregaMostrar} ${p.horaEntrega || ''}</div>
+                        <div>📆 Registro: ${fechaRegistroMostrar}</div>
                         ${p.responsable ? `<div>👤 Responsable: ${escapeHtml(p.responsable)}</div>` : ''}
                     </div>
                     <div class="pedido-acciones">
@@ -560,7 +592,7 @@
         document.getElementById('editTelefono').value = p.telefono || "";
         document.getElementById('editDescripcion').value = p.descripcion || "";
         document.getElementById('editMonto').value = p.monto || "";
-        document.getElementById('editFechaEntrega').value = p.fechaEntrega || "";
+        document.getElementById('editFechaEntrega').value = p.fechaEntrega ? limpiarFecha(p.fechaEntrega) : "";
         document.getElementById('editHoraEntrega').value = p.horaEntrega || "";
         document.getElementById('editEstado').value = p.estado || "Pendiente";
         document.getElementById('editResponsable').value = p.responsable || "";
