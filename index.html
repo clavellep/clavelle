@@ -25,31 +25,41 @@
             align-items: center;
             flex-wrap: wrap;
             border: 1px solid #f0e4d8;
-            position: relative;
         }
         .logo h1 { color: #4a6f5e; font-size: 1.8rem; }
         .logo p { color: #b8876e; font-size: 0.8rem; }
         .tasa { background: #eae1d6; padding: 8px 20px; border-radius: 40px; font-size: 0.8rem; }
         
-        /* Botones flotantes */
+        /* Botones flotantes - separados y con leyenda */
         .btn-calc, .btn-help {
             position: fixed;
-            width: 55px;
-            height: 55px;
-            border-radius: 55px;
-            font-size: 24px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            z-index: 1000;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        .btn-calc { background: #b8876e; bottom: 20px; right: 20px; }
-        .btn-calc:hover { background: #a5735b; transform: scale(1.05); }
-        .btn-help { background: #6b8c7a; bottom: 90px; right: 20px; }
-        .btn-help:hover { background: #5b7a68; transform: scale(1.05); }
+        .btn-calc {
+            background: #b8876e;
+            color: white;
+            bottom: 20px;
+            right: 20px;
+        }
+        .btn-calc:hover { background: #a5735b; transform: scale(1.02); }
+        .btn-help {
+            background: #6b8c7a;
+            color: white;
+            bottom: 20px;
+            left: 20px;
+        }
+        .btn-help:hover { background: #5b7a68; transform: scale(1.02); }
         
         /* Panel de ayuda */
         .help-panel {
@@ -107,6 +117,11 @@
             background: #b8876e;
             margin-top: 8px;
             padding: 10px;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
         }
         .shortcut-grid {
             display: grid;
@@ -167,7 +182,7 @@
         }
         .tour-card h3 { color: #4a6f5e; margin-bottom: 16px; }
         .tour-card p { margin-bottom: 20px; color: #5c5248; }
-        .tour-buttons { display: flex; gap: 12px; justify-content: center; }
+        .tour-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
         
         /* Tabs */
         .tabs { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
@@ -212,7 +227,7 @@
         .stat-card .numero { font-size: 2rem; font-weight: 600; color: #4f6b5c; }
         .stat-card .monto { font-size: 1.2rem; color: #27ae60; font-weight: 500; }
         footer { text-align: center; margin-top: 40px; padding: 16px; color: #cdbcab; font-size: 0.7rem; }
-        @media (max-width: 640px) { body { padding: 12px; } }
+        @media (max-width: 640px) { body { padding: 12px; } .btn-calc, .btn-help { padding: 6px 12px; font-size: 0.65rem; } }
         
         .fechas-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-end; }
         .grupo-fecha { display: flex; flex-direction: column; gap: 4px; }
@@ -229,6 +244,21 @@
         .calc-buttons .equal { background: #27ae60; grid-column: span 2; }
         .calc-close { background: #95a5a6; margin-top: 12px; width: 100%; padding: 12px; border-radius: 20px; }
         .modal-calc, .modal-tour { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center; }
+        
+        /* Admin panel (oculto por defecto) */
+        .admin-only {
+            display: none;
+        }
+        .admin-toggle {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.6rem;
+            color: #cdbcab;
+            cursor: pointer;
+            z-index: 100;
+        }
+        .admin-toggle:hover { color: #b8876e; }
     </style>
 </head>
 <body>
@@ -307,11 +337,15 @@
     <footer>💐 Clavelle · Sincronizado con Google Sheets · Guía interactiva disponible</footer>
 </div>
 
-<!-- BOTONES FLOTANTES -->
-<div class="btn-calc" onclick="abrirCalculadora()" data-tooltip="Calculadora básica">🧮</div>
-<div class="btn-help" onclick="toggleHelp()" data-tooltip="Guía de ayuda">❓</div>
+<!-- BOTONES FLOTANTES (separados) -->
+<div class="btn-calc" onclick="abrirCalculadora()">
+    🧮 Calculadora
+</div>
+<div class="btn-help" onclick="toggleHelp()">
+    ❓ Ayuda
+</div>
 
-<!-- PANEL DE AYUDA -->
+<!-- Panel de ayuda (sin contraseña visible) -->
 <div id="helpPanel" class="help-panel">
     <div class="help-header">
         <h3>🌸 Guía Clavelle</h3>
@@ -341,7 +375,7 @@
             </div>
             <div class="help-step">
                 <strong>4. Eliminar pedido</strong><br>
-                Solo pedidos en estado <strong>Pendiente</strong> o <strong>En Proceso</strong>. Necesitarás la contraseña de autorización.
+                Solo pedidos en estado <strong>Pendiente</strong> o <strong>En Proceso</strong>.
             </div>
             <div class="help-step">
                 <strong>5. Restaurar pedido</strong><br>
@@ -361,16 +395,8 @@
         <div class="help-section">
             <h4>🧮 Calculadora</h4>
             <div class="help-step">
-                Botón <strong>🧮</strong> abajo a la derecha. Operaciones: +, -, ×, ÷, %
+                Botón <strong>🧮 Calculadora</strong> abajo a la derecha. Operaciones: +, -, ×, ÷, %
                 <div class="help-tip">Máximo 10-12 dígitos por pantalla</div>
-            </div>
-        </div>
-        
-        <div class="help-section">
-            <h4>🔐 Seguridad</h4>
-            <div class="help-step">
-                Las acciones de <strong>Eliminar</strong> y <strong>Restaurar</strong> requieren contraseña de autorización.
-                <div class="help-tip">🔑 Contraseña: piliperezbele</div>
             </div>
         </div>
         
@@ -379,8 +405,8 @@
     </div>
 </div>
 
-<!-- MODAL TOUR -->
-<div id="tourModal" class="modal-tour">
+<!-- Modal tour -->
+<div id="tourModal" class="tour-modal">
     <div class="tour-card">
         <h3>🎓 Tour guiado</h3>
         <p id="tourTexto">¡Bienvenida a Clavelle! Te guiaré por las principales funciones del sistema.</p>
@@ -396,7 +422,7 @@
     </div>
 </div>
 
-<!-- MODAL CALCULADORA -->
+<!-- Modal calculadora -->
 <div id="modalCalculadora" class="modal-calc">
     <div class="calc-container">
         <div class="calc-display" id="calcDisplay">0</div>
@@ -411,6 +437,9 @@
     </div>
 </div>
 
+<!-- Activador para mostrar información de administrador (contraseña oculta) -->
+<div class="admin-toggle" onclick="mostrarAdminInfo()">🔒</div>
+
 <script>
     // ===== CONFIGURACIÓN =====
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkrJgvG8SRDbmbCsy4TOvZE7ObwdbrNeBl_tXivh-tdSTpA6qFVXSfnK-gzjxsNIhPjQ/exec";
@@ -423,13 +452,18 @@
     let tasa = 489.55;
     let editandoNumero = null;
     
+    // Mostrar contraseña solo si se hace clic en el candado (solo administradores)
+    function mostrarAdminInfo() {
+        alert("🔐 INFORMACIÓN DE ADMINISTRADOR\n\n📌 Contraseña de autorización: " + CLAVE + "\n\n⚠️ No compartir con usuarios no autorizados.");
+    }
+    
     // ===== TOUR GUIADO =====
     let tourPasoActual = 0;
     const tourPasos = [
         { texto: "¡Bienvenida a Clavelle! 🌸 Este sistema te ayudará a gestionar tus pedidos florales de forma fácil y elegante.", img: "🌸", accion: null },
         { texto: "📝 Pestaña REGISTRO: Completa el formulario para crear nuevos pedidos. Los campos con * son obligatorios. El número de pedido se genera automáticamente.", img: "📝", accion: () => mostrarPanel('registro') },
         { texto: "🔍 Pestaña CONTROL: Aquí puedes ver, filtrar y gestionar todos tus pedidos. Usa los filtros por fecha y estado.", img: "🔍", accion: () => mostrarPanel('control') },
-        { texto: "✏️ En CONTROL, cada pedido tiene botones: Editar (modificar datos), Eliminar (requiere contraseña) y Entregar (marcar como entregado).", img: "✏️", accion: null },
+        { texto: "✏️ En CONTROL, cada pedido tiene botones: Editar (modificar datos), Eliminar (requiere autorización) y Entregar (marcar como entregado).", img: "✏️", accion: null },
         { texto: "🗑️ ELIMINADOS: Haz clic en el botón 'Eliminados' para ver pedidos eliminados. Desde allí puedes RESTAURARLOS.", img: "♻️", accion: null },
         { texto: "📊 Pestaña ESTADÍSTICAS: Selecciona un rango de fechas y obtén totales en Bs y USD, más el detalle de pedidos.", img: "📊", accion: () => mostrarPanel('estadisticas') },
         { texto: "🧮 CALCULADORA: Botón flotante abajo a la derecha. Realiza operaciones básicas y porcentajes. ¡Úsala cuando necesites!", img: "🧮", accion: () => abrirCalculadora() }
@@ -447,32 +481,15 @@
         document.getElementById('tourImagen').innerText = paso.img;
         document.getElementById('tourPaso').innerText = tourPasoActual + 1;
         document.getElementById('tourTotal').innerText = tourPasos.length;
-        
-        if (paso.accion) {
-            setTimeout(paso.accion, 100);
-        }
+        if (paso.accion) setTimeout(paso.accion, 100);
     }
     
     function tourSiguiente() {
-        if (tourPasoActual < tourPasos.length - 1) {
-            tourPasoActual++;
-            actualizarTour();
-        } else {
-            cerrarTour();
-        }
+        if (tourPasoActual < tourPasos.length - 1) { tourPasoActual++; actualizarTour(); }
+        else cerrarTour();
     }
-    
-    function tourAnterior() {
-        if (tourPasoActual > 0) {
-            tourPasoActual--;
-            actualizarTour();
-        }
-    }
-    
-    function cerrarTour() {
-        document.getElementById('tourModal').style.display = 'none';
-        cerrarCalculadora();
-    }
+    function tourAnterior() { if (tourPasoActual > 0) { tourPasoActual--; actualizarTour(); } }
+    function cerrarTour() { document.getElementById('tourModal').style.display = 'none'; cerrarCalculadora(); }
     
     function descargarManual() {
         const manual = `
@@ -498,7 +515,7 @@
 ===========================================
 - ✏️ Editar: Modificar datos (solo Pendiente/Proceso)
 - ✅ Entregar: Marcar como entregado (pide responsable)
-- 🗑️ Eliminar: Mover a eliminados (requiere contraseña)
+- 🗑️ Eliminar: Mover a eliminados (requiere autorización)
 - ♻️ Restaurar: Recuperar pedido eliminado
 
 ===========================================
@@ -510,13 +527,8 @@
 ===========================================
 5. CALCULADORA
 ===========================================
-- Botón 🧮 flotante
+- Botón 🧮 flotante abajo a la derecha
 - Operaciones: +, -, ×, ÷, %
-
-===========================================
-🔐 CONTRASEÑA DE AUTORIZACIÓN
-===========================================
-piliperezbele
 
 ===========================================
 💰 TIPO DE CAMBIO BCV
@@ -530,7 +542,6 @@ Para cualquier duda, contacte al administrador.
 
 ¡Gracias por usar Clavelle! 🌸
         `;
-        
         const blob = new Blob([manual], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -548,15 +559,8 @@ Para cualquier duda, contacte al administrador.
     
     function actualizarDisplayCalc() { document.getElementById('calcDisplay').innerText = calcActual; }
     function calcAgregar(valor) {
-        if (valor === '%') {
-            let num = parseFloat(calcActual);
-            if (!isNaN(num)) calcActual = (num / 100).toString();
-            actualizarDisplayCalc(); return;
-        }
-        if (['+', '-', '*', '/'].includes(valor)) {
-            calcAnterior = calcActual; calcOperacion = valor; calcActual = "0";
-            actualizarDisplayCalc(); return;
-        }
+        if (valor === '%') { let num = parseFloat(calcActual); if (!isNaN(num)) calcActual = (num / 100).toString(); actualizarDisplayCalc(); return; }
+        if (['+', '-', '*', '/'].includes(valor)) { calcAnterior = calcActual; calcOperacion = valor; calcActual = "0"; actualizarDisplayCalc(); return; }
         if (calcActual === "0" && valor !== '.') calcActual = valor;
         else if (calcActual.length < 12) calcActual += valor;
         actualizarDisplayCalc();
@@ -581,9 +585,7 @@ Para cualquier duda, contacte al administrador.
     function cerrarCalculadora() { document.getElementById('modalCalculadora').style.display = 'none'; }
     
     // ===== HELP PANEL =====
-    function toggleHelp() {
-        document.getElementById('helpPanel').classList.toggle('open');
-    }
+    function toggleHelp() { document.getElementById('helpPanel').classList.toggle('open'); }
     
     // ===== FUNCIONES GENERALES =====
     function limpiarFecha(fecha) { if (!fecha) return ""; let f = String(fecha); if (f.includes('T')) f = f.split('T')[0]; if (f.includes(',')) f = f.split(',')[0]; if (f.match(/^\d{4}-\d{2}-\d{2}/)) return f.substring(0,10); return f; }
@@ -692,7 +694,7 @@ Para cualquier duda, contacte al administrador.
     
     async function eliminarPedidoConfirm(num, cliente, estado) {
         if(estado === "Entregado") { mostrarNotificacion("❌ No se puede eliminar un pedido entregado", true); return; }
-        let pass = prompt(`🔐 Contraseña para eliminar pedido #${num}:`);
+        let pass = prompt(`🔐 Contraseña de autorización para eliminar pedido #${num}:`);
         if(!pass || pass !== CLAVE) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
         if(confirm(`¿Eliminar pedido #${num} de ${cliente}?`)) {
             try {
@@ -704,7 +706,7 @@ Para cualquier duda, contacte al administrador.
     }
     
     async function restaurarPedidoConfirm(num, cliente) {
-        let pass = prompt(`🔐 Contraseña para restaurar pedido #${num}:`);
+        let pass = prompt(`🔐 Contraseña de autorización para restaurar pedido #${num}:`);
         if(!pass || pass !== CLAVE) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
         if(confirm(`¿Restaurar pedido #${num} de ${cliente}?`)) {
             try {
