@@ -29,11 +29,13 @@
         .btn-warning { background: #e67e22; }
         .btn-primary { background: #2c3e50; width: 100%; margin-top: 20px; padding: 14px; font-size: 1em; }
         .btn-info { background: #3498db; }
+        .btn-restaurar { background: #9b59b6; }
         .badge-pendiente { background: #ffe4e6; color: #b8324a; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .badge-proceso { background: #fff3e0; color: #c47d2e; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .badge-entregado { background: #e6f7e6; color: #2e7d32; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .badge-eliminado { background: #e0e0e0; color: #7f8c8d; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
         .pedido-item { background: #fdfaf7; border: 1px solid #eee5dc; border-radius: 24px; padding: 16px; margin-bottom: 12px; transition: box-shadow 0.2s; }
+        .pedido-item.eliminado { background: #f5f5f5; opacity: 0.8; }
         .pedido-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
         .pedido-detalle { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; font-size: 0.85em; color: #5a4a3a; }
         .pedido-acciones { display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid #efe3d7; padding-top: 12px; margin-top: 8px; flex-wrap: wrap; }
@@ -100,14 +102,14 @@
         .password-input { border: 2px solid #e67e22 !important; background: #fff8f0 !important; }
         .ayuda { font-size: 0.7em; color: #e67e22; margin-top: 4px; }
         .switch-boton { background: #95a5a6; }
-        .switch-boton.activo { background: #27ae60; }
+        .switch-boton.activo { background: #e74c3c; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <h1>💐 CLAVELLE</h1>
-        <p>Gestión Administrativa · Trazabilidad </p>
+        <p>gestión inteligente · trazabilidad · BCV</p>
     </div>
     
     <div class="tabs">
@@ -121,7 +123,7 @@
         <h2 style="margin-bottom: 20px;">📝 Registrar Nuevo Pedido</h2>
         <div class="form-grid">
             <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f4f0eb;"></div>
-            <div class="campo"><label>👤 Cliente/Código *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente/Aplicación" autocomplete="off"></div>
+            <div class="campo"><label>👤 Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente" autocomplete="off"></div>
             <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567" autocomplete="off"></div>
             <div class="campo"><label>📦 Descripción *</label><textarea id="descripcion" rows="2" placeholder="Detalles del pedido..."></textarea></div>
             <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" placeholder="0.00" step="0.01"></div>
@@ -147,14 +149,14 @@
             <div class="grupo-fecha"><label>📅 Fecha Hasta (Registro)</label><input type="date" id="fechaHasta"></div>
             <div class="grupo-fecha"><label>&nbsp;</label><button class="btn-info" onclick="aplicarFiltros()">🔍 Aplicar Fechas</button></div>
             <div class="grupo-fecha"><label>&nbsp;</label><button onclick="limpiarFechas()" style="background:#95a5a6;">🗑️ Limpiar Fechas</button></div>
-            <div class="grupo-fecha"><label>&nbsp;</label><button id="btnMostrarEliminados" class="switch-boton" onclick="toggleMostrarEliminados()">🗑️ Mostrar Eliminados</button></div>
         </div>
         
         <div class="filtros">
-            <button onclick="filtrarPor('todos')">📋 Todos</button>
-            <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
-            <button onclick="filtrarPor('En Proceso')">⚙️ Proceso</button>
-            <button onclick="filtrarPor('Entregado')">✅ Entregados</button>
+            <button onclick="filtrarPor('todos')" id="btnTodos">📋 Todos</button>
+            <button onclick="filtrarPor('Pendiente')" id="btnPendiente">🕊️ Pendientes</button>
+            <button onclick="filtrarPor('En Proceso')" id="btnProceso">⚙️ Proceso</button>
+            <button onclick="filtrarPor('Entregado')" id="btnEntregado">✅ Entregados</button>
+            <button onclick="filtrarPor('eliminados')" id="btnEliminados" style="background:#7f8c8d;">🗑️ Eliminados</button>
         </div>
         
         <div id="indicadoresFiltro" style="margin-bottom: 16px; font-size: 0.75em; color: #8a7a66; display: flex; gap: 16px; flex-wrap: wrap;"></div>
@@ -200,96 +202,60 @@
     let USUARIO_ACTUAL = "Pili Pérez";
     let todosLosPedidos = [];
     let filtroActual = "todos";
-    let mostrarEliminados = false;
+    let mostrarEliminadosFlag = false;  // Control para incluir eliminados en la lectura
     let fechaDesde = "";
     let fechaHasta = "";
     let tasaBCV = 489.55;
     let numeroEditando = null;
     
-    // ===== FUNCIONES DE FORMATO (dd/mm/aaaa y hora am/pm) =====
+    // ===== FUNCIONES DE FORMATO =====
     function formatearFechaLocal(fechaIso) {
-    if (!fechaIso || fechaIso === "") return "—";
-    try {
-        // Si ya viene en formato DD/MM/YYYY, devolver igual
-        if (fechaIso.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaIso;
-        
-        // Limpiar basura (eliminar todo después de T si existe)
-        var fechaLimpia = fechaIso.split('T')[0];
-        
-        // Si tiene formato YYYY-MM-DD, convertir a DD/MM/YYYY
-        if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
-            var partes = fechaLimpia.split('-');
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
-        }
-        
-        // Si tiene formato DD-MM-YYYY
-        if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
-            var partes = fechaLimpia.split('-');
-            return `${partes[0]}/${partes[1]}/${partes[2]}`;
-        }
-        
-        // Si tiene formato raro con números, intentar extraer
-        var numeros = fechaLimpia.match(/\d+/g);
-        if (numeros && numeros.length >= 3) {
-            // Si el primer número es año (4 dígitos)
-            if (numeros[0].length === 4) {
-                return `${numeros[2]}/${numeros[1]}/${numeros[0]}`;
+        if (!fechaIso || fechaIso === "") return "—";
+        try {
+            if (fechaIso.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaIso;
+            var fechaLimpia = fechaIso.split('T')[0];
+            if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                var partes = fechaLimpia.split('-');
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
             }
-            // Si el último número es año (4 dígitos)
-            if (numeros[2].length === 4) {
-                return `${numeros[0]}/${numeros[1]}/${numeros[2]}`;
+            if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                var partes = fechaLimpia.split('-');
+                return `${partes[0]}/${partes[1]}/${partes[2]}`;
             }
-        }
-        
-        return fechaIso;
-    } catch(e) {
-        console.error("Error formateando fecha:", e);
-        return fechaIso;
+            var numeros = fechaLimpia.match(/\d+/g);
+            if (numeros && numeros.length >= 3) {
+                if (numeros[0].length === 4) return `${numeros[2]}/${numeros[1]}/${numeros[0]}`;
+                if (numeros[2].length === 4) return `${numeros[0]}/${numeros[1]}/${numeros[2]}`;
+            }
+            return fechaIso;
+        } catch(e) { return fechaIso; }
     }
-}
     
     function formatearHoraLocal(horaStr) {
-    if (!horaStr || horaStr === "") return "—";
-    try {
-        // Limpiar basura (eliminar todo después de T si existe)
-        var horaLimpia = horaStr.split('T')[1]?.split('.')[0] || horaStr;
-        
-        // Si ya tiene formato am/pm
-        if (horaLimpia.includes('am') || horaLimpia.includes('pm')) return horaLimpia;
-        
-        // Extraer solo números de hora y minutos
-        var partes = horaLimpia.match(/\d+/g);
-        if (!partes || partes.length === 0) return "—";
-        
-        var horas = parseInt(partes[0]);
-        var minutos = partes[1] || "00";
-        var ampm = horas >= 12 ? 'pm' : 'am';
-        horas = horas % 12;
-        horas = horas === 0 ? 12 : horas;
-        return `${horas}:${minutos} ${ampm}`;
-    } catch(e) {
-        console.error("Error formateando hora:", e);
-        return horaStr;
+        if (!horaStr || horaStr === "") return "—";
+        try {
+            var horaLimpia = horaStr.split('T')[1]?.split('.')[0] || horaStr;
+            if (horaLimpia.includes('am') || horaLimpia.includes('pm')) return horaLimpia;
+            var partes = horaLimpia.match(/\d+/g);
+            if (!partes || partes.length === 0) return "—";
+            var horas = parseInt(partes[0]);
+            var minutos = partes[1] || "00";
+            var ampm = horas >= 12 ? 'pm' : 'am';
+            horas = horas % 12;
+            horas = horas === 0 ? 12 : horas;
+            return `${horas}:${minutos} ${ampm}`;
+        } catch(e) { return horaStr; }
     }
-}
     
     function formatearFechaHoraLocal(fechaHoraStr) {
         if (!fechaHoraStr || fechaHoraStr === "") return "—";
         try {
             if (fechaHoraStr.includes('T')) {
-                const fecha = formatearFechaLocal(fechaHoraStr.split('T')[0]);
-                const hora = formatearHoraLocal(fechaHoraStr.split('T')[1]?.split('.')[0] || "");
-                return `${fecha} ${hora}`;
+                return `${formatearFechaLocal(fechaHoraStr.split('T')[0])} ${formatearHoraLocal(fechaHoraStr)}`;
             }
             if (fechaHoraStr.includes(',')) {
-                const partes = fechaHoraStr.split(',');
-                let fechaParte = partes[0].trim();
-                const horaParte = partes[1].trim();
-                if (fechaParte.includes('/')) {
-                    const fp = fechaParte.split('/');
-                    if (fp.length === 3 && parseInt(fp[0]) <= 12) fechaParte = `${fp[1]}/${fp[0]}/${fp[2]}`;
-                }
-                return `${fechaParte} ${formatearHoraLocal(horaParte.split(' ')[0])}`;
+                var partes = fechaHoraStr.split(',');
+                return `${formatearFechaLocal(partes[0].trim())} ${formatearHoraLocal(partes[1].trim())}`;
             }
             return fechaHoraStr;
         } catch(e) { return fechaHoraStr; }
@@ -333,7 +299,10 @@
     async function leerPedidos() {
         try {
             let url = `${SCRIPT_URL}?action=leer`;
-            if (mostrarEliminados) url += `&mostrarEliminados=true`;
+            // Solo incluir eliminados si el filtro actual es "eliminados"
+            if (filtroActual === "eliminados") {
+                url += `&mostrarEliminados=true`;
+            }
             if (fechaDesde) url += `&fechaDesde=${fechaDesde}`;
             if (fechaHasta) url += `&fechaHasta=${fechaHasta}`;
             const data = await jsonpRequest(url);
@@ -395,6 +364,21 @@
                 resolve({ success: response.success === true, error: response.error });
             };
             script.src = `${SCRIPT_URL}?action=eliminar&numero=${numero}&password=${encodeURIComponent(password)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${callbackName}`;
+            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
+            document.body.appendChild(script);
+        });
+    }
+    
+    async function restaurarPedido(numero, password) {
+        return new Promise((resolve, reject) => {
+            const callbackName = `jsonp_callback_${Date.now()}`;
+            const script = document.createElement('script');
+            window[callbackName] = function(response) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve({ success: response.success === true, error: response.error });
+            };
+            script.src = `${SCRIPT_URL}?action=restaurar&numero=${numero}&password=${encodeURIComponent(password)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${callbackName}`;
             script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
             document.body.appendChild(script);
         });
@@ -483,24 +467,44 @@
         if (!container) return;
         container.innerHTML = '<div class="empty-state"><span class="loading"></span> Cargando...</div>';
         todosLosPedidos = await leerPedidos();
+        
         if (!todosLosPedidos || todosLosPedidos.length === 0) {
-            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con los filtros seleccionados</div>';
+            let mensaje = "📭 No hay pedidos";
+            if (filtroActual === "eliminados") mensaje = "🗑️ No hay pedidos eliminados";
+            else if (filtroActual !== "todos") mensaje = `📭 No hay pedidos en estado "${filtroActual}"`;
+            container.innerHTML = `<div class="empty-state">${mensaje}</div>`;
             actualizarEstadisticas();
             return;
         }
-        let filtrados = filtroActual === "todos" ? todosLosPedidos : todosLosPedidos.filter(p => p.estado === filtroActual);
+        
+        // Si el filtro actual NO es "eliminados", filtrar los que NO están eliminados (estado normal)
+        let filtrados = todosLosPedidos;
+        if (filtroActual !== "eliminados") {
+            // Los pedidos "normales" ya vienen sin eliminados de la API
+            filtrados = todosLosPedidos;
+        }
+        
+        // Si el filtro actual es un estado específico (Pendiente, En Proceso, Entregado)
+        if (filtroActual !== "todos" && filtroActual !== "eliminados") {
+            filtrados = filtrados.filter(p => p.estado === filtroActual);
+        }
+        
         filtrados.sort((a,b) => b.numero - a.numero);
+        
         if (filtrados.length === 0) {
-            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con este filtro de estado</div>';
+            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con este filtro</div>';
             actualizarEstadisticas();
             return;
         }
+        
         let html = '';
         for (let p of filtrados) {
             let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
             let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
+            let esEliminado = (filtroActual === "eliminados");
+            
             html += `
-                <div class="pedido-item">
+                <div class="pedido-item ${esEliminado ? 'eliminado' : ''}">
                     <div class="pedido-header">
                         <div><strong>📋 #${p.numero}</strong> <span class="${badgeClass}">${p.estado}</span></div>
                         <div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${montoUSD})</small></div>
@@ -516,15 +520,33 @@
                         ${p.modificadoPor ? `<div>✏️ <strong>Modificado:</strong> ${escapeHtml(p.modificadoPor)} (${formatearFechaHoraLocal(p.fechaModificacion)})</div>` : ''}
                     </div>
                     <div class="pedido-acciones">
-                        ${p.estado !== "Entregado" ? `<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Editar</button>` : `<button disabled>🔒 Editado</button>`}
-                        ${p.estado !== "Entregado" ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : `<button disabled>🔒 Eliminar</button>`}
-                        ${p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
+                        ${!esEliminado && p.estado !== "Entregado" ? `<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Editar</button>` : ''}
+                        ${!esEliminado && p.estado !== "Entregado" ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : ''}
+                        ${!esEliminado && p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
+                        ${esEliminado ? `<button class="btn-restaurar" onclick="confirmarRestaurar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}')">♻️ Restaurar Pedido</button>` : ''}
                     </div>
                 </div>
             `;
         }
         container.innerHTML = html;
         actualizarEstadisticas();
+    }
+    
+    async function confirmarRestaurar(numero, cliente) {
+        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nRestaurar pedido #${numero} - "${cliente}"\n\nIngresa la contraseña para restaurar este pedido.\n\nEl pedido volverá a estar activo con su estado original.`);
+        if (!password) { mostrarNotificacion("❌ Se requiere contraseña", true); return; }
+        if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
+        if (confirm(`⚠️ ¿Restaurar pedido #${numero} de "${cliente}"?\n\nEl pedido volverá a estar activo.`)) {
+            try {
+                const resultado = await restaurarPedido(numero, password);
+                if (resultado.success) {
+                    mostrarNotificacion(`♻️ Pedido #${numero} restaurado correctamente`);
+                    await cargarPedidos();
+                } else {
+                    mostrarNotificacion("❌ Error al restaurar: " + resultado.error, true);
+                }
+            } catch(error) { mostrarNotificacion("❌ Error de red", true); }
+        }
     }
     
     async function confirmarEntrega(numero, elemento) {
@@ -552,7 +574,7 @@
     
     async function confirmarEliminar(numero, cliente, estado) {
         if (estado === "Entregado") { mostrarNotificacion("❌ No se puede eliminar un pedido entregado", true); return; }
-        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nPedido #${numero} - "${cliente}"\n\nIngresa la contraseña:`);
+        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nPedido #${numero} - "${cliente}"\n\nIngresa la contraseña para eliminar este registro.`);
         if (!password) { mostrarNotificacion("❌ Se requiere contraseña", true); return; }
         if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
         if (confirm(`⚠️ ¿Eliminar pedido #${numero} de "${cliente}"?`)) {
@@ -670,9 +692,32 @@
     function limpiarStatsFechas() { document.getElementById('statsFechaDesde').value = ""; document.getElementById('statsFechaHasta').value = ""; actualizarEstadisticasConFechas(); }
     function aplicarFiltros() { fechaDesde = document.getElementById('fechaDesde').value; fechaHasta = document.getElementById('fechaHasta').value; actualizarIndicadoresFiltro(); cargarPedidos(); }
     function limpiarFechas() { document.getElementById('fechaDesde').value = ""; document.getElementById('fechaHasta').value = ""; fechaDesde = ""; fechaHasta = ""; actualizarIndicadoresFiltro(); cargarPedidos(); }
-    function toggleMostrarEliminados() { mostrarEliminados = !mostrarEliminados; const btn = document.getElementById('btnMostrarEliminados'); if (mostrarEliminados) { btn.innerHTML = "✅ Mostrando Eliminados"; btn.classList.add('activo'); } else { btn.innerHTML = "🗑️ Mostrar Eliminados"; btn.classList.remove('activo'); } actualizarIndicadoresFiltro(); cargarPedidos(); }
-    function actualizarIndicadoresFiltro() { const container = document.getElementById('indicadoresFiltro'); if (!container) return; let indicadores = []; if (fechaDesde) indicadores.push(`📅 Desde: ${formatearFechaLocal(fechaDesde)}`); if (fechaHasta) indicadores.push(`📅 Hasta: ${formatearFechaLocal(fechaHasta)}`); if (mostrarEliminados) indicadores.push(`🗑️ Incluyendo Eliminados`); if (filtroActual !== "todos") indicadores.push(`📌 Estado: ${filtroActual === "Pendiente" ? "🕊️ Pendientes" : (filtroActual === "En Proceso" ? "⚙️ Proceso" : "✅ Entregados")}`); container.innerHTML = indicadores.length ? indicadores.map(i => `<span style="background:#f0ebe5; padding:4px 12px; border-radius:40px;">🔍 ${i}</span>`).join('') : '<span>📋 Mostrando todos los pedidos activos</span>'; }
-    function filtrarPor(estado) { filtroActual = estado; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    
+    function actualizarIndicadoresFiltro() {
+        const container = document.getElementById('indicadoresFiltro');
+        if (!container) return;
+        let indicadores = [];
+        if (fechaDesde) indicadores.push(`📅 Desde: ${formatearFechaLocal(fechaDesde)}`);
+        if (fechaHasta) indicadores.push(`📅 Hasta: ${formatearFechaLocal(fechaHasta)}`);
+        if (filtroActual !== "todos" && filtroActual !== "eliminados") {
+            indicadores.push(`📌 Estado: ${filtroActual === "Pendiente" ? "🕊️ Pendientes" : (filtroActual === "En Proceso" ? "⚙️ Proceso" : "✅ Entregados")}`);
+        }
+        if (filtroActual === "eliminados") indicadores.push(`🗑️ Mostrando ELIMINADOS`);
+        container.innerHTML = indicadores.length ? indicadores.map(i => `<span style="background:#f0ebe5; padding:4px 12px; border-radius:40px;">🔍 ${i}</span>`).join('') : '<span>📋 Mostrando todos los pedidos activos</span>';
+    }
+    
+    function filtrarPor(estado) {
+        filtroActual = estado;
+        // Actualizar estilo de botones
+        document.getElementById('btnTodos').style.background = estado === 'todos' ? '#2c3e50' : '#e0d8cf';
+        document.getElementById('btnPendiente').style.background = estado === 'Pendiente' ? '#2c3e50' : '#e0d8cf';
+        document.getElementById('btnProceso').style.background = estado === 'En Proceso' ? '#2c3e50' : '#e0d8cf';
+        document.getElementById('btnEntregado').style.background = estado === 'Entregado' ? '#2c3e50' : '#e0d8cf';
+        document.getElementById('btnEliminados').style.background = estado === 'eliminados' ? '#e74c3c' : '#7f8c8d';
+        actualizarIndicadoresFiltro();
+        cargarPedidos();
+    }
+    
     function escapeHtml(str) { if (!str) return "—"; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
     function mostrarPanel(panel) { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById(`panel-${panel}`).classList.add('active'); event.target.classList.add('active'); if (panel === 'control') cargarPedidos(); }
     
@@ -692,4 +737,4 @@
     init();
 </script>
 </body>
-<html>
+</html>
