@@ -209,26 +209,32 @@
     
     // ===== FUNCIONES DE FORMATO =====
     function formatearFechaLocal(fechaIso) {
-        if (!fechaIso || fechaIso === "") return "—";
-        try {
-            if (fechaIso.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaIso;
-            var fechaLimpia = fechaIso.split('T')[0];
-            if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                var partes = fechaLimpia.split('-');
-                return `${partes[2]}/${partes[1]}/${partes[0]}`;
-            }
-            if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                var partes = fechaLimpia.split('-');
-                return `${partes[0]}/${partes[1]}/${partes[2]}`;
-            }
-            var numeros = fechaLimpia.match(/\d+/g);
-            if (numeros && numeros.length >= 3) {
-                if (numeros[0].length === 4) return `${numeros[2]}/${numeros[1]}/${numeros[0]}`;
-                if (numeros[2].length === 4) return `${numeros[0]}/${numeros[1]}/${numeros[2]}`;
-            }
-            return fechaIso;
-        } catch(e) { return fechaIso; }
+    if (!fechaIso || fechaIso === "") return "—";
+    try {
+        // Normalizar: eliminar cualquier hora UTC
+        let fechaLimpia = String(fechaIso).split('T')[0];
+        
+        // Si ya viene en formato DD/MM/YYYY
+        if (fechaLimpia.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaLimpia;
+        
+        // Si viene YYYY-MM-DD
+        if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            let partes = fechaLimpia.split('-');
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+        
+        // Si viene DD-MM-YYYY
+        if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
+            let partes = fechaLimpia.split('-');
+            return `${partes[0]}/${partes[1]}/${partes[2]}`;
+        }
+        
+        return fechaLimpia;
+    } catch(e) {
+        console.error("Error formateando fecha:", e);
+        return fechaIso;
     }
+}
     
     function formatearHoraLocal(horaStr) {
         if (!horaStr || horaStr === "") return "—";
