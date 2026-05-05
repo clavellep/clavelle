@@ -6,124 +6,337 @@
     <title>Clavelle · Gestión de Pedidos</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #f8f5f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 16px; }
+        body {
+            background: #f4f1ea; /* Fondo beige muy suave */
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 24px 20px;
+            color: #2c2b28;
+        }
+
+        /* Fuente elegante para títulos */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+        
         .container { max-width: 1400px; margin: 0 auto; }
-        .header { background: linear-gradient(135deg, #2c3e50, #1a2a3a); border-radius: 32px; padding: 20px; text-align: center; color: white; margin-bottom: 20px; }
-        .header h1 { font-size: 1.8em; }
-        .header p { font-size: 0.8em; opacity: 0.8; }
-        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab { background: #e0d8cf; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
-        .tab.active { background: #2c3e50; color: white; }
-        .panel { display: none; background: white; border-radius: 32px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .panel.active { display: block; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-        .campo { display: flex; flex-direction: column; gap: 6px; }
-        .campo label { font-weight: bold; color: #4a3a2a; font-size: 0.85em; }
-        .campo input, .campo select, .campo textarea { padding: 12px; border: 1.5px solid #e8dfd6; border-radius: 20px; font-family: inherit; font-size: 0.9em; }
-        .campo input:focus, .campo select:focus, .campo textarea:focus { outline: none; border-color: #2c3e50; }
-        button { background: #2c3e50; color: white; border: none; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: opacity 0.2s; }
-        button:hover { opacity: 0.9; }
-        button:disabled { opacity: 0.6; cursor: not-allowed; }
-        .btn-success { background: #27ae60; }
-        .btn-danger { background: #e74c3c; }
-        .btn-warning { background: #e67e22; }
-        .btn-primary { background: #2c3e50; width: 100%; margin-top: 20px; padding: 14px; font-size: 1em; }
-        .btn-info { background: #3498db; }
-        .btn-restaurar { background: #9b59b6; }
-        .badge-pendiente { background: #ffe4e6; color: #b8324a; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
-        .badge-proceso { background: #fff3e0; color: #c47d2e; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
-        .badge-entregado { background: #e6f7e6; color: #2e7d32; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
-        .badge-eliminado { background: #e0e0e0; color: #7f8c8d; padding: 4px 12px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
-        .pedido-item { background: #fdfaf7; border: 1px solid #eee5dc; border-radius: 24px; padding: 16px; margin-bottom: 12px; transition: box-shadow 0.2s; }
-        .pedido-item.eliminado { background: #f5f5f5; opacity: 0.8; }
-        .pedido-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-        .pedido-detalle { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; font-size: 0.85em; color: #5a4a3a; }
-        .pedido-acciones { display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid #efe3d7; padding-top: 12px; margin-top: 8px; flex-wrap: wrap; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
-        .stat-card { background: #fdfaf7; border-radius: 24px; padding: 20px; text-align: center; border: 1px solid #eee5dc; }
-        .stat-card h4 { color: #8a7a66; font-size: 0.8em; margin-bottom: 8px; }
-        .stat-card .numero { font-size: 2em; font-weight: bold; color: #2c3e50; }
-        .stat-card .monto { font-size: 1.1em; color: #27ae60; font-weight: bold; margin-top: 5px; }
-        .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
-        .filtros-fechas { display: flex; gap: 16px; flex-wrap: wrap; background: #f5efe8; padding: 16px; border-radius: 28px; margin-bottom: 20px; align-items: flex-end; }
-        .grupo-fecha { display: flex; flex-direction: column; gap: 4px; }
-        .grupo-fecha label { font-size: 0.7em; color: #8a7a66; font-weight: bold; }
-        .grupo-fecha input { padding: 8px 12px; border-radius: 40px; border: 1px solid #e8dfd6; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #2c3e50; color: white; padding: 12px 24px; border-radius: 40px; animation: slideIn 0.3s ease; z-index: 1000; font-size: 0.9em; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .loading { display: inline-block; width: 16px; height: 16px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; vertical-align: middle; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .empty-state { text-align: center; padding: 40px; color: #b0a088; }
-        .tasa { text-align: center; margin-top: 16px; font-size: 0.8em; color: #8a7a66; }
-        footer { text-align: center; margin-top: 24px; padding: 16px; color: #b0a088; font-size: 0.7em; }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1001;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
+
+        /* === HEADER RENOVADO (FLORAL) === */
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, #fef7f0 100%);
+            border-radius: 40px;
+            padding: 24px 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(207, 181, 151, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-icon {
+            background: #f3ede5;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 32px;
+            box-shadow: inset 0 1px 2px #fff8, 0 4px 8px rgba(0,0,0,0.02);
         }
-        .modal-content {
+        .header-text h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #4a6f5e, #8b6c5d);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 4px;
+        }
+        .header-text p {
+            font-size: 0.8rem;
+            color: #8f8a82;
+            font-weight: 450;
+        }
+        .header-badge {
+            background: #e9e0d6;
+            padding: 6px 14px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            color: #5b4c3c;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-badge span:first-child { font-size: 1rem; }
+
+        /* === TABS MODERNOS === */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            background: transparent;
+        }
+        .tab {
+            background: transparent;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #7a6b5d;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        .tab.active {
+            background: #6b8c7a;
+            color: white;
+            box-shadow: 0 4px 10px rgba(87, 117, 96, 0.2);
+        }
+        .tab:hover:not(.active) { background: #e8dfd6; color: #3b3a37; }
+
+        /* === PANELES === */
+        .panel {
+            display: none;
             background: white;
             border-radius: 32px;
-            padding: 24px;
-            max-width: 550px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
+            padding: 28px 28px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.01);
+            transition: all 0.2s;
         }
-        .modal-header {
+        .panel.active { display: block; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Formulario */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .campo label {
+            font-weight: 500;
+            color: #5c5248;
+            font-size: 0.8rem;
+            letter-spacing: -0.2px;
+        }
+        .campo input, .campo select, .campo textarea {
+            padding: 12px 16px;
+            border: 1.5px solid #eee5dd;
+            border-radius: 28px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: #ffffff;
+            transition: 0.2s;
+        }
+        .campo input:focus, .campo select:focus, .campo textarea:focus {
+            outline: none;
+            border-color: #b3cfc0;
+            box-shadow: 0 0 0 3px rgba(107, 140, 122, 0.1);
+        }
+
+        /* Botones modernos */
+        button {
+            background: #6b8c7a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        button:hover { background: #5b7a68; transform: translateY(-1px); }
+        button:active { transform: translateY(1px); }
+        button:disabled { opacity: 0.6; transform: none; cursor: default; }
+        
+        .btn-primary {
+            background: #8b6c5d;
+            width: 100%;
+            padding: 14px;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .btn-primary:hover { background: #775b4e; }
+        .btn-success { background: #83a67c; }
+        .btn-success:hover { background: #6d8a66; }
+        .btn-danger { background: #cb887a; }
+        .btn-danger:hover { background: #bc7464; }
+        .btn-warning { background: #d9b48b; color: #3b2c1f; }
+        .btn-warning:hover { background: #cf9f6e; color: white; }
+        .btn-info { background: #99b4aa; }
+        .btn-restaurar { background: #b7a99a; }
+
+        /* Badges */
+        .badge-pendiente { background: #ffe7e0; color: #b1624b; }
+        .badge-proceso { background: #fff0e0; color: #bf7f3f; }
+        .badge-entregado { background: #e3f3e4; color: #517a3e; }
+        .badge-eliminado { background: #eeebe7; color: #8f7e6e; }
+        .badge-pendiente, .badge-proceso, .badge-entregado, .badge-eliminado {
+            padding: 5px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Tarjetas de pedido */
+        .pedido-item {
+            background: #ffffff;
+            border: 1px solid #f0e8e0;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .pedido-item:hover {
+            border-color: #e2d5ca;
+            background: #fefcf9;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+        }
+        .pedido-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .pedido-detalle {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 16px;
+            font-size: 0.8rem;
+            color: #6c6258;
+            border-top: 1px solid #f2ebe4;
+            padding-top: 12px;
+        }
+        .pedido-detalle div {
+            background: #fbf9f6;
+            padding: 4px 10px;
+            border-radius: 60px;
+        }
+        .pedido-acciones {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            border-top: 1px solid #f0eae3;
+            padding-top: 16px;
+        }
+        .entregado-label {
+            background: #e3f3e4;
+            color: #46643a;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Filtros */
+        .filtros-fechas, .filtros {
+            background: #fdfaf7;
+            border-radius: 26px;
+            padding: 12px 18px;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee5dc;
         }
-        .modal-header h3 { color: #2c3e50; }
-        .close-modal {
-            background: none;
-            color: #8a7a66;
-            font-size: 28px;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
+        .grupo-fecha label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #8a7a68;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .stat-card {
+            background: #fdfaf7;
+            border-radius: 28px;
+            padding: 20px;
             text-align: center;
+            border: 1px solid #f0e8e0;
         }
-        .close-modal:hover { color: #e74c3c; }
-        .modal .campo { margin-bottom: 15px; }
-        .entregado-label { background: #27ae60; color: white; padding: 8px 16px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
+        .stat-card .numero { font-size: 2rem; font-weight: 600; color: #4f6b5c; }
+        .stat-card .monto { color: #78a07c; font-weight: 500; }
+
+        /* Toast y misc */
+        .toast {
+            background: #4a6f5e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 450;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 36px;
+            border: none;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.1);
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.7rem;
+            color: #baafa3;
+            border-top: 1px solid #efe5dc;
+        }
+        @media (max-width: 640px) {
+            body { padding: 16px; }
+            .header { flex-direction: column; align-items: flex-start; }
+        }
     </style>
 </head>
 <body>
+
 <div class="container">
+    <!-- ENCABEZADO FLORAL MODERNO -->
     <div class="header">
-        <h1>💐 CLAVELLE</h1>
-        <p>Gestión Administrativa de Pedidos</p>
+        <div class="header-brand">
+            <div class="header-icon">🌸</div>
+            <div class="header-text">
+                <h1>CLAVELLE</h1>
+                <p>Gestión Administrativa de Pedidos · Trazabilidad floral</p>
+            </div>
+        </div>
+        <div class="header-badge">
+            <span>💱</span> <span id="tasaDisplay">Calculando BCV...</span>
+        </div>
     </div>
-    
+
     <div class="tabs">
-        <button class="tab active" onclick="mostrarPanel('registro')">📝 Registro</button>
-        <button class="tab" onclick="mostrarPanel('control')">🔍 Control</button>
+        <button class="tab active" onclick="mostrarPanel('registro')">📝 Registrar Pedido</button>
+        <button class="tab" onclick="mostrarPanel('control')">🔍 Control de Pedidos</button>
         <button class="tab" onclick="mostrarPanel('estadisticas')">📊 Estadísticas</button>
     </div>
     
-    <!-- Panel Registro -->
+    <!-- REGISTRO -->
     <div id="panel-registro" class="panel active">
-        <h2 style="margin-bottom: 20px;">📝 Registrar Nuevo Pedido</h2>
+        <h2 style="margin-bottom: 20px; font-weight: 500; color: #5a4f44;">🌸 Nuevo Pedido</h2>
         <div class="form-grid">
-            <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f4f0eb;"></div>
-            <div class="campo"><label>👤 Aplicación/Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente" autocomplete="off"></div>
-            <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567" autocomplete="off"></div>
+            <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f6f3ef;"></div>
+            <div class="campo"><label>👤 Aplicación/Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre o código" autocomplete="off"></div>
+            <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567"></div>
             <div class="campo"><label>📦 Descripción *</label><textarea id="descripcion" rows="2" placeholder="Detalles del pedido..."></textarea></div>
-            <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" placeholder="0.00" step="0.01"></div>
+            <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" step="0.01" placeholder="0.00"></div>
             <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="fechaEntrega"></div>
             <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="horaEntrega"></div>
             <div class="campo"><label>📌 Estado Inicial</label>
@@ -134,589 +347,100 @@
             </div>
         </div>
         <button class="btn-primary" onclick="guardarPedido()">💾 GUARDAR PEDIDO</button>
-        <div class="tasa">💱 Tipo de cambio BCV: <strong id="tasaDisplay">Calculando...</strong> Bs/USD</div>
+        <div class="tasa" style="margin-top: 20px; text-align: center; font-size: 0.7rem; color:#bdaea0;">💱 Tipo de cambio actualizado automáticamente</div>
     </div>
     
-    <!-- Panel Control -->
+    <!-- CONTROL -->
     <div id="panel-control" class="panel">
-        <h2 style="margin-bottom: 20px;">🔍 Control de Pedidos</h2>
-        
-        <div class="filtros-fechas">
-            <div class="grupo-fecha"><label>📅 Fecha Desde (Registro)</label><input type="date" id="fechaDesde"></div>
-            <div class="grupo-fecha"><label>📅 Fecha Hasta (Registro)</label><input type="date" id="fechaHasta"></div>
-            <div class="grupo-fecha"><label>&nbsp;</label><button class="btn-info" onclick="aplicarFiltros()">🔍 Aplicar Fechas</button></div>
-            <div class="grupo-fecha"><label>&nbsp;</label><button onclick="limpiarFechas()" style="background:#95a5a6;">🗑️ Limpiar Fechas</button></div>
+        <h2 style="margin-bottom: 20px; font-weight: 500;">🔍 Control de Pedidos</h2>
+        <div class="filtros-fechas" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+            <div class="grupo-fecha"><label>📅 Desde</label><input type="date" id="fechaDesde"></div>
+            <div class="grupo-fecha"><label>📅 Hasta</label><input type="date" id="fechaHasta"></div>
+            <button class="btn-info" onclick="aplicarFiltros()">🔍 Aplicar Fechas</button>
+            <button onclick="limpiarFechas()" style="background:#cdc2b6;">🗑️ Limpiar Fechas</button>
         </div>
-        
         <div class="filtros">
             <button onclick="filtrarPor('todos')" id="btnTodos">📋 Todos</button>
-            <button onclick="filtrarPor('Pendiente')" id="btnPendiente">🕊️ Pendientes por hacer</button>
-            <button onclick="filtrarPor('En Proceso')" id="btnProceso">⚙️ Proceso Finalizado</button>
+            <button onclick="filtrarPor('Pendiente')" id="btnPendiente">🕊️ Pendientes</button>
+            <button onclick="filtrarPor('En Proceso')" id="btnProceso">⚙️ Proceso</button>
             <button onclick="filtrarPor('Entregado')" id="btnEntregado">✅ Entregados</button>
-            <button onclick="filtrarPor('eliminados')" id="btnEliminados" style="background:#7f8c8d;">🗑️ Eliminados</button>
+            <button onclick="filtrarPor('eliminados')" id="btnEliminados" style="background:#cdc2b6;">🗑️ Eliminados</button>
         </div>
-        
-        <div id="indicadoresFiltro" style="margin-bottom: 16px; font-size: 0.75em; color: #8a7a66; display: flex; gap: 16px; flex-wrap: wrap;"></div>
+        <div id="indicadoresFiltro" style="margin-bottom: 20px; font-size:0.7rem; color:#a28f7c;"></div>
         <div id="listaPedidos"></div>
     </div>
     
-    <!-- Panel Estadísticas -->
+    <!-- ESTADÍSTICAS -->
     <div id="panel-estadisticas" class="panel">
-        <h2 style="margin-bottom: 20px;">📊 Estadísticas de Ventas</h2>
-        <div class="filtros-fechas" style="margin-bottom: 20px;">
+        <h2 style="margin-bottom: 20px; font-weight: 500;">📊 Estadísticas de Ventas</h2>
+        <div class="filtros-fechas" style="margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
             <div class="grupo-fecha"><label>📅 Desde</label><input type="date" id="statsFechaDesde"></div>
             <div class="grupo-fecha"><label>📅 Hasta</label><input type="date" id="statsFechaHasta"></div>
-            <div class="grupo-fecha"><label>&nbsp;</label><button onclick="actualizarEstadisticasConFechas()">📊 Actualizar</button></div>
-            <div class="grupo-fecha"><label>&nbsp;</label><button onclick="limpiarStatsFechas()" style="background:#95a5a6;">🗑️ Limpiar</button></div>
+            <button class="btn-info" onclick="actualizarEstadisticasConFechas()">📊 Actualizar</button>
+            <button onclick="limpiarStatsFechas()" style="background:#cdc2b6;">🗑️ Limpiar</button>
         </div>
         <div id="statsContainer" class="stats-grid"></div>
     </div>
     
-    <footer>💐 Clavelle Floristería · Datos sincronizados con Google Sheets</footer>
+    <footer>💐 Clavelle · Sincronización en tiempo real con Google Sheets</footer>
 </div>
 
-<!-- Modal para EDITAR (sin campo de contraseña) -->
-<div id="modalEditar" class="modal">
-    <div class="modal-content">
-        <div class="modal-header"><h3>✏️ Editar Pedido #<span id="editNumero"></span></h3><span class="close-modal" onclick="cerrarModal()">&times;</span></div>
+<!-- MODAL EDITAR sin contraseña -->
+<div id="modalEditar" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:1000;">
+    <div class="modal-content" style="background:white; max-width:500px; width:90%; border-radius:2rem; padding:1.5rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;"><h3>✏️ Editar Pedido #<span id="editNumero"></span></h3><span onclick="cerrarModal()" style="cursor:pointer; font-size:24px;">&times;</span></div>
         <div class="campo"><label>👤 Cliente</label><input type="text" id="editCliente"></div>
         <div class="campo"><label>📞 Teléfono</label><input type="text" id="editTelefono"></div>
         <div class="campo"><label>📦 Descripción</label><textarea id="editDescripcion" rows="2"></textarea></div>
         <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01"></div>
         <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
         <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
-        <div class="campo"><label>📌 Estado</label><select id="editEstado"><option value="Pendiente">Pendiente</option><option value="En Proceso">Proceso Finalizado</option><option value="Entregado">Entregado</option></select></div>
+        <div class="campo"><label>📌 Estado</label><select id="editEstado"><option>Pendiente</option><option>En Proceso</option><option>Entregado</option></select></div>
         <div class="campo"><label>👤 Responsable Entrega</label><input type="text" id="editResponsable"></div>
-        <div style="display: flex; gap: 10px; margin-top: 20px;"><button onclick="guardarEdicion()" style="background:#27ae60; flex:1;">💾 Guardar</button><button onclick="cerrarModal()" style="background:#95a5a6; flex:1;">Cancelar</button></div>
+        <div style="display: flex; gap: 12px; margin-top: 1.5rem;"><button onclick="guardarEdicion()" style="background:#6b8c7a; flex:1">💾 Guardar</button><button onclick="cerrarModal()" style="background:#cdc2b6;">Cancelar</button></div>
     </div>
 </div>
 
 <script>
-    // ===== CONFIGURACIÓN =====
+    // ===== CONFIGURACIÓN ===== (NO TOCAR - MISMA LÓGICA FUNCIONAL)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzg4gkGCsYmX0Ddp2OfCkKJIhBu7JW9p20_cBWcSLV2yDDVkOgFyMxFjMNE937tYRQxxA/exec";
     const CLAVE_AUTORIZACION = "piliperezbele";
     let USUARIO_ACTUAL = "Pili Pérez";
-    let todosLosPedidos = [];
-    let filtroActual = "todos";
-    let fechaDesde = "";
-    let fechaHasta = "";
-    let tasaBCV = 489.55;
-    let numeroEditando = null;
+    let todosLosPedidos = [], filtroActual = "todos", fechaDesde = "", fechaHasta = "", tasaBCV = 489.55, numeroEditando = null;
     
-    // ===== FUNCIONES DE FORMATO =====
-    function formatearFechaLocal(fechaIso) {
-        if (!fechaIso || fechaIso === "") return "—";
-        try {
-            let fechaLimpia = String(fechaIso).split('T')[0];
-            if (fechaLimpia.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaLimpia;
-            if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                let partes = fechaLimpia.split('-');
-                return `${partes[2]}/${partes[1]}/${partes[0]}`;
-            }
-            if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                let partes = fechaLimpia.split('-');
-                return `${partes[0]}/${partes[1]}/${partes[2]}`;
-            }
-            return fechaLimpia;
-        } catch(e) {
-            return fechaIso;
-        }
-    }
+    function formatearFechaLocal(f) { if(!f) return"—"; let l=String(f).split('T')[0]; if(l.match(/^\d{4}-\d{2}-\d{2}$/)){ let p=l.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; } return l; }
+    function formatearHoraLocal(h){ if(!h) return"—"; let c=h.split('T')[1]?.split('.')[0]||h; if(c.includes('am')||c.includes('pm')) return c; let p=c.match(/\d+/g); if(!p) return"—"; let horas=parseInt(p[0])%12||12, mins=p[1]||"00", ampm=parseInt(p[0])>=12?'pm':'am'; return `${horas}:${mins} ${ampm}`; }
+    function formatearFechaHoraLocal(fh){ if(!fh) return"—"; if(fh.includes('T')) return `${formatearFechaLocal(fh.split('T')[0])} ${formatearHoraLocal(fh)}`; if(fh.includes(',')){ let pp=fh.split(','); return `${formatearFechaLocal(pp[0].trim())} ${formatearHoraLocal(pp[1].trim())}`; } return fh; }
+    function mostrarNotificacion(m,esError=false){ let t=document.createElement('div'); t.className='toast'; t.style.background=esError?'#cb887a':'#6b8c7a'; t.style.position='fixed'; t.style.bottom='20px'; t.style.right='20px'; t.style.zIndex='9999'; t.style.padding='12px 24px'; t.style.borderRadius='60px'; t.style.color='white'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+    async function obtenerTasaBCV(){ try{ let r=await fetch('https://open.er-api.com/v6/latest/USD'); let d=await r.json(); if(d?.rates?.VES) tasaBCV=d.rates.VES; }catch(e){} document.getElementById('tasaDisplay')&&(document.getElementById('tasaDisplay').innerText=tasaBCV.toFixed(2)); return tasaBCV; }
+    function jsonpRequest(url){ return new Promise((res,rej)=>{ let cb=`__jsonp_${Date.now()}`; let s=document.createElement('script'); window[cb]=d=>{ delete window[cb]; document.body.removeChild(s); res(d); }; let sep=url.includes('?')?'&':'?'; s.src=`${url}${sep}callback=${cb}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
+    async function leerPedidos(){ try{ let url=`${SCRIPT_URL}?action=leer`; if(filtroActual==='eliminados') url+='&mostrarEliminados=true'; if(fechaDesde) url+=`&fechaDesde=${fechaDesde}`; if(fechaHasta) url+=`&fechaHasta=${fechaHasta}`; let d=await jsonpRequest(url); return d.success?d.pedidos||[]:[]; }catch(e){ mostrarNotificacion("❌ Error de lectura",true); return[]; } }
+    async function guardarPedidoWebApp(pd){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; let p=new URLSearchParams(); p.append('action','guardar'); p.append('data',JSON.stringify(pd)); p.append('callback',cb); s.src=`${SCRIPT_URL}?${p.toString()}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
+    async function actualizarPedidoCompleto(pd){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; let p=new URLSearchParams(); p.append('action','actualizarCompleto'); p.append('data',JSON.stringify(pd)); p.append('usuario',USUARIO_ACTUAL); p.append('callback',cb); s.src=`${SCRIPT_URL}?${p.toString()}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
+    async function eliminarPedido(num,pass){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; s.src=`${SCRIPT_URL}?action=eliminar&numero=${num}&password=${encodeURIComponent(pass)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${cb}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
+    async function restaurarPedido(num,pass){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; s.src=`${SCRIPT_URL}?action=restaurar&numero=${num}&password=${encodeURIComponent(pass)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${cb}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
+    async function actualizarEstadoPedido(num,est,resp){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; s.src=`${SCRIPT_URL}?action=actualizar&numero=${num}&estado=${encodeURIComponent(est)}&responsable=${encodeURIComponent(resp)}&callback=${cb}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
     
-    function formatearHoraLocal(horaStr) {
-        if (!horaStr || horaStr === "") return "—";
-        try {
-            var horaLimpia = horaStr.split('T')[1]?.split('.')[0] || horaStr;
-            if (horaLimpia.includes('am') || horaLimpia.includes('pm')) return horaLimpia;
-            var partes = horaLimpia.match(/\d+/g);
-            if (!partes || partes.length === 0) return "—";
-            var horas = parseInt(partes[0]);
-            var minutos = partes[1] || "00";
-            var ampm = horas >= 12 ? 'pm' : 'am';
-            horas = horas % 12;
-            horas = horas === 0 ? 12 : horas;
-            return `${horas}:${minutos} ${ampm}`;
-        } catch(e) { return horaStr; }
-    }
+    async function guardarPedido(){ let cl=document.getElementById('clienteNombre').value.trim(), de=document.getElementById('descripcion').value.trim(), m=document.getElementById('monto').value, te=document.getElementById('telefono').value.trim(), fe=document.getElementById('fechaEntrega').value, he=document.getElementById('horaEntrega').value, es=document.getElementById('estadoRegistro').value; if(!cl||!de||!m||isNaN(m)||parseFloat(m)<=0){ mostrarNotificacion("❌ Verifica cliente, descripción y monto",true); return; } let btn=event.target, orig=btn.innerHTML; btn.innerHTML='<span class="loading"></span> Guardando...'; btn.disabled=true; let p=await leerPedidos(); let ult=p.length?Math.max(...p.map(p=>parseInt(p.numero)))+1:1; let montoBs=parseFloat(m), montoUsd=montoBs/tasaBCV; let data={numero:ult, cliente:cl, telefono:te, descripcion:de, monto:montoBs.toFixed(2), fechaEntrega:fe, horaEntrega:he, estado:es, clienteDetalle:"", responsable:"", fechaRegistro:new Date().toISOString().split('T')[0], montoUSD:montoUsd.toFixed(2), observaciones:`Creado por ${USUARIO_ACTUAL}`}; let res=await guardarPedidoWebApp(data); btn.innerHTML=orig; btn.disabled=false; if(res.success){ mostrarNotificacion(`✅ Pedido #${ult} guardado`); document.getElementById('clienteNombre').value=""; document.getElementById('telefono').value=""; document.getElementById('descripcion').value=""; document.getElementById('monto').value=""; document.getElementById('fechaEntrega').value=""; document.getElementById('horaEntrega').value=""; document.getElementById('numeroPedido').value=ult+1; await cargarPedidos(); } else mostrarNotificacion("❌ Error al guardar",true); }
     
-    function formatearFechaHoraLocal(fechaHoraStr) {
-        if (!fechaHoraStr || fechaHoraStr === "") return "—";
-        try {
-            if (fechaHoraStr.includes('T')) {
-                return `${formatearFechaLocal(fechaHoraStr.split('T')[0])} ${formatearHoraLocal(fechaHoraStr)}`;
-            }
-            if (fechaHoraStr.includes(',')) {
-                var partes = fechaHoraStr.split(',');
-                return `${formatearFechaLocal(partes[0].trim())} ${formatearHoraLocal(partes[1].trim())}`;
-            }
-            return fechaHoraStr;
-        } catch(e) { return fechaHoraStr; }
-    }
+    async function cargarPedidos(){ let cont=document.getElementById('listaPedidos'); if(!cont) return; cont.innerHTML='<div class="empty-state">Cargando...</div>'; todosLosPedidos=await leerPedidos(); if(!todosLosPedidos.length){ cont.innerHTML='<div class="empty-state">No hay pedidos</div>'; actualizarEstadisticas(); return; } let filtrados=todosLosPedidos; if(filtroActual!=="todos" && filtroActual!=="eliminados") filtrados=filtrados.filter(p=>p.estado===filtroActual); filtrados.sort((a,b)=>b.numero-a.numero); if(!filtrados.length){ cont.innerHTML='<div class="empty-state">No hay pedidos con este filtro</div>'; actualizarEstadisticas(); return; } let html=""; for(let p of filtrados){ let badge=p.estado==="Pendiente"?"badge-pendiente":(p.estado==="En Proceso"?"badge-proceso":"badge-entregado"); let usd=(parseFloat(p.monto)/tasaBCV).toFixed(2); let esElim=filtroActual==="eliminados", esEnt=(p.estado==="Entregado"); html+=`<div class="pedido-item"><div class="pedido-header"><div><strong>📋 #${p.numero}</strong> <span class="${badge}">${p.estado}</span></div><div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${usd})</small></div></div><div class="pedido-detalle"><div>👤 ${escapeHtml(p.cliente)}</div><div>📞 ${escapeHtml(p.telefono)||"—"}</div><div>📦 ${escapeHtml(p.descripcion)}</div><div>📅 Entrega: ${formatearFechaLocal(p.fechaEntrega)} ${formatearHoraLocal(p.horaEntrega)}</div><div>📆 Registro: ${formatearFechaLocal(p.fechaRegistro)}</div>${p.responsable?`<div>👤 Responsable: ${escapeHtml(p.responsable)}</div>`:''}${p.modificadoPor?`<div>✏️ Modificado: ${escapeHtml(p.modificadoPor)} (${formatearFechaHoraLocal(p.fechaModificacion)})</div>`:''}</div><div class="pedido-acciones">${!esElim&&!esEnt?`<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g,"\\'")})'>✏️ Editar</button>`:''}${!esElim&&!esEnt?`<button class="btn-danger" onclick='confirmarEliminar(${p.numero},"${escapeHtml(p.cliente).replace(/'/g,"\\'")}","${p.estado}")'>🗑️ Eliminar</button>`:''}${!esElim&&!esEnt?`<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>`:''}${esElim?`<button class="btn-restaurar" onclick="confirmarRestaurar(${p.numero},'${escapeHtml(p.cliente).replace(/'/g,"\\'")}')">♻️ Restaurar</button>`:''}${esEnt&&!esElim?`<span class="entregado-label">✅ ENTREGADO - Procesado</span>`:''}</div></div>`; } cont.innerHTML=html; actualizarEstadisticas(); }
     
-    function mostrarNotificacion(mensaje, esError = false) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.style.background = esError ? '#e74c3c' : '#27ae60';
-        toast.textContent = mensaje;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
-    
-    async function obtenerTasaBCV() {
-        try {
-            const response = await fetch('https://open.er-api.com/v6/latest/USD');
-            const data = await response.json();
-            if (data && data.rates && data.rates.VES) tasaBCV = data.rates.VES;
-        } catch(e) { tasaBCV = 489.55; }
-        document.getElementById('tasaDisplay').innerText = tasaBCV.toFixed(2);
-        return tasaBCV;
-    }
-    
-    function jsonpRequest(url) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `__jsonp_${Date.now()}`;
-            const script = document.createElement('script');
-            window[callbackName] = function(data) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                resolve(data);
-            };
-            const separator = url.includes('?') ? '&' : '?';
-            script.src = `${url}${separator}callback=${callbackName}`;
-            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
-            document.body.appendChild(script);
-        });
-    }
-    
-    async function leerPedidos() {
-        try {
-            let url = `${SCRIPT_URL}?action=leer`;
-            if (filtroActual === "eliminados") {
-                url += `&mostrarEliminados=true`;
-            }
-            if (fechaDesde) url += `&fechaDesde=${fechaDesde}`;
-            if (fechaHasta) url += `&fechaHasta=${fechaHasta}`;
-            const data = await jsonpRequest(url);
-            return data.success ? (data.pedidos || []) : [];
-        } catch(error) {
-            console.error("Error al leer:", error);
-            mostrarNotificacion("❌ Error de lectura", true);
-            return [];
-        }
-    }
-    
-    async function guardarPedidoWebApp(pedidoData) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `jsonp_callback_${Date.now()}`;
-            const script = document.createElement('script');
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                resolve({ success: response.success === true, error: response.error });
-            };
-            const params = new URLSearchParams();
-            params.append('action', 'guardar');
-            params.append('data', JSON.stringify(pedidoData));
-            params.append('callback', callbackName);
-            script.src = `${SCRIPT_URL}?${params.toString()}`;
-            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
-            document.body.appendChild(script);
-        });
-    }
-    
-    async function actualizarPedidoCompleto(pedidoData) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `jsonp_callback_${Date.now()}`;
-            const script = document.createElement('script');
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                resolve({ success: response.success === true, error: response.error });
-            };
-            const params = new URLSearchParams();
-            params.append('action', 'actualizarCompleto');
-            params.append('data', JSON.stringify(pedidoData));
-            params.append('usuario', USUARIO_ACTUAL);
-            params.append('callback', callbackName);
-            script.src = `${SCRIPT_URL}?${params.toString()}`;
-            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
-            document.body.appendChild(script);
-        });
-    }
-    
-    async function eliminarPedido(numero, password) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `jsonp_callback_${Date.now()}`;
-            const script = document.createElement('script');
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                resolve({ success: response.success === true, error: response.error });
-            };
-            script.src = `${SCRIPT_URL}?action=eliminar&numero=${numero}&password=${encodeURIComponent(password)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${callbackName}`;
-            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
-            document.body.appendChild(script);
-        });
-    }
-    
-    async function restaurarPedido(numero, password) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `jsonp_callback_${Date.now()}`;
-            const script = document.createElement('script');
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                resolve({ success: response.success === true, error: response.error });
-            };
-            script.src = `${SCRIPT_URL}?action=restaurar&numero=${numero}&password=${encodeURIComponent(password)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${callbackName}`;
-            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
-            document.body.appendChild(script);
-        });
-    }
-    
-    async function actualizarEstadoPedido(numero, nuevoEstado, responsable) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `jsonp_callback_${Date.now()}`;
-            const script = document.createElement('script');
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                resolve({ success: response.success === true, error: response.error });
-            };
-            script.src = `${SCRIPT_URL}?action=actualizar&numero=${numero}&estado=${encodeURIComponent(nuevoEstado)}&responsable=${encodeURIComponent(responsable)}&callback=${callbackName}`;
-            script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); reject(new Error('Network error')); };
-            document.body.appendChild(script);
-        });
-    }
-    
-    async function guardarPedido() {
-        let clienteNombre = document.getElementById('clienteNombre').value.trim();
-        let descripcion = document.getElementById('descripcion').value.trim();
-        let monto = document.getElementById('monto').value;
-        let telefono = document.getElementById('telefono').value.trim();
-        let fechaEntrega = document.getElementById('fechaEntrega').value;
-        let horaEntrega = document.getElementById('horaEntrega').value;
-        let estado = document.getElementById('estadoRegistro').value;
-        
-        if (!clienteNombre) { mostrarNotificacion("❌ Cliente obligatorio", true); return; }
-        if (!descripcion) { mostrarNotificacion("❌ Descripción obligatoria", true); return; }
-        if (!monto || isNaN(monto) || parseFloat(monto) <= 0) { mostrarNotificacion("❌ Monto inválido", true); return; }
-        
-        const btn = event.target;
-        const textoOriginal = btn.innerHTML;
-        btn.innerHTML = '<span class="loading"></span> Guardando...';
-        btn.disabled = true;
-        
-        let pedidos = await leerPedidos();
-        let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
-        let montoBs = parseFloat(monto);
-        let montoUsd = montoBs / tasaBCV;
-        
-        let pedidoData = {
-            numero: ultimoNumero,
-            cliente: clienteNombre,
-            telefono: telefono,
-            descripcion: descripcion,
-            monto: montoBs.toFixed(2),
-            fechaEntrega: fechaEntrega,
-            horaEntrega: horaEntrega,
-            estado: estado,
-            clienteDetalle: "",
-            responsable: "",
-            fechaRegistro: new Date().toISOString().split('T')[0],
-            montoUSD: montoUsd.toFixed(2),
-            observaciones: `Creado por ${USUARIO_ACTUAL}`
-        };
-        
-        try {
-            const resultado = await guardarPedidoWebApp(pedidoData);
-            btn.innerHTML = textoOriginal;
-            btn.disabled = false;
-            if (resultado.success) {
-                mostrarNotificacion(`✅ Pedido #${ultimoNumero} guardado`);
-                document.getElementById('clienteNombre').value = "";
-                document.getElementById('telefono').value = "";
-                document.getElementById('descripcion').value = "";
-                document.getElementById('monto').value = "";
-                document.getElementById('fechaEntrega').value = "";
-                document.getElementById('horaEntrega').value = "";
-                document.getElementById('numeroPedido').value = ultimoNumero + 1;
-                await cargarPedidos();
-            } else {
-                mostrarNotificacion("❌ Error al guardar: " + (resultado.error || "Verifica conexión"), true);
-            }
-        } catch(error) {
-            btn.innerHTML = textoOriginal;
-            btn.disabled = false;
-            mostrarNotificacion("❌ Error de red: " + error.message, true);
-        }
-    }
-    
-    async function cargarPedidos() {
-        const container = document.getElementById('listaPedidos');
-        if (!container) return;
-        container.innerHTML = '<div class="empty-state"><span class="loading"></span> Cargando...</div>';
-        todosLosPedidos = await leerPedidos();
-        
-        if (!todosLosPedidos || todosLosPedidos.length === 0) {
-            let mensaje = "📭 No hay pedidos";
-            if (filtroActual === "eliminados") mensaje = "🗑️ No hay pedidos eliminados";
-            else if (filtroActual !== "todos") mensaje = `📭 No hay pedidos en estado "${filtroActual}"`;
-            container.innerHTML = `<div class="empty-state">${mensaje}</div>`;
-            actualizarEstadisticas();
-            return;
-        }
-        
-        let filtrados = todosLosPedidos;
-        if (filtroActual !== "todos" && filtroActual !== "eliminados") {
-            filtrados = filtrados.filter(p => p.estado === filtroActual);
-        }
-        
-        filtrados.sort((a,b) => b.numero - a.numero);
-        
-        if (filtrados.length === 0) {
-            container.innerHTML = '<div class="empty-state">📭 No hay pedidos con este filtro</div>';
-            actualizarEstadisticas();
-            return;
-        }
-        
-        let html = '';
-        for (let p of filtrados) {
-            let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
-            let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
-            let esEliminado = (filtroActual === "eliminados");
-            let esEntregado = (p.estado === "Entregado");
-            
-            html += `
-                <div class="pedido-item ${esEliminado ? 'eliminado' : ''}">
-                    <div class="pedido-header">
-                        <div><strong>📋 #${p.numero}</strong> <span class="${badgeClass}">${p.estado}</span></div>
-                        <div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${montoUSD})</small></div>
-                    </div>
-                    <div class="pedido-detalle">
-                        <div>👤 <strong>Cliente:</strong> ${escapeHtml(p.cliente)}</div>
-                        <div>📞 <strong>Teléfono:</strong> ${escapeHtml(p.telefono) || '—'}</div>
-                        <div>📦 <strong>Descripción:</strong> ${escapeHtml(p.descripcion)}</div>
-                        <div>📅 <strong>Fecha Entrega:</strong> ${formatearFechaLocal(p.fechaEntrega)}</div>
-                        <div>⏰ <strong>Hora Entrega:</strong> ${formatearHoraLocal(p.horaEntrega)}</div>
-                        <div>📆 <strong>Registrado:</strong> ${formatearFechaLocal(p.fechaRegistro)}</div>
-                        ${p.responsable ? `<div>👤 <strong>Responsable Entrega:</strong> ${escapeHtml(p.responsable)}</div>` : ''}
-                        ${p.modificadoPor ? `<div>✏️ <strong>Modificado:</strong> ${escapeHtml(p.modificadoPor)} (${formatearFechaHoraLocal(p.fechaModificacion)})</div>` : ''}
-                    </div>
-                    <div class="pedido-acciones">
-                        ${!esEliminado && !esEntregado ? `<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Editar</button>` : ''}
-                        ${!esEliminado && !esEntregado ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : ''}
-                        ${!esEliminado && !esEntregado ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
-                        ${esEliminado ? `<button class="btn-restaurar" onclick="confirmarRestaurar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}')">♻️ Restaurar Pedido</button>` : ''}
-                        ${esEntregado && !esEliminado ? `<span class="entregado-label">✅ ENTREGADO - Procesado</span>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-        container.innerHTML = html;
-        actualizarEstadisticas();
-    }
-    
-    async function confirmarRestaurar(numero, cliente) {
-        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nRestaurar pedido #${numero} - "${cliente}"\n\nIngresa la contraseña para restaurar este pedido.\n\nEl pedido volverá a estar activo con su estado original.`);
-        if (!password) { mostrarNotificacion("❌ Se requiere contraseña", true); return; }
-        if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
-        if (confirm(`⚠️ ¿Restaurar pedido #${numero} de "${cliente}"?\n\nEl pedido volverá a estar activo.`)) {
-            try {
-                const resultado = await restaurarPedido(numero, password);
-                if (resultado.success) {
-                    mostrarNotificacion(`♻️ Pedido #${numero} restaurado correctamente`);
-                    await cargarPedidos();
-                } else {
-                    mostrarNotificacion("❌ Error al restaurar: " + resultado.error, true);
-                }
-            } catch(error) { mostrarNotificacion("❌ Error de red", true); }
-        }
-    }
-    
-    async function confirmarEntrega(numero, elemento) {
-        let responsable = prompt("✍️ Nombre de quien entrega el pedido:");
-        if (!responsable) { mostrarNotificacion("❌ Nombre obligatorio", true); return; }
-        const textoOriginal = elemento.innerHTML;
-        elemento.innerHTML = '<span class="loading"></span>';
-        elemento.disabled = true;
-        try {
-            const resultado = await actualizarEstadoPedido(numero, "Entregado", responsable);
-            elemento.innerHTML = textoOriginal;
-            elemento.disabled = false;
-            if (resultado.success) {
-                mostrarNotificacion(`✅ Pedido #${numero} entregado por: ${responsable}`);
-                await cargarPedidos();
-            } else {
-                mostrarNotificacion("❌ Error al actualizar: " + resultado.error, true);
-            }
-        } catch(error) {
-            elemento.innerHTML = textoOriginal;
-            elemento.disabled = false;
-            mostrarNotificacion("❌ Error de red", true);
-        }
-    }
-    
-    async function confirmarEliminar(numero, cliente, estado) {
-        if (estado === "Entregado") { mostrarNotificacion("❌ No se puede eliminar un pedido entregado", true); return; }
-        const password = prompt(`🔐 AUTORIZACIÓN REQUERIDA\n\nPedido #${numero} - "${cliente}"\n\nIngresa la contraseña para eliminar este registro.`);
-        if (!password) { mostrarNotificacion("❌ Se requiere contraseña", true); return; }
-        if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
-        if (confirm(`⚠️ ¿Eliminar pedido #${numero} de "${cliente}"?`)) {
-            try {
-                const resultado = await eliminarPedido(numero, password);
-                if (resultado.success) {
-                    mostrarNotificacion(`🗑️ Pedido #${numero} eliminado`);
-                    await cargarPedidos();
-                } else {
-                    mostrarNotificacion("❌ Error al eliminar: " + resultado.error, true);
-                }
-            } catch(error) { mostrarNotificacion("❌ Error de red", true); }
-        }
-    }
-    
-    function abrirModalEditar(pedido) {
-        if (pedido.estado === "Entregado") { 
-            mostrarNotificacion("❌ No se puede editar un pedido que ya está ENTREGADO", true); 
-            return; 
-        }
-        numeroEditando = pedido.numero;
-        document.getElementById('editNumero').innerText = pedido.numero;
-        document.getElementById('editCliente').value = pedido.cliente || "";
-        document.getElementById('editTelefono').value = pedido.telefono || "";
-        document.getElementById('editDescripcion').value = pedido.descripcion || "";
-        document.getElementById('editMonto').value = pedido.monto || "";
-        document.getElementById('editFechaEntrega').value = pedido.fechaEntrega || "";
-        document.getElementById('editHoraEntrega').value = pedido.horaEntrega || "";
-        document.getElementById('editEstado').value = pedido.estado || "Pendiente";
-        document.getElementById('editResponsable').value = pedido.responsable || "";
-        document.getElementById('modalEditar').style.display = 'flex';
-    }
-    
-    function cerrarModal() { document.getElementById('modalEditar').style.display = 'none'; numeroEditando = null; }
-    
-    async function guardarEdicion() {
-        if (!numeroEditando) return;
-        const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
-        const montoUsd = montoBs / tasaBCV;
-        const pedidoActualizado = {
-            numero: numeroEditando,
-            cliente: document.getElementById('editCliente').value,
-            telefono: document.getElementById('editTelefono').value,
-            descripcion: document.getElementById('editDescripcion').value,
-            monto: montoBs.toFixed(2),
-            fechaEntrega: document.getElementById('editFechaEntrega').value,
-            horaEntrega: document.getElementById('editHoraEntrega').value,
-            estado: document.getElementById('editEstado').value,
-            responsable: document.getElementById('editResponsable').value,
-            montoUSD: montoUsd.toFixed(2)
-        };
-        const btn = event.target;
-        const textoOriginal = btn.innerHTML;
-        btn.innerHTML = '<span class="loading"></span> Guardando...';
-        btn.disabled = true;
-        try {
-            const resultado = await actualizarPedidoCompleto(pedidoActualizado);
-            btn.innerHTML = textoOriginal;
-            btn.disabled = false;
-            if (resultado.success) {
-                mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`);
-                cerrarModal();
-                await cargarPedidos();
-            } else {
-                mostrarNotificacion("❌ Error: " + resultado.error, true);
-            }
-        } catch(error) {
-            btn.innerHTML = textoOriginal;
-            btn.disabled = false;
-            mostrarNotificacion("❌ Error de red", true);
-        }
-    }
-    
-    function actualizarEstadisticas() {
-        const statsDiv = document.getElementById('statsContainer');
-        if (!statsDiv) return;
-        if (!todosLosPedidos || todosLosPedidos.length === 0) { statsDiv.innerHTML = '<div class="empty-state">📊 Sin datos</div>'; return; }
-        let totalBs = todosLosPedidos.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
-        let totalUsd = totalBs / tasaBCV;
-        let pendientes = todosLosPedidos.filter(p => p.estado === "Pendiente");
-        let proceso = todosLosPedidos.filter(p => p.estado === "En Proceso");
-        let entregados = todosLosPedidos.filter(p => p.estado === "Entregado");
-        statsDiv.innerHTML = `
-            <div class="stat-card"><h4>📊 Total</h4><div class="numero">${todosLosPedidos.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div>
-            <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero" style="color:#b8324a">${pendientes.length}</div><div class="monto">Bs ${pendientes.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>⚙️ Proceso</h4><div class="numero" style="color:#c47d2e">${proceso.length}</div><div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>✅ Entregados</h4><div class="numero" style="color:#2e7d32">${entregados.length}</div><div class="monto">Bs ${entregados.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-        `;
-    }
-    
-    async function actualizarEstadisticasConFechas() {
-        const fDesde = document.getElementById('statsFechaDesde').value;
-        const fHasta = document.getElementById('statsFechaHasta').value;
-        let url = `${SCRIPT_URL}?action=leer&mostrarEliminados=false`;
-        if (fDesde) url += `&fechaDesde=${fDesde}`;
-        if (fHasta) url += `&fechaHasta=${fHasta}`;
-        const data = await jsonpRequest(url);
-        const pedidosStats = data.success ? (data.pedidos || []) : [];
-        const statsDiv = document.getElementById('statsContainer');
-        if (!pedidosStats.length) { statsDiv.innerHTML = '<div class="empty-state">📊 Sin datos en el rango</div>'; return; }
-        let totalBs = pedidosStats.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
-        let totalUsd = totalBs / tasaBCV;
-        let pendientes = pedidosStats.filter(p => p.estado === "Pendiente");
-        let proceso = pedidosStats.filter(p => p.estado === "En Proceso");
-        let entregados = pedidosStats.filter(p => p.estado === "Entregado");
-        statsDiv.innerHTML = `
-            <div class="stat-card"><h4>📊 Total</h4><div class="numero">${pedidosStats.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div>
-            <div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero">${pendientes.length}</div><div class="monto">Bs ${pendientes.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>⚙️ Proceso</h4><div class="numero">${proceso.length}</div><div class="monto">Bs ${proceso.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-            <div class="stat-card"><h4>✅ Entregados</h4><div class="numero">${entregados.length}</div><div class="monto">Bs ${entregados.reduce((s,p) => s + (parseFloat(p.monto)||0), 0).toFixed(2)}</div></div>
-        `;
-    }
-    
-    function limpiarStatsFechas() { document.getElementById('statsFechaDesde').value = ""; document.getElementById('statsFechaHasta').value = ""; actualizarEstadisticasConFechas(); }
-    function aplicarFiltros() { fechaDesde = document.getElementById('fechaDesde').value; fechaHasta = document.getElementById('fechaHasta').value; actualizarIndicadoresFiltro(); cargarPedidos(); }
-    function limpiarFechas() { document.getElementById('fechaDesde').value = ""; document.getElementById('fechaHasta').value = ""; fechaDesde = ""; fechaHasta = ""; actualizarIndicadoresFiltro(); cargarPedidos(); }
-    
-    function actualizarIndicadoresFiltro() {
-        const container = document.getElementById('indicadoresFiltro');
-        if (!container) return;
-        let indicadores = [];
-        if (fechaDesde) indicadores.push(`📅 Desde: ${formatearFechaLocal(fechaDesde)}`);
-        if (fechaHasta) indicadores.push(`📅 Hasta: ${formatearFechaLocal(fechaHasta)}`);
-        if (filtroActual !== "todos" && filtroActual !== "eliminados") {
-            indicadores.push(`📌 Estado: ${filtroActual === "Pendiente" ? "🕊️ Pendientes" : (filtroActual === "En Proceso" ? "⚙️ Proceso" : "✅ Entregados")}`);
-        }
-        if (filtroActual === "eliminados") indicadores.push(`🗑️ Mostrando ELIMINADOS`);
-        container.innerHTML = indicadores.length ? indicadores.map(i => `<span style="background:#f0ebe5; padding:4px 12px; border-radius:40px;">🔍 ${i}</span>`).join('') : '<span>📋 Mostrando todos los pedidos activos</span>';
-    }
-    
-    function filtrarPor(estado) {
-        filtroActual = estado;
-        document.getElementById('btnTodos').style.background = estado === 'todos' ? '#2c3e50' : '#e0d8cf';
-        document.getElementById('btnPendiente').style.background = estado === 'Pendiente' ? '#2c3e50' : '#e0d8cf';
-        document.getElementById('btnProceso').style.background = estado === 'En Proceso' ? '#2c3e50' : '#e0d8cf';
-        document.getElementById('btnEntregado').style.background = estado === 'Entregado' ? '#2c3e50' : '#e0d8cf';
-        document.getElementById('btnEliminados').style.background = estado === 'eliminados' ? '#e74c3c' : '#7f8c8d';
-        actualizarIndicadoresFiltro();
-        cargarPedidos();
-    }
-    
-    function escapeHtml(str) { if (!str) return "—"; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
-    function mostrarPanel(panel) { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById(`panel-${panel}`).classList.add('active'); event.target.classList.add('active'); if (panel === 'control') cargarPedidos(); }
-    
-    async function init() {
-        await obtenerTasaBCV();
-        let pedidos = await leerPedidos();
-        let ultimoNumero = pedidos.length > 0 ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
-        document.getElementById('numeroPedido').value = ultimoNumero;
-        await cargarPedidos();
-        const hoy = new Date();
-        const hace30Dias = new Date(); hace30Dias.setDate(hoy.getDate() - 30);
-        document.getElementById('statsFechaDesde').value = hace30Dias.toISOString().split('T')[0];
-        document.getElementById('statsFechaHasta').value = hoy.toISOString().split('T')[0];
-        actualizarEstadisticasConFechas();
-        setInterval(async () => { await obtenerTasaBCV(); if (document.getElementById('panel-control').classList.contains('active')) await cargarPedidos(); }, 300000);
-    }
+    async function confirmarRestaurar(num,cliente){ let pass=prompt(`🔐 Autorización requerida\nRestaurar pedido #${num} - ${cliente}\nContraseña:`); if(!pass||pass!==CLAVE_AUTORIZACION){ mostrarNotificacion("❌ Contraseña incorrecta",true); return; } if(confirm(`¿Restaurar pedido #${num}?`)){ let r=await restaurarPedido(num,pass); if(r.success){ mostrarNotificacion(`♻️ Pedido #${num} restaurado`); cargarPedidos(); } else mostrarNotificacion("❌ Error al restaurar",true); } }
+    async function confirmarEntrega(num,el){ let responsable=prompt("✍️ Nombre de quien entrega:"); if(!responsable){ mostrarNotificacion("❌ Nombre requerido",true); return; } let orig=el.innerHTML; el.innerHTML='<span class="loading"></span>'; el.disabled=true; let r=await actualizarEstadoPedido(num,"Entregado",responsable); el.innerHTML=orig; el.disabled=false; if(r.success){ mostrarNotificacion(`✅ Pedido #${num} entregado por ${responsable}`); cargarPedidos(); } else mostrarNotificacion("❌ Error",true); }
+    async function confirmarEliminar(num,cliente,estado){ if(estado==="Entregado"){ mostrarNotificacion("❌ No se puede eliminar entregado",true); return; } let pass=prompt(`🔐 Contraseña para eliminar pedido #${num}`); if(!pass||pass!==CLAVE_AUTORIZACION){ mostrarNotificacion("❌ Contraseña incorrecta",true); return; } if(confirm(`¿Eliminar pedido #${num}?`)){ let r=await eliminarPedido(num,pass); if(r.success){ mostrarNotificacion(`🗑️ Pedido #${num} eliminado`); cargarPedidos(); } else mostrarNotificacion("❌ Error",true); } }
+    function abrirModalEditar(p){ if(p.estado==="Entregado"){ mostrarNotificacion("❌ No se puede editar un pedido entregado",true); return; } numeroEditando=p.numero; document.getElementById('editNumero').innerText=p.numero; document.getElementById('editCliente').value=p.cliente||""; document.getElementById('editTelefono').value=p.telefono||""; document.getElementById('editDescripcion').value=p.descripcion||""; document.getElementById('editMonto').value=p.monto||""; document.getElementById('editFechaEntrega').value=p.fechaEntrega||""; document.getElementById('editHoraEntrega').value=p.horaEntrega||""; document.getElementById('editEstado').value=p.estado||"Pendiente"; document.getElementById('editResponsable').value=p.responsable||""; document.getElementById('modalEditar').style.display='flex'; }
+    function cerrarModal(){ document.getElementById('modalEditar').style.display='none'; numeroEditando=null; }
+    async function guardarEdicion(){ if(!numeroEditando) return; let montoBs=parseFloat(document.getElementById('editMonto').value)||0, montoUsd=montoBs/tasaBCV; let data={numero:numeroEditando, cliente:document.getElementById('editCliente').value, telefono:document.getElementById('editTelefono').value, descripcion:document.getElementById('editDescripcion').value, monto:montoBs.toFixed(2), fechaEntrega:document.getElementById('editFechaEntrega').value, horaEntrega:document.getElementById('editHoraEntrega').value, estado:document.getElementById('editEstado').value, responsable:document.getElementById('editResponsable').value, montoUSD:montoUsd.toFixed(2)}; let btn=event.target, orig=btn.innerHTML; btn.innerHTML='<span class="loading"></span> Guardando...'; btn.disabled=true; let r=await actualizarPedidoCompleto(data); btn.innerHTML=orig; btn.disabled=false; if(r.success){ mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`); cerrarModal(); cargarPedidos(); } else mostrarNotificacion("❌ Error: "+r.error,true); }
+    function actualizarEstadisticas(){ let d=document.getElementById('statsContainer'); if(!d) return; if(!todosLosPedidos.length){ d.innerHTML='<div class="empty-state">Sin datos</div>'; return; } let totalBs=todosLosPedidos.reduce((s,p)=>s+(parseFloat(p.monto)||0),0), totalUsd=totalBs/tasaBCV, pend=todosLosPedidos.filter(p=>p.estado==="Pendiente"), proc=todosLosPedidos.filter(p=>p.estado==="En Proceso"), ent=todosLosPedidos.filter(p=>p.estado==="Entregado"); d.innerHTML=`<div class="stat-card"><h4>📊 Total</h4><div class="numero">${todosLosPedidos.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div><div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero">${pend.length}</div><div class="monto">Bs ${pend.reduce((s,p)=>s+(parseFloat(p.monto)||0),0).toFixed(2)}</div></div><div class="stat-card"><h4>⚙️ Proceso</h4><div class="numero">${proc.length}</div><div class="monto">Bs ${proc.reduce((s,p)=>s+(parseFloat(p.monto)||0),0).toFixed(2)}</div></div><div class="stat-card"><h4>✅ Entregados</h4><div class="numero">${ent.length}</div><div class="monto">Bs ${ent.reduce((s,p)=>s+(parseFloat(p.monto)||0),0).toFixed(2)}</div></div>`; }
+    async function actualizarEstadisticasConFechas(){ let fd=document.getElementById('statsFechaDesde').value, fh=document.getElementById('statsFechaHasta').value; let url=`${SCRIPT_URL}?action=leer&mostrarEliminados=false`; if(fd) url+=`&fechaDesde=${fd}`; if(fh) url+=`&fechaHasta=${fh}`; let d=await jsonpRequest(url); let pedidos=d.success?d.pedidos||[]:[]; let statsDiv=document.getElementById('statsContainer'); if(!pedidos.length){ statsDiv.innerHTML='<div class="empty-state">Sin datos en el rango</div>'; return; } let totalBs=pedidos.reduce((s,p)=>s+(parseFloat(p.monto)||0),0), totalUsd=totalBs/tasaBCV, pend=pedidos.filter(p=>p.estado==="Pendiente"), proc=pedidos.filter(p=>p.estado==="En Proceso"), ent=pedidos.filter(p=>p.estado==="Entregado"); statsDiv.innerHTML=`<div class="stat-card"><h4>📊 Total</h4><div class="numero">${pedidos.length}</div><div class="monto">Bs ${totalBs.toFixed(2)}</div><div class="monto">$${totalUsd.toFixed(2)}</div></div><div class="stat-card"><h4>🕊️ Pendientes</h4><div class="numero">${pend.length}</div><div class="monto">Bs ${pend.reduce((s,p)=>s+(parseFloat(p.monto)||0),0).toFixed(2)}</div></div><div class="stat-card"><h4>⚙️ Proceso</h4><div class="numero">${proc.length}</div><div class="monto">Bs ${proc.reduce((s,p)=>s+(parseFloat(p.monto)||0),0).toFixed(2)}</div></div><div class="stat-card"><h4>✅ Entregados</h4><div class="numero">${ent.length}</div><div class="monto">Bs ${ent.reduce((s,p)=>s+(parseFloat(p.monto)||0),0).toFixed(2)}</div></div>`; }
+    function limpiarStatsFechas(){ document.getElementById('statsFechaDesde').value=""; document.getElementById('statsFechaHasta').value=""; actualizarEstadisticasConFechas(); }
+    function aplicarFiltros(){ fechaDesde=document.getElementById('fechaDesde').value; fechaHasta=document.getElementById('fechaHasta').value; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function limpiarFechas(){ document.getElementById('fechaDesde').value=""; document.getElementById('fechaHasta').value=""; fechaDesde=""; fechaHasta=""; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function actualizarIndicadoresFiltro(){ let cont=document.getElementById('indicadoresFiltro'); if(!cont) return; let ind=[]; if(fechaDesde) ind.push(`📅 Desde: ${formatearFechaLocal(fechaDesde)}`); if(fechaHasta) ind.push(`📅 Hasta: ${formatearFechaLocal(fechaHasta)}`); if(filtroActual!=="todos" && filtroActual!=="eliminados") ind.push(`📌 Estado: ${filtroActual==="Pendiente"?"🕊️ Pendientes":(filtroActual==="En Proceso"?"⚙️ Proceso":"✅ Entregados")}`); if(filtroActual==="eliminados") ind.push(`🗑️ Mostrando ELIMINADOS`); cont.innerHTML=ind.length?ind.map(i=>`<span style="background:#f0ebe5; padding:4px 12px; border-radius:40px;">🔍 ${i}</span>`).join(''):'<span>📋 Mostrando todos activos</span>'; }
+    function filtrarPor(estado){ filtroActual=estado; document.getElementById('btnTodos').style.background=estado==='todos'?'#6b8c7a':'#e0d8cf'; document.getElementById('btnPendiente').style.background=estado==='Pendiente'?'#6b8c7a':'#e0d8cf'; document.getElementById('btnProceso').style.background=estado==='En Proceso'?'#6b8c7a':'#e0d8cf'; document.getElementById('btnEntregado').style.background=estado==='Entregado'?'#6b8c7a':'#e0d8cf'; document.getElementById('btnEliminados').style.background=estado==='eliminados'?'#cb887a':'#cdc2b6'; actualizarIndicadoresFiltro(); cargarPedidos(); }
+    function escapeHtml(s){ if(!s) return"—"; let d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+    function mostrarPanel(panel){ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(`panel-${panel}`).classList.add('active'); event.target.classList.add('active'); if(panel==='control') cargarPedidos(); }
+    async function init(){ await obtenerTasaBCV(); let pedidos=await leerPedidos(); let ult=pedidos.length?Math.max(...pedidos.map(p=>parseInt(p.numero)))+1:1; document.getElementById('numeroPedido').value=ult; await cargarPedidos(); let hoy=new Date(), hace30=new Date(); hace30.setDate(hoy.getDate()-30); document.getElementById('statsFechaDesde').value=hace30.toISOString().split('T')[0]; document.getElementById('statsFechaHasta').value=hoy.toISOString().split('T')[0]; actualizarEstadisticasConFechas(); setInterval(async()=>{ await obtenerTasaBCV(); if(document.getElementById('panel-control').classList.contains('active')) await cargarPedidos(); },300000); }
     init();
 </script>
 </body>
