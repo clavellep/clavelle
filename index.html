@@ -8,7 +8,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #faf7f2;
+            background: #f5f0ea;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             padding: 24px 20px;
             color: #2c2b28;
@@ -373,7 +373,7 @@
 
 <script>
     // ===== CONFIGURACIÓN =====
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzg4gkGCsYmX0Ddp2OfCkKJIhBu7JW9p20_cBWcSLV2yDDVkOgFyMxFjMNE937tYRQxxA/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvrAP047t9wnkS-5UdwmW3z1t3T7ggZwpDiuG51DQhi_oTYS97kuoWTwIQJ53DdWeqKw/exec";
     const CLAVE_AUTORIZACION = "piliperezbele";
     let USUARIO_ACTUAL = "Pili Pérez";
     let todosLosPedidos = [], filtroActual = "todos", fechaDesde = "", fechaHasta = "", tasaBCV = 489.55, numeroEditando = null;
@@ -384,7 +384,26 @@
     function mostrarNotificacion(m,esError=false){ let t=document.createElement('div'); t.className='toast'; t.style.background=esError?'#cb887a':'#6b8c7a'; t.style.position='fixed'; t.style.bottom='20px'; t.style.right='20px'; t.style.zIndex='9999'; t.style.padding='12px 24px'; t.style.borderRadius='60px'; t.style.color='white'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
     async function obtenerTasaBCV(){ try{ let r=await fetch('https://open.er-api.com/v6/latest/USD'); let d=await r.json(); if(d?.rates?.VES) tasaBCV=d.rates.VES; }catch(e){} document.getElementById('tasaDisplay')&&(document.getElementById('tasaDisplay').innerText=tasaBCV.toFixed(2)); return tasaBCV; }
     function jsonpRequest(url){ return new Promise((res,rej)=>{ let cb=`__jsonp_${Date.now()}`; let s=document.createElement('script'); window[cb]=d=>{ delete window[cb]; document.body.removeChild(s); res(d); }; let sep=url.includes('?')?'&':'?'; s.src=`${url}${sep}callback=${cb}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
-    async function leerPedidos(){ try{ let url=`${SCRIPT_URL}?action=leer`; if(filtroActual==='eliminados') url+='&mostrarEliminados=true'; if(fechaDesde) url+=`&fechaDesde=${fechaDesde}`; if(fechaHasta) url+=`&fechaHasta=${fechaHasta}`; let d=await jsonpRequest(url); return d.success?d.pedidos||[]:[]; }catch(e){ mostrarNotificacion("❌ Error de lectura",true); return[]; } }
+    
+    async function leerPedidos() {
+        try {
+            let url = `${SCRIPT_URL}?action=leer`;
+            if (filtroActual === "eliminados") {
+                url += `&mostrarEliminados=true`;
+            } else {
+                url += `&mostrarEliminados=false`;
+            }
+            if (fechaDesde) url += `&fechaDesde=${fechaDesde}`;
+            if (fechaHasta) url += `&fechaHasta=${fechaHasta}`;
+            const data = await jsonpRequest(url);
+            return data.success ? (data.pedidos || []) : [];
+        } catch(error) {
+            console.error("Error al leer:", error);
+            mostrarNotificacion("❌ Error de lectura", true);
+            return [];
+        }
+    }
+    
     async function guardarPedidoWebApp(pd){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; let p=new URLSearchParams(); p.append('action','guardar'); p.append('data',JSON.stringify(pd)); p.append('callback',cb); s.src=`${SCRIPT_URL}?${p.toString()}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
     async function actualizarPedidoCompleto(pd){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; let p=new URLSearchParams(); p.append('action','actualizarCompleto'); p.append('data',JSON.stringify(pd)); p.append('usuario',USUARIO_ACTUAL); p.append('callback',cb); s.src=`${SCRIPT_URL}?${p.toString()}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
     async function eliminarPedido(num,pass){ return new Promise((res,rej)=>{ let cb=`jsonp_cb_${Date.now()}`; let s=document.createElement('script'); window[cb]=r=>{ delete window[cb]; document.body.removeChild(s); res({success:r.success===true, error:r.error}); }; s.src=`${SCRIPT_URL}?action=eliminar&numero=${num}&password=${encodeURIComponent(pass)}&usuario=${encodeURIComponent(USUARIO_ACTUAL)}&callback=${cb}`; s.onerror=()=>{ delete window[cb]; document.body.removeChild(s); rej(new Error('Network error')); }; document.body.appendChild(s); }); }
