@@ -208,28 +208,70 @@
     
     // ===== FUNCIONES DE FORMATO (dd/mm/aaaa y hora am/pm) =====
     function formatearFechaLocal(fechaIso) {
-        if (!fechaIso || fechaIso === "") return "—";
-        try {
-            if (fechaIso.includes('/')) return fechaIso;
-            const partes = fechaIso.split('-');
-            if (partes.length === 3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
-            return fechaIso;
-        } catch(e) { return fechaIso; }
+    if (!fechaIso || fechaIso === "") return "—";
+    try {
+        // Si ya viene en formato DD/MM/YYYY, devolver igual
+        if (fechaIso.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaIso;
+        
+        // Limpiar basura (eliminar todo después de T si existe)
+        var fechaLimpia = fechaIso.split('T')[0];
+        
+        // Si tiene formato YYYY-MM-DD, convertir a DD/MM/YYYY
+        if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            var partes = fechaLimpia.split('-');
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+        
+        // Si tiene formato DD-MM-YYYY
+        if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
+            var partes = fechaLimpia.split('-');
+            return `${partes[0]}/${partes[1]}/${partes[2]}`;
+        }
+        
+        // Si tiene formato raro con números, intentar extraer
+        var numeros = fechaLimpia.match(/\d+/g);
+        if (numeros && numeros.length >= 3) {
+            // Si el primer número es año (4 dígitos)
+            if (numeros[0].length === 4) {
+                return `${numeros[2]}/${numeros[1]}/${numeros[0]}`;
+            }
+            // Si el último número es año (4 dígitos)
+            if (numeros[2].length === 4) {
+                return `${numeros[0]}/${numeros[1]}/${numeros[2]}`;
+            }
+        }
+        
+        return fechaIso;
+    } catch(e) {
+        console.error("Error formateando fecha:", e);
+        return fechaIso;
     }
+}
     
     function formatearHoraLocal(horaStr) {
-        if (!horaStr || horaStr === "") return "—";
-        try {
-            if (horaStr.includes('am') || horaStr.includes('pm')) return horaStr;
-            const partes = horaStr.split(':');
-            let horas = parseInt(partes[0]);
-            const minutos = partes[1] || "00";
-            const ampm = horas >= 12 ? 'pm' : 'am';
-            horas = horas % 12;
-            horas = horas === 0 ? 12 : horas;
-            return `${horas}:${minutos} ${ampm}`;
-        } catch(e) { return horaStr; }
+    if (!horaStr || horaStr === "") return "—";
+    try {
+        // Limpiar basura (eliminar todo después de T si existe)
+        var horaLimpia = horaStr.split('T')[1]?.split('.')[0] || horaStr;
+        
+        // Si ya tiene formato am/pm
+        if (horaLimpia.includes('am') || horaLimpia.includes('pm')) return horaLimpia;
+        
+        // Extraer solo números de hora y minutos
+        var partes = horaLimpia.match(/\d+/g);
+        if (!partes || partes.length === 0) return "—";
+        
+        var horas = parseInt(partes[0]);
+        var minutos = partes[1] || "00";
+        var ampm = horas >= 12 ? 'pm' : 'am';
+        horas = horas % 12;
+        horas = horas === 0 ? 12 : horas;
+        return `${horas}:${minutos} ${ampm}`;
+    } catch(e) {
+        console.error("Error formateando hora:", e);
+        return horaStr;
     }
+}
     
     function formatearFechaHoraLocal(fechaHoraStr) {
         if (!fechaHoraStr || fechaHoraStr === "") return "—";
