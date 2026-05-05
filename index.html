@@ -99,10 +99,7 @@
         }
         .close-modal:hover { color: #e74c3c; }
         .modal .campo { margin-bottom: 15px; }
-        .password-input { border: 2px solid #e67e22 !important; background: #fff8f0 !important; }
-        .ayuda { font-size: 0.7em; color: #e67e22; margin-top: 4px; }
-        .switch-boton { background: #95a5a6; }
-        .switch-boton.activo { background: #e74c3c; }
+        .entregado-label { background: #27ae60; color: white; padding: 8px 16px; border-radius: 40px; font-size: 0.75em; font-weight: bold; display: inline-block; }
     </style>
 </head>
 <body>
@@ -201,7 +198,6 @@
     let USUARIO_ACTUAL = "Pili Pérez";
     let todosLosPedidos = [];
     let filtroActual = "todos";
-    let mostrarEliminadosFlag = false;  // Control para incluir eliminados en la lectura
     let fechaDesde = "";
     let fechaHasta = "";
     let tasaBCV = 489.55;
@@ -209,32 +205,23 @@
     
     // ===== FUNCIONES DE FORMATO =====
     function formatearFechaLocal(fechaIso) {
-    if (!fechaIso || fechaIso === "") return "—";
-    try {
-        // Normalizar: eliminar cualquier hora UTC
-        let fechaLimpia = String(fechaIso).split('T')[0];
-        
-        // Si ya viene en formato DD/MM/YYYY
-        if (fechaLimpia.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaLimpia;
-        
-        // Si viene YYYY-MM-DD
-        if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
-            let partes = fechaLimpia.split('-');
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        if (!fechaIso || fechaIso === "") return "—";
+        try {
+            let fechaLimpia = String(fechaIso).split('T')[0];
+            if (fechaLimpia.match(/^\d{2}\/\d{2}\/\d{4}$/)) return fechaLimpia;
+            if (fechaLimpia.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                let partes = fechaLimpia.split('-');
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+            if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                let partes = fechaLimpia.split('-');
+                return `${partes[0]}/${partes[1]}/${partes[2]}`;
+            }
+            return fechaLimpia;
+        } catch(e) {
+            return fechaIso;
         }
-        
-        // Si viene DD-MM-YYYY
-        if (fechaLimpia.match(/^\d{2}-\d{2}-\d{4}$/)) {
-            let partes = fechaLimpia.split('-');
-            return `${partes[0]}/${partes[1]}/${partes[2]}`;
-        }
-        
-        return fechaLimpia;
-    } catch(e) {
-        console.error("Error formateando fecha:", e);
-        return fechaIso;
     }
-}
     
     function formatearHoraLocal(horaStr) {
         if (!horaStr || horaStr === "") return "—";
@@ -304,7 +291,6 @@
     async function leerPedidos() {
         try {
             let url = `${SCRIPT_URL}?action=leer`;
-            // Solo incluir eliminados si el filtro actual es "eliminados"
             if (filtroActual === "eliminados") {
                 url += `&mostrarEliminados=true`;
             }
@@ -338,7 +324,7 @@
         });
     }
     
-    async function actualizarPedidoCompleto(pedidoData, password) {
+    async function actualizarPedidoCompleto(pedidoData) {
         return new Promise((resolve, reject) => {
             const callbackName = `jsonp_callback_${Date.now()}`;
             const script = document.createElement('script');
@@ -350,7 +336,6 @@
             const params = new URLSearchParams();
             params.append('action', 'actualizarCompleto');
             params.append('data', JSON.stringify(pedidoData));
-            params.append('password', password);
             params.append('usuario', USUARIO_ACTUAL);
             params.append('callback', callbackName);
             script.src = `${SCRIPT_URL}?${params.toString()}`;
@@ -482,14 +467,7 @@
             return;
         }
         
-        // Si el filtro actual NO es "eliminados", filtrar los que NO están eliminados (estado normal)
         let filtrados = todosLosPedidos;
-        if (filtroActual !== "eliminados") {
-            // Los pedidos "normales" ya vienen sin eliminados de la API
-            filtrados = todosLosPedidos;
-        }
-        
-        // Si el filtro actual es un estado específico (Pendiente, En Proceso, Entregado)
         if (filtroActual !== "todos" && filtroActual !== "eliminados") {
             filtrados = filtrados.filter(p => p.estado === filtroActual);
         }
@@ -507,6 +485,7 @@
             let badgeClass = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
             let montoUSD = (parseFloat(p.monto) / tasaBCV).toFixed(2);
             let esEliminado = (filtroActual === "eliminados");
+            let esEntregado = (p.estado === "Entregado");
             
             html += `
                 <div class="pedido-item ${esEliminado ? 'eliminado' : ''}">
@@ -525,10 +504,11 @@
                         ${p.modificadoPor ? `<div>✏️ <strong>Modificado:</strong> ${escapeHtml(p.modificadoPor)} (${formatearFechaHoraLocal(p.fechaModificacion)})</div>` : ''}
                     </div>
                     <div class="pedido-acciones">
-                        ${!esEliminado && p.estado !== "Entregado" ? `<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Editar</button>` : ''}
-                        ${!esEliminado && p.estado !== "Entregado" ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : ''}
-                        ${!esEliminado && p.estado !== "Entregado" ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
+                        ${!esEliminado && !esEntregado ? `<button class="btn-warning" onclick='abrirModalEditar(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Editar</button>` : ''}
+                        ${!esEliminado && !esEntregado ? `<button class="btn-danger" onclick="confirmarEliminar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}', '${p.estado}')">🗑️ Eliminar</button>` : ''}
+                        ${!esEliminado && !esEntregado ? `<button class="btn-success" onclick="confirmarEntrega(${p.numero}, this)">✅ Marcar Entregado</button>` : ''}
                         ${esEliminado ? `<button class="btn-restaurar" onclick="confirmarRestaurar(${p.numero}, '${escapeHtml(p.cliente).replace(/'/g, "\\'")}')">♻️ Restaurar Pedido</button>` : ''}
+                        ${esEntregado && !esEliminado ? `<span class="entregado-label">✅ ENTREGADO - Procesado</span>` : ''}
                     </div>
                 </div>
             `;
@@ -596,10 +576,12 @@
     }
     
     function abrirModalEditar(pedido) {
-        if (pedido.estado === "Entregado") { mostrarNotificacion("❌ No se puede editar un pedido entregado", true); return; }
+        if (pedido.estado === "Entregado") { 
+            mostrarNotificacion("❌ No se puede editar un pedido que ya está ENTREGADO", true); 
+            return; 
+        }
         numeroEditando = pedido.numero;
         document.getElementById('editNumero').innerText = pedido.numero;
-        document.getElementById('editPassword').value = "";
         document.getElementById('editCliente').value = pedido.cliente || "";
         document.getElementById('editTelefono').value = pedido.telefono || "";
         document.getElementById('editDescripcion').value = pedido.descripcion || "";
@@ -614,44 +596,42 @@
     function cerrarModal() { document.getElementById('modalEditar').style.display = 'none'; numeroEditando = null; }
     
     async function guardarEdicion() {
-    if (!numeroEditando) return;
-    // Ya no pedimos contraseña para editar
-    const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
-    const montoUsd = montoBs / tasaBCV;
-    const pedidoActualizado = {
-        numero: numeroEditando,
-        cliente: document.getElementById('editCliente').value,
-        telefono: document.getElementById('editTelefono').value,
-        descripcion: document.getElementById('editDescripcion').value,
-        monto: montoBs.toFixed(2),
-        fechaEntrega: document.getElementById('editFechaEntrega').value,
-        horaEntrega: document.getElementById('editHoraEntrega').value,
-        estado: document.getElementById('editEstado').value,
-        responsable: document.getElementById('editResponsable').value,
-        montoUSD: montoUsd.toFixed(2)
-    };
-    const btn = event.target;
-    const textoOriginal = btn.innerHTML;
-    btn.innerHTML = '<span class="loading"></span> Guardando...';
-    btn.disabled = true;
-    try {
-        // Enviamos una contraseña vacía o nula - el Apps Script debe permitir edición sin contraseña
-        const resultado = await actualizarPedidoCompleto(pedidoActualizado, "");
-        btn.innerHTML = textoOriginal;
-        btn.disabled = false;
-        if (resultado.success) {
-            mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`);
-            cerrarModal();
-            await cargarPedidos();
-        } else {
-            mostrarNotificacion("❌ Error: " + resultado.error, true);
+        if (!numeroEditando) return;
+        const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
+        const montoUsd = montoBs / tasaBCV;
+        const pedidoActualizado = {
+            numero: numeroEditando,
+            cliente: document.getElementById('editCliente').value,
+            telefono: document.getElementById('editTelefono').value,
+            descripcion: document.getElementById('editDescripcion').value,
+            monto: montoBs.toFixed(2),
+            fechaEntrega: document.getElementById('editFechaEntrega').value,
+            horaEntrega: document.getElementById('editHoraEntrega').value,
+            estado: document.getElementById('editEstado').value,
+            responsable: document.getElementById('editResponsable').value,
+            montoUSD: montoUsd.toFixed(2)
+        };
+        const btn = event.target;
+        const textoOriginal = btn.innerHTML;
+        btn.innerHTML = '<span class="loading"></span> Guardando...';
+        btn.disabled = true;
+        try {
+            const resultado = await actualizarPedidoCompleto(pedidoActualizado);
+            btn.innerHTML = textoOriginal;
+            btn.disabled = false;
+            if (resultado.success) {
+                mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`);
+                cerrarModal();
+                await cargarPedidos();
+            } else {
+                mostrarNotificacion("❌ Error: " + resultado.error, true);
+            }
+        } catch(error) {
+            btn.innerHTML = textoOriginal;
+            btn.disabled = false;
+            mostrarNotificacion("❌ Error de red", true);
         }
-    } catch(error) {
-        btn.innerHTML = textoOriginal;
-        btn.disabled = false;
-        mostrarNotificacion("❌ Error de red", true);
     }
-}
     
     function actualizarEstadisticas() {
         const statsDiv = document.getElementById('statsContainer');
@@ -712,7 +692,6 @@
     
     function filtrarPor(estado) {
         filtroActual = estado;
-        // Actualizar estilo de botones
         document.getElementById('btnTodos').style.background = estado === 'todos' ? '#2c3e50' : '#e0d8cf';
         document.getElementById('btnPendiente').style.background = estado === 'Pendiente' ? '#2c3e50' : '#e0d8cf';
         document.getElementById('btnProceso').style.background = estado === 'En Proceso' ? '#2c3e50' : '#e0d8cf';
