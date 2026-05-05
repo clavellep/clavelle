@@ -178,11 +178,10 @@
     <footer>💐 Clavelle Floristería · Datos sincronizados con Google Sheets</footer>
 </div>
 
-<!-- Modal para EDITAR -->
+<!-- Modal para EDITAR (sin campo de contraseña) -->
 <div id="modalEditar" class="modal">
     <div class="modal-content">
         <div class="modal-header"><h3>✏️ Editar Pedido #<span id="editNumero"></span></h3><span class="close-modal" onclick="cerrarModal()">&times;</span></div>
-        <div class="campo"><label>🔐 Contraseña de Autorización *</label><input type="password" id="editPassword" class="password-input" placeholder="Contraseña"><div class="ayuda">⚠️ Se requiere autorización</div></div>
         <div class="campo"><label>👤 Cliente</label><input type="text" id="editCliente"></div>
         <div class="campo"><label>📞 Teléfono</label><input type="text" id="editTelefono"></div>
         <div class="campo"><label>📦 Descripción</label><textarea id="editDescripcion" rows="2"></textarea></div>
@@ -609,45 +608,44 @@
     function cerrarModal() { document.getElementById('modalEditar').style.display = 'none'; numeroEditando = null; }
     
     async function guardarEdicion() {
-        if (!numeroEditando) return;
-        const password = document.getElementById('editPassword').value;
-        if (!password) { mostrarNotificacion("❌ Contraseña requerida", true); return; }
-        if (password !== CLAVE_AUTORIZACION) { mostrarNotificacion("❌ Contraseña incorrecta", true); return; }
-        const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
-        const montoUsd = montoBs / tasaBCV;
-        const pedidoActualizado = {
-            numero: numeroEditando,
-            cliente: document.getElementById('editCliente').value,
-            telefono: document.getElementById('editTelefono').value,
-            descripcion: document.getElementById('editDescripcion').value,
-            monto: montoBs.toFixed(2),
-            fechaEntrega: document.getElementById('editFechaEntrega').value,
-            horaEntrega: document.getElementById('editHoraEntrega').value,
-            estado: document.getElementById('editEstado').value,
-            responsable: document.getElementById('editResponsable').value,
-            montoUSD: montoUsd.toFixed(2)
-        };
-        const btn = event.target;
-        const textoOriginal = btn.innerHTML;
-        btn.innerHTML = '<span class="loading"></span> Guardando...';
-        btn.disabled = true;
-        try {
-            const resultado = await actualizarPedidoCompleto(pedidoActualizado, password);
-            btn.innerHTML = textoOriginal;
-            btn.disabled = false;
-            if (resultado.success) {
-                mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`);
-                cerrarModal();
-                await cargarPedidos();
-            } else {
-                mostrarNotificacion("❌ Error: " + resultado.error, true);
-            }
-        } catch(error) {
-            btn.innerHTML = textoOriginal;
-            btn.disabled = false;
-            mostrarNotificacion("❌ Error de red", true);
+    if (!numeroEditando) return;
+    // Ya no pedimos contraseña para editar
+    const montoBs = parseFloat(document.getElementById('editMonto').value) || 0;
+    const montoUsd = montoBs / tasaBCV;
+    const pedidoActualizado = {
+        numero: numeroEditando,
+        cliente: document.getElementById('editCliente').value,
+        telefono: document.getElementById('editTelefono').value,
+        descripcion: document.getElementById('editDescripcion').value,
+        monto: montoBs.toFixed(2),
+        fechaEntrega: document.getElementById('editFechaEntrega').value,
+        horaEntrega: document.getElementById('editHoraEntrega').value,
+        estado: document.getElementById('editEstado').value,
+        responsable: document.getElementById('editResponsable').value,
+        montoUSD: montoUsd.toFixed(2)
+    };
+    const btn = event.target;
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = '<span class="loading"></span> Guardando...';
+    btn.disabled = true;
+    try {
+        // Enviamos una contraseña vacía o nula - el Apps Script debe permitir edición sin contraseña
+        const resultado = await actualizarPedidoCompleto(pedidoActualizado, "");
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+        if (resultado.success) {
+            mostrarNotificacion(`✅ Pedido #${numeroEditando} actualizado`);
+            cerrarModal();
+            await cargarPedidos();
+        } else {
+            mostrarNotificacion("❌ Error: " + resultado.error, true);
         }
+    } catch(error) {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+        mostrarNotificacion("❌ Error de red", true);
     }
+}
     
     function actualizarEstadisticas() {
         const statsDiv = document.getElementById('statsContainer');
