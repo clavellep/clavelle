@@ -109,7 +109,7 @@
 <div class="container">
     <div class="header">
         <h1>💐 CLAVELLE</h1>
-        <p>gestión inteligente · trazabilidad · BCV</p>
+        <p>Gestión Administrativa de Pedidos</p>
     </div>
     
     <div class="tabs">
@@ -123,7 +123,7 @@
         <h2 style="margin-bottom: 20px;">📝 Registrar Nuevo Pedido</h2>
         <div class="form-grid">
             <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f4f0eb;"></div>
-            <div class="campo"><label>👤 Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente" autocomplete="off"></div>
+            <div class="campo"><label>👤 Aplicación/Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente" autocomplete="off"></div>
             <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567" autocomplete="off"></div>
             <div class="campo"><label>📦 Descripción *</label><textarea id="descripcion" rows="2" placeholder="Detalles del pedido..."></textarea></div>
             <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" placeholder="0.00" step="0.01"></div>
@@ -131,8 +131,8 @@
             <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="horaEntrega"></div>
             <div class="campo"><label>📌 Estado Inicial</label>
                 <select id="estadoRegistro">
-                    <option value="Pendiente">🕊️ Pendiente</option>
-                    <option value="En Proceso">⚙️ En Proceso</option>
+                    <option value="Pendiente">🕊️ Pendiente por hacer</option>
+                    <option value="En Proceso">⚙️ Proceso Finalizado</option>
                 </select>
             </div>
         </div>
@@ -153,8 +153,8 @@
         
         <div class="filtros">
             <button onclick="filtrarPor('todos')" id="btnTodos">📋 Todos</button>
-            <button onclick="filtrarPor('Pendiente')" id="btnPendiente">🕊️ Pendientes</button>
-            <button onclick="filtrarPor('En Proceso')" id="btnProceso">⚙️ Proceso</button>
+            <button onclick="filtrarPor('Pendiente')" id="btnPendiente">🕊️ Pendientes por hacer</button>
+            <button onclick="filtrarPor('En Proceso')" id="btnProceso">⚙️ Proceso Finalizado</button>
             <button onclick="filtrarPor('Entregado')" id="btnEntregado">✅ Entregados</button>
             <button onclick="filtrarPor('eliminados')" id="btnEliminados" style="background:#7f8c8d;">🗑️ Eliminados</button>
         </div>
@@ -189,7 +189,7 @@
         <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01"></div>
         <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
         <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
-        <div class="campo"><label>📌 Estado</label><select id="editEstado"><option value="Pendiente">Pendiente</option><option value="En Proceso">En Proceso</option><option value="Entregado">Entregado</option></select></div>
+        <div class="campo"><label>📌 Estado</label><select id="editEstado"><option value="Pendiente">Pendiente</option><option value="En Proceso">Proceso Finalizado</option><option value="Entregado">Entregado</option></select></div>
         <div class="campo"><label>👤 Responsable Entrega</label><input type="text" id="editResponsable"></div>
         <div style="display: flex; gap: 10px; margin-top: 20px;"><button onclick="guardarEdicion()" style="background:#27ae60; flex:1;">💾 Guardar</button><button onclick="cerrarModal()" style="background:#95a5a6; flex:1;">Cancelar</button></div>
     </div>
