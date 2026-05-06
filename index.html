@@ -2,95 +2,206 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Clavelle · Catálogo floral</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Clavelle · Gestión floral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #f7f3ef;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            padding: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container { max-width: 1400px; margin: 0 auto; }
+        body {
+            background: #faf7f2;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            padding: 12px;
+            color: #2c2b28;
+        }
+        /* Contenedor más angosto para mejor legibilidad */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
         
-        /* Header minimalista */
+        /* HEADER FLORAL */
         .header {
             background: #ffffff;
-            border-radius: 40px;
-            padding: 20px 32px;
-            margin-bottom: 28px;
+            border-radius: 32px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             border: 1px solid #f0e4d8;
         }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            font-size: 2rem;
+        }
         .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #4a6f5e, #b8876e);
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6b8c7a, #b8876e);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
-        .logo p { color: #b8876e; font-size: 0.75rem; margin-top: 4px; }
-        
+        .logo p {
+            font-size: 0.65rem;
+            color: #b0a088;
+            font-weight: 500;
+        }
         .tasa-container {
-            background: #eae1d6;
-            padding: 6px 18px;
+            background: #f3ede5;
+            padding: 6px 14px;
             border-radius: 60px;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
         }
-        .tasa-container .fecha { font-size: 0.6rem; color: #8b735b; }
-        .tasa-container .valor { font-weight: 600; color: #4a6f5e; }
+        .tasa-container .fecha {
+            font-size: 0.55rem;
+            color: #8b735b;
+            font-weight: 400;
+        }
+        .tasa-container .valor {
+            font-weight: 700;
+            color: #6b8c7a;
+        }
         
-        /* Tabs con colores distintos por pestaña (activa) */
-        .tabs { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+        /* TABS CON COLORES DIFERENTES */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
         .tab {
-            background: #e0d8cf;
             border: none;
-            padding: 10px 28px;
+            padding: 12px 16px;
             border-radius: 60px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 700;
+            font-size: 0.85rem;
             transition: 0.2s;
-            color: #1a1a1a;
+            flex: 1;
+            text-align: center;
+            min-width: 100px;
+            background: #ede5dc;
+            color: #4a3a2a;
         }
-        /* Colores personalizados cuando están activos */
-        .tab[data-panel="registro"].active { background: #b8876e; color: white; }
-        .tab[data-panel="control"].active { background: #6b8c7a; color: white; }
-        .tab[data-panel="estadisticas"].active { background: #99b4aa; color: white; }
-        .tab:hover:not(.active) { background: #cdc2b6; }
+        /* Colores específicos por pestaña cuando están activas */
+        .tab[data-panel="registro"].active {
+            background: #b8876e;
+            color: white;
+        }
+        .tab[data-panel="control"].active {
+            background: #6b8c7a;
+            color: white;
+        }
+        .tab[data-panel="estadisticas"].active {
+            background: #99b4aa;
+            color: white;
+        }
+        .tab:hover:not(.active) {
+            background: #ddd0c2;
+        }
         
-        /* Paneles con sutileza */
-        .panel { display: none; background: white; border-radius: 32px; padding: 28px; box-shadow: 0 8px 20px rgba(0,0,0,0.02); }
-        .panel.active { display: block; animation: fade 0.2s ease; }
-        @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        /* PANELES */
+        .panel {
+            display: none;
+            background: white;
+            border-radius: 28px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        .panel.active {
+            display: block;
+            animation: fade 0.2s ease;
+        }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         
-        /* Formulario moderno */
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .campo { display: flex; flex-direction: column; gap: 8px; }
-        .campo label { font-weight: 600; color: #8b735b; font-size: 0.75rem; letter-spacing: 0.3px; }
+        /* FORMULARIO BONITO Y GRANDE */
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .campo label {
+            font-weight: 700;
+            color: #6b5a48;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .campo label .label-icon {
+            font-size: 1.1rem;
+        }
         .campo input, .campo select, .campo textarea {
-            padding: 12px 18px;
+            padding: 14px 16px;
             border: 1.5px solid #efe2d6;
             border-radius: 48px;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
             transition: 0.2s;
             background: #ffffff;
+            width: 100%;
+        }
+        /* FECHAS MÁS GRANDES */
+        input[type="date"], input[type="time"] {
+            padding: 14px 16px;
+            font-size: 0.9rem;
         }
         .campo input:focus, .campo select:focus, .campo textarea:focus {
             outline: none;
-            border-color: #b3cfc0;
-            box-shadow: 0 0 0 3px rgba(107, 140, 122, 0.1);
+            border-color: #b8876e;
+            box-shadow: 0 0 0 3px rgba(184, 135, 110, 0.1);
+        }
+        textarea {
+            border-radius: 28px !important;
+            resize: vertical;
         }
         
-        /* Catálogo elegante y discreto */
+        /* BOTÓN GUARDAR PROPORCIONADO */
+        .btn-primary {
+            background: #b8876e;
+            width: 100%;
+            padding: 16px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover {
+            background: #a5735b;
+            transform: translateY(-1px);
+        }
+        
+        /* CATÁLOGO */
         .catalogo-selector {
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .selector-boton {
             background: transparent;
@@ -98,61 +209,185 @@
             color: #b8876e;
             width: auto;
             text-align: center;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 60px;
-            font-size: 0.7rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
         }
-        .selector-boton:hover { background: #b8876e10; border: 1.5px solid #b8876e; color: #b8876e; transform: none; }
+        .selector-boton:hover {
+            background: #b8876e10;
+            border: 1.5px solid #b8876e;
+        }
         .lista-catalogo {
             display: none;
             background: white;
             border: 1px solid #efe2d6;
-            border-radius: 28px;
-            max-height: 250px;
+            border-radius: 24px;
+            max-height: 260px;
             overflow-y: auto;
-            margin-top: 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            margin-top: 10px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
         }
-        .lista-catalogo.visible { display: block; }
+        .lista-catalogo.visible {
+            display: block;
+        }
         .item-catalogo {
-            padding: 10px 18px;
+            padding: 12px 16px;
             border-bottom: 1px solid #f0e4d8;
             cursor: pointer;
             transition: 0.1s;
         }
-        .item-catalogo:hover { background: #fdfbf8; }
-        .item-catalogo strong { color: #4a6f5e; font-size: 0.8rem; }
-        .item-catalogo small { color: #b8876e; font-size: 0.65rem; display: block; margin-top: 4px; }
+        .item-catalogo:hover {
+            background: #fdfbf8;
+        }
+        .item-catalogo strong {
+            color: #6b8c7a;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .item-catalogo small {
+            color: #b8876e;
+            font-size: 0.7rem;
+            display: block;
+            margin-top: 4px;
+            font-weight: 500;
+        }
         
-        /* Botones generales */
-        button { background: #6b8c7a; color: white; border: none; padding: 10px 22px; border-radius: 60px; cursor: pointer; font-weight: 500; transition: 0.2s; }
-        button:hover { background: #5b7a68; transform: translateY(-1px); }
-        .btn-primary { background: #b8876e; width: 100%; padding: 14px; font-size: 0.9rem; }
+        /* BOTONES GENERALES */
+        button {
+            background: #6b8c7a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #5b7a68;
+            transform: translateY(-1px);
+        }
         .btn-success { background: #83a67c; }
         .btn-danger { background: #cb887a; }
         .btn-warning { background: #e2bc89; color: #4a3a2a; }
         .btn-info { background: #99b4aa; }
         
-        /* Badges y tarjetas */
-        .badge-pendiente { background: #ffe6df; color: #bb714c; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; }
-        .badge-proceso { background: #fff0e0; color: #c7883c; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; }
-        .badge-entregado { background: #e3f3e4; color: #517a3e; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; }
-        .pedido-item { background: #fff; border: 1px solid #f0e4d8; border-radius: 28px; padding: 18px; margin-bottom: 16px; transition: 0.2s; }
-        .pedido-item:hover { border-color: #dfcebe; background: #fefcf9; }
-        .pedido-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-        .pedido-detalle { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: #8f7b66; background: #fdfbf8; padding: 12px; border-radius: 24px; margin-bottom: 12px; }
-        .pedido-acciones { display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #f0e4d8; padding-top: 12px; flex-wrap: wrap; }
-        .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-        .stat-card { background: #fdfbf8; border-radius: 28px; padding: 20px; text-align: center; border: 1px solid #efe2d6; }
-        .stat-card .numero { font-size: 2rem; font-weight: 600; color: #4f6b5c; }
-        .stat-card .monto { font-size: 1.1rem; color: #27ae60; font-weight: 500; }
-        footer { text-align: center; margin-top: 40px; padding: 16px; color: #cdbcab; font-size: 0.7rem; }
+        /* BADGES */
+        .badge-pendiente, .badge-proceso, .badge-entregado {
+            padding: 5px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .badge-pendiente { background: #ffe6df; color: #bb714c; }
+        .badge-proceso { background: #fff0e0; color: #c7883c; }
+        .badge-entregado { background: #e3f3e4; color: #517a3e; }
         
-        /* Tooltips */
+        /* TARJETAS DE PEDIDO (MÁS LEGIBLES) */
+        .pedido-item {
+            background: #fff;
+            border: 1px solid #f0e4d8;
+            border-radius: 28px;
+            padding: 18px;
+            margin-bottom: 16px;
+            transition: 0.2s;
+        }
+        .pedido-item:hover {
+            border-color: #dfcebe;
+            background: #fefcf9;
+        }
+        .pedido-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .pedido-numero {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #4a6f5e;
+        }
+        .pedido-detalle {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #8f7b66;
+            background: #fdfbf8;
+            padding: 12px;
+            border-radius: 24px;
+            margin-bottom: 14px;
+        }
+        .pedido-acciones {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 1px solid #f0e4d8;
+            padding-top: 14px;
+            flex-wrap: wrap;
+        }
+        .filtros {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .stat-card {
+            background: #fdfbf8;
+            border-radius: 24px;
+            padding: 18px;
+            text-align: center;
+            border: 1px solid #efe2d6;
+        }
+        .stat-card .numero {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #4f6b5c;
+        }
+        .stat-card .monto {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #27ae60;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 16px;
+            font-size: 0.65rem;
+            color: #cdbcab;
+            font-weight: 500;
+        }
+        
+        /* FILTROS DE FECHA MÁS GRANDES */
+        .fecha-filtros {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .fecha-filtros input {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 14px;
+            border-radius: 48px;
+            border: 1.5px solid #efe2d6;
+            font-size: 0.85rem;
+        }
+        
+        /* TOOLTIPS */
         .custom-tooltip {
             position: fixed;
             background: #ffe0e0;
@@ -160,14 +395,14 @@
             padding: 8px 16px;
             border-radius: 40px;
             font-size: 0.7rem;
-            font-weight: 500;
+            font-weight: 600;
             white-space: nowrap;
             z-index: 10000;
             pointer-events: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        /* Botones flotantes */
+        /* BOTONES FLOTANTES */
         .btn-calc, .btn-help {
             position: fixed;
             display: flex;
@@ -176,21 +411,33 @@
             gap: 8px;
             cursor: pointer;
             z-index: 1000;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 10px 18px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .btn-calc { background: #b8876e; color: white; bottom: 20px; right: 20px; }
-        .btn-help { background: #6b8c7a; color: white; bottom: 20px; left: 20px; }
+        .btn-calc {
+            background: #b8876e;
+            color: white;
+            bottom: 20px;
+            right: 20px;
+        }
+        .btn-help {
+            background: #6b8c7a;
+            color: white;
+            bottom: 20px;
+            left: 20px;
+        }
         
-        /* Modales */
+        /* MODALES */
         .modal-calc, .modal-tour {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 1001;
             align-items: center;
@@ -200,17 +447,18 @@
             background: #2c3e50;
             border-radius: 32px;
             padding: 20px;
-            width: 320px;
+            width: 300px;
         }
         .calc-display {
             background: #1a2a3a;
             color: white;
-            font-size: 2rem;
+            font-size: 1.8rem;
             text-align: right;
-            padding: 20px;
+            padding: 16px;
             border-radius: 24px;
             margin-bottom: 16px;
             font-family: monospace;
+            font-weight: 700;
         }
         .calc-buttons {
             display: grid;
@@ -219,21 +467,18 @@
         }
         .calc-buttons button {
             background: #34495e;
-            padding: 16px;
+            padding: 14px;
             border-radius: 20px;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            font-weight: 700;
         }
-        .calc-buttons .op { background: #e67e22; }
-        .calc-buttons .clear { background: #e74c3c; }
-        .calc-buttons .equal { background: #27ae60; grid-column: span 2; }
-        .calc-close { background: #95a5a6; margin-top: 12px; width: 100%; padding: 12px; border-radius: 20px; }
         
-        /* Panel de ayuda completo */
+        /* PANEL AYUDA */
         .help-panel {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 380px;
+            right: -380px;
+            width: 340px;
             height: 100%;
             background: white;
             box-shadow: -4px 0 20px rgba(0,0,0,0.1);
@@ -242,81 +487,102 @@
             display: flex;
             flex-direction: column;
         }
-        .help-panel.open { right: 0; }
+        .help-panel.open {
+            right: 0;
+        }
         .help-header {
-            background: #4a6f5e;
+            background: #6b8c7a;
             color: white;
-            padding: 20px;
+            padding: 18px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
         }
-        .help-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+        .help-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
         .help-content {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
         }
         .help-section {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             border-bottom: 1px solid #f0e4d8;
-            padding-bottom: 16px;
+            padding-bottom: 14px;
         }
-        .help-section h4 { color: #4a6f5e; margin-bottom: 12px; }
+        .help-section h4 {
+            color: #6b8c7a;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
         .help-step {
             background: #fdfbf8;
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 12px;
             margin-bottom: 10px;
             border-left: 4px solid #b8876e;
-        }
-        .help-step strong { color: #b8876e; }
-        .help-tip {
-            background: #e8f5e9;
-            border-radius: 12px;
-            padding: 10px;
-            margin-top: 8px;
             font-size: 0.75rem;
+            font-weight: 500;
         }
         .tour-btn {
             width: 100%;
             background: #b8876e;
             margin-top: 12px;
-            padding: 10px;
-            border-radius: 40px;
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 700;
             color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .shortcut-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .shortcut-item {
-            background: #f0ebe5;
-            border-radius: 12px;
-            padding: 8px;
-            text-align: center;
-            font-size: 0.7rem;
         }
         .tour-card {
             background: white;
             border-radius: 32px;
-            max-width: 400px;
             width: 90%;
+            max-width: 380px;
             padding: 24px;
             text-align: center;
         }
-        .tour-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+        .tour-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 550px) {
+            body {
+                padding: 8px;
+            }
+            .tab {
+                font-size: 0.75rem;
+                padding: 10px 12px;
+                min-width: 80px;
+            }
+            .pedido-acciones button {
+                font-size: 0.7rem;
+                padding: 8px 14px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <div class="logo">
-            <h1>🌸 CLAVELLE</h1>
-            <p>Catálogo floral · gestión elegante</p>
+            <div class="logo-icon">🌸</div>
+            <div>
+                <h1>CLAVELLE</h1>
+                <p>Gestión floral · pedidos</p>
+            </div>
         </div>
         <div class="tasa-container">
             <div class="fecha" id="tasaFecha">Precio del dólar para el día:</div>
@@ -330,34 +596,53 @@
         <button class="tab" data-panel="estadisticas" onclick="mostrarPanel('estadisticas')">📊 Estadísticas</button>
     </div>
     
-    <!-- REGISTRO con catálogo elegante -->
+    <!-- REGISTRO -->
     <div id="panel-registro" class="panel active">
-        <h2 style="margin-bottom: 20px;">📝 Registrar nuevo pedido</h2>
+        <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">📝 Nuevo pedido</h2>
         <div class="form-grid">
-            <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f8f2ec;"></div>
-            <div class="campo"><label>👤 Aplicación/Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente o aplicación"></div>
-            <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567"></div>
+            <div class="campo">
+                <label><span class="label-icon">📋</span> Número</label>
+                <input type="text" id="numeroPedido" readonly style="background:#f8f2ec;">
+            </div>
+            <div class="campo">
+                <label><span class="label-icon">👤</span> Aplicación/Cliente *</label>
+                <input type="text" id="clienteNombre" placeholder="Nombre del cliente o aplicación">
+            </div>
+            <div class="campo">
+                <label><span class="label-icon">📞</span> Teléfono</label>
+                <input type="text" id="telefono" placeholder="0412-1234567">
+            </div>
             
-            <div class="campo" style="grid-column: span 2;">
-                <label>🌸 Catálogo</label>
+            <div class="campo">
+                <label><span class="label-icon">🌸</span> Catálogo</label>
                 <div class="catalogo-selector">
                     <button type="button" class="selector-boton" id="btnCatalogo">📖 Ver catálogo ▼</button>
                     <div id="listaCatalogo" class="lista-catalogo"></div>
                 </div>
             </div>
             
-            <div class="campo" style="grid-column: span 2;">
-                <label>📦 Descripción * (puedes editar libremente)</label>
-                <textarea id="descripcion" rows="3" placeholder="Describe el pedido... Al seleccionar un producto del catálogo, la descripción se cargará aquí y podrás modificarla."></textarea>
+            <div class="campo">
+                <label><span class="label-icon">📦</span> Descripción *</label>
+                <textarea id="descripcion" rows="3" placeholder="Describe el pedido... Al seleccionar un producto del catálogo, se cargará aquí y podrás editarlo."></textarea>
             </div>
             
-            <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" step="0.01" placeholder="0.00"></div>
-            <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="fechaEntrega"></div>
-            <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="horaEntrega"></div>
-            <div class="campo"><label>📌 Estado</label>
+            <div class="campo">
+                <label><span class="label-icon">💰</span> Monto (Bs) *</label>
+                <input type="number" id="monto" step="0.01" placeholder="0.00">
+            </div>
+            <div class="campo">
+                <label><span class="label-icon">📅</span> Fecha Entrega</label>
+                <input type="date" id="fechaEntrega">
+            </div>
+            <div class="campo">
+                <label><span class="label-icon">⏰</span> Hora Entrega</label>
+                <input type="time" id="horaEntrega">
+            </div>
+            <div class="campo">
+                <label><span class="label-icon">📌</span> Estado</label>
                 <select id="estadoRegistro">
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="En Proceso">Proceso Finalizado</option>
+                    <option value="Pendiente">🕊️ Pendiente</option>
+                    <option value="En Proceso">⚙️ Proceso Finalizado</option>
                 </select>
             </div>
         </div>
@@ -366,38 +651,38 @@
     
     <!-- CONTROL -->
     <div id="panel-control" class="panel">
-        <h2>🔍 Control de pedidos</h2>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+        <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">🔍 Control de pedidos</h2>
+        <div class="fecha-filtros">
             <input type="date" id="fechaDesde" placeholder="Desde">
             <input type="date" id="fechaHasta" placeholder="Hasta">
             <button onclick="aplicarFiltros()">🔍 Filtrar</button>
-            <button onclick="limpiarFiltros()">🗑️ Limpiar</button>
+            <button onclick="limpiarFiltros()" style="background:#cdc2b6;">🗑️ Limpiar</button>
         </div>
         <div class="filtros">
             <button onclick="filtrarPor('todos')">📋 Todos</button>
             <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
             <button onclick="filtrarPor('En Proceso')">⚙️ Proceso Finalizado</button>
             <button onclick="filtrarPor('Entregado')">✅ Entregados</button>
-            <button onclick="filtrarPor('eliminados')" id="btnEliminados">🗑️ Eliminados</button>
+            <button onclick="filtrarPor('eliminados')" id="btnEliminados" style="background:#cdc2b6;">🗑️ Eliminados</button>
         </div>
         <div id="listaPedidos">Cargando...</div>
     </div>
     
     <!-- ESTADÍSTICAS -->
     <div id="panel-estadisticas" class="panel">
-        <h2>📊 Estadísticas de ventas</h2>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
-            <div><label>📅 Desde</label><input type="date" id="statsFechaDesde"></div>
-            <div><label>📅 Hasta</label><input type="date" id="statsFechaHasta"></div>
+        <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">📊 Estadísticas</h2>
+        <div class="fecha-filtros">
+            <input type="date" id="statsFechaDesde" placeholder="Desde">
+            <input type="date" id="statsFechaHasta" placeholder="Hasta">
             <button class="btn-info" onclick="cargarEstadisticasPorFecha()">📊 Calcular</button>
             <button onclick="limpiarStatsFechas()" style="background:#cdc2b6;">🗑️ Limpiar</button>
         </div>
         <div id="statsResultado" class="stats-grid">
-            <div class="stat-card"><div class="numero">0</div><div>Pedidos</div></div>
-            <div class="stat-card"><div class="monto">Bs 0.00</div><div>Total Bolívares</div></div>
-            <div class="stat-card"><div class="monto">$ 0.00</div><div>Total Dólares</div></div>
+            <div class="stat-card"><div class="numero">0</div><div style="font-weight:600;">Pedidos</div></div>
+            <div class="stat-card"><div class="monto">Bs 0.00</div><div style="font-weight:600;">Total Bolívares</div></div>
+            <div class="stat-card"><div class="monto">$ 0.00</div><div style="font-weight:600;">Total Dólares</div></div>
         </div>
-        <div id="detalleStats" style="margin-top: 20px; max-height: 300px; overflow-y: auto;"></div>
+        <div id="detalleStats" style="margin-top: 18px; max-height: 300px; overflow-y: auto;"></div>
     </div>
     
     <footer>💐 Clavelle · Catálogo integrado · Datos sincronizados</footer>
@@ -407,7 +692,7 @@
 <div class="btn-calc" onclick="abrirCalculadora()">🧮 Calculadora</div>
 <div class="btn-help" onclick="toggleHelp()">❓ Ayuda</div>
 
-<!-- Panel de ayuda completo -->
+<!-- Panel ayuda -->
 <div id="helpPanel" class="help-panel">
     <div class="help-header">
         <h3>🌸 Guía Clavelle</h3>
@@ -415,27 +700,30 @@
     </div>
     <div class="help-content">
         <div class="help-section">
-            <h4>📝 Paso a paso</h4>
-            <div class="help-step"><strong>1. Registrar pedido</strong><br>Completa el formulario en la pestaña <strong>Registro</strong>. Los campos con * son obligatorios.<div class="help-tip">💡 El número de pedido se genera automáticamente</div></div>
-            <div class="help-step"><strong>2. Usar el catálogo</strong><br>Haz clic en "📖 Ver catálogo", selecciona un producto y la descripción se cargará automáticamente. Puedes editarla después.<div class="help-tip">🌸 Más de 30 arreglos florales disponibles</div></div>
-            <div class="help-step"><strong>3. Controlar pedidos</strong><br>En la pestaña <strong>Control</strong> puedes filtrar por fechas o estado, editar, eliminar o marcar como entregado.<div class="shortcut-grid"><div class="shortcut-item">🔍 Filtrar fechas</div><div class="shortcut-item">📋 Ver por estado</div><div class="shortcut-item">✏️ Editar</div><div class="shortcut-item">✅ Entregar</div></div></div>
-            <div class="help-step"><strong>4. Entregar un pedido</strong><br>Busca el pedido y haz clic en <strong>"✅ Entregar"</strong>. Se te pedirá el nombre de quien entrega.</div>
-            <div class="help-step"><strong>5. Eliminar / Restaurar</strong><br>Solo pedidos en estado <strong>Pendiente</strong> o <strong>Proceso Finalizado</strong>. Ve a la vista <strong>Eliminados</strong> para restaurar.</div>
+            <h4>📝 Registro</h4>
+            <div class="help-step">📌 Completa el formulario. Los campos con * son obligatorios.</div>
+            <div class="help-step">📖 Usa el catálogo para cargar descripciones rápidamente.</div>
+        </div>
+        <div class="help-section">
+            <h4>🔍 Control</h4>
+            <div class="help-step">🔍 Filtra por fechas o estado (Pendiente, Proceso, Entregado).</div>
+            <div class="help-step">✏️ Edita, entrega o elimina pedidos (eliminar requiere autorización).</div>
+            <div class="help-step">🗑️ Los pedidos eliminados se ven en "Eliminados" y se pueden restaurar.</div>
         </div>
         <div class="help-section">
             <h4>📊 Estadísticas</h4>
-            <div class="help-step">Selecciona un rango de fechas y haz clic en <strong>"Calcular"</strong> para ver totales y detalle.<div class="help-tip">💰 Total en bolívares y dólares del período</div></div>
+            <div class="help-step">Selecciona un rango de fechas y obtén totales y detalle.</div>
         </div>
         <div class="help-section">
             <h4>🧮 Calculadora</h4>
-            <div class="help-step">Botón <strong>🧮 Calculadora</strong> abajo a la derecha. Operaciones básicas y porcentajes.<div class="help-tip">Máximo 12 dígitos</div></div>
+            <div class="help-step">Botón flotante abajo a la derecha. +, -, ×, ÷, %</div>
         </div>
-        <button class="tour-btn" onclick="iniciarTour()">🎓 Iniciar tour guiado</button>
-        <button class="tour-btn" onclick="descargarManual()" style="background:#6b8c7a; margin-top:8px;">📥 Descargar manual PDF</button>
+        <button class="tour-btn" onclick="iniciarTour()">🎓 Tour guiado</button>
+        <button class="tour-btn" onclick="descargarManual()" style="background:#6b8c7a;">📥 Manual PDF</button>
     </div>
 </div>
 
-<!-- Modales calculadora y tour -->
+<!-- Modal calculadora -->
 <div id="modalCalculadora" class="modal-calc">
     <div class="calc-container">
         <div class="calc-display" id="calcDisplay">0</div>
@@ -450,22 +738,23 @@
     </div>
 </div>
 
+<!-- Modal tour -->
 <div id="tourModal" class="modal-tour">
     <div class="tour-card">
         <h3>🎓 Tour guiado</h3>
-        <p id="tourTexto">¡Bienvenida a Clavelle! Te guiaré por las principales funciones del sistema.</p>
+        <p id="tourTexto">¡Bienvenida a Clavelle! Te guiaré por las funciones principales.</p>
         <div id="tourImagen" style="font-size: 3rem;">🌸</div>
         <div class="tour-buttons">
-            <button id="tourPrevBtn" onclick="tourAnterior()" style="background:#95a5a6;">◀ Anterior</button>
-            <button id="tourNextBtn" onclick="tourSiguiente()">Siguiente ▶</button>
-            <button id="tourCerrarBtn" onclick="cerrarTour()" style="background:#cb887a;">Cerrar</button>
+            <button onclick="tourAnterior()" style="background:#95a5a6;">◀ Anterior</button>
+            <button onclick="tourSiguiente()">Siguiente ▶</button>
+            <button onclick="cerrarTour()" style="background:#cb887a;">Cerrar</button>
         </div>
         <div style="margin-top: 12px; font-size: 0.7rem;">Paso <span id="tourPaso">1</span> de <span id="tourTotal">7</span></div>
     </div>
 </div>
 
 <script>
-    // ===== CATÁLOGO (sin precios) =====
+    // ===== CATÁLOGO ====
     const catalogo = [
         { nombre: "Clavelle Rosas", descripcion: "2 rosas arregladas. Disponibilidad de colores variados." },
         { nombre: "Clavelle doce Rosas", descripcion: "12 rosas arregladas. Disponibilidad de colores variados." },
@@ -484,21 +773,7 @@
         { nombre: "Clavelle Astromelias", descripcion: "Astromelias, eucalipto." },
         { nombre: "Clavelle Lírios", descripcion: "Ramo de Lírios." },
         { nombre: "Clavelle Brillante", descripcion: "Hortensias, astromelias." },
-        { nombre: "Clavelle Luz", descripcion: "2 paquetes de azucena." },
-        { nombre: "Clavelle Poderosa", descripcion: "Hortensias, Astromelias." },
-        { nombre: "Clavelle Tulipanes", descripcion: "10 Tulipanes." },
-        { nombre: "Clavelle Dendrobium", descripcion: "Dendrobium, florero." },
-        { nombre: "Clavelle Dulce", descripcion: "Hortensias, margaritas." },
-        { nombre: "Clavelle Gerberas", descripcion: "Gerberas, astromelias." },
-        { nombre: "Clavelle Van Gogh", descripcion: "Girasol, margaritas." },
-        { nombre: "Clavelle VG Med", descripcion: "Girasol, 8 rosas." },
-        { nombre: "Clavelle VG VIP", descripcion: "8 girasoles." },
-        { nombre: "Clavelle girasol violeta", descripcion: "Girasol, margaritas." },
-        { nombre: "Clavelle Barbie", descripcion: "Ramo de pinocchio." },
-        { nombre: "Clavelle Barbie clav", descripcion: "Clavellinas y gerberas." },
-        { nombre: "Clavelle ramo colores", descripcion: "Tulipanes, estrella de belén." },
-        { nombre: "Clavelle PD Fuccia", descripcion: "4 Girasoles, 4 rosas." },
-        { nombre: "Clavelle gerb aleg", descripcion: "Gerberas, Ghipso." }
+        { nombre: "Clavelle Luz", descripcion: "2 paquetes de azucena." }
     ];
     
     function cargarCatalogo() {
@@ -525,68 +800,31 @@
     
     function toggleCatalogo() { document.getElementById('listaCatalogo').classList.toggle('visible'); }
     
-    // ===== TOUR COMPLETO =====
+    // ===== TOUR ====
     let tourPasoActual = 0;
     const tourPasos = [
-        { texto: "¡Bienvenida a Clavelle! 🌸 Este sistema te ayudará a gestionar tus pedidos florales de forma fácil y elegante.", img: "🌸", accion: null },
-        { texto: "📝 Pestaña REGISTRO: Completa el formulario para crear nuevos pedidos. Los campos con * son obligatorios.", img: "📝", accion: () => mostrarPanel('registro') },
-        { texto: "🌸 Catálogo integrado: Haz clic en 'Ver catálogo' y selecciona un producto. La descripción se cargará automáticamente.", img: "📖", accion: null },
-        { texto: "🔍 Pestaña CONTROL: Aquí puedes ver, filtrar y gestionar todos tus pedidos. Usa los filtros por fecha y estado.", img: "🔍", accion: () => mostrarPanel('control') },
-        { texto: "✏️ En CONTROL, cada pedido tiene botones: Editar, Eliminar (requiere autorización) y Entregar.", img: "✏️", accion: null },
-        { texto: "🗑️ ELIMINADOS: Haz clic en el botón 'Eliminados' para ver pedidos eliminados. Desde allí puedes RESTAURARLOS.", img: "♻️", accion: null },
-        { texto: "📊 Pestaña ESTADÍSTICAS: Selecciona un rango de fechas y obtén totales en Bs y USD, más el detalle de pedidos.", img: "📊", accion: () => mostrarPanel('estadisticas') },
-        { texto: "🧮 CALCULADORA: Botón flotante abajo a la derecha. Realiza operaciones básicas y porcentajes.", img: "🧮", accion: () => abrirCalculadora() }
+        { texto: "🌸 ¡Bienvenida a Clavelle! Sistema fácil para gestionar pedidos florales.", img: "🌸", accion: null },
+        { texto: "📝 REGISTRO: Completa el formulario y usa el catálogo para cargar descripciones.", img: "📝", accion: () => mostrarPanel('registro') },
+        { texto: "🔍 CONTROL: Filtra por fechas o estado. Edita, entrega o elimina pedidos.", img: "🔍", accion: () => mostrarPanel('control') },
+        { texto: "🗑️ ELIMINADOS: Haz clic en 'Eliminados' para ver pedidos eliminados y restaurarlos.", img: "♻️", accion: null },
+        { texto: "📊 ESTADÍSTICAS: Selecciona fechas y calcula totales.", img: "📊", accion: () => mostrarPanel('estadisticas') },
+        { texto: "🧮 CALCULADORA: Botón flotante abajo a la derecha.", img: "🧮", accion: () => abrirCalculadora() }
     ];
     
-    function iniciarTour() {
-        tourPasoActual = 0;
-        document.getElementById('tourModal').style.display = 'flex';
-        actualizarTour();
-    }
-    
-    function actualizarTour() {
-        let paso = tourPasos[tourPasoActual];
-        document.getElementById('tourTexto').innerText = paso.texto;
-        document.getElementById('tourImagen').innerText = paso.img;
-        document.getElementById('tourPaso').innerText = tourPasoActual + 1;
-        document.getElementById('tourTotal').innerText = tourPasos.length;
-        if (paso.accion) setTimeout(paso.accion, 100);
-    }
-    
-    function tourSiguiente() {
-        if (tourPasoActual < tourPasos.length - 1) { tourPasoActual++; actualizarTour(); }
-        else cerrarTour();
-    }
+    function iniciarTour() { tourPasoActual = 0; document.getElementById('tourModal').style.display = 'flex'; actualizarTour(); }
+    function actualizarTour() { let paso = tourPasos[tourPasoActual]; document.getElementById('tourTexto').innerText = paso.texto; document.getElementById('tourImagen').innerText = paso.img; document.getElementById('tourPaso').innerText = tourPasoActual+1; document.getElementById('tourTotal').innerText = tourPasos.length; if (paso.accion) setTimeout(paso.accion, 100); }
+    function tourSiguiente() { if (tourPasoActual < tourPasos.length-1) { tourPasoActual++; actualizarTour(); } else cerrarTour(); }
     function tourAnterior() { if (tourPasoActual > 0) { tourPasoActual--; actualizarTour(); } }
     function cerrarTour() { document.getElementById('tourModal').style.display = 'none'; cerrarCalculadora(); }
     
     function descargarManual() {
-        const manual = `🌸 MANUAL CLAVELLE - SISTEMA DE GESTIÓN DE PEDIDOS 🌸
-===========================================
-1. REGISTRAR PEDIDO
-- Complete el formulario en la pestaña "Registro"
-- Campos obligatorios: Aplicación/Cliente, Descripción y Monto Bs
-- Use el catálogo para cargar descripciones rápidamente
-
-2. CONTROL DE PEDIDOS
-- Filtre por fechas o estado
-- Edite, entregue o elimine pedidos (eliminar requiere autorización)
-
-3. ELIMINADOS / RESTAURAR
-- Los pedidos eliminados no se borran, se marcan como "Eliminados"
-- Desde la vista "Eliminados" puede restaurarlos
-
-4. ESTADÍSTICAS
-- Seleccione rango de fechas y calcule totales
-
-5. CALCULADORA
-- Botón flotante abajo a la derecha
-- Operaciones: +, -, ×, ÷, %
-
-💰 TIPO DE CAMBIO BCV
-Se actualiza automáticamente cada 5 minutos
-
-¡Gracias por usar Clavelle! 🌸`;
+        const manual = `🌸 CLAVELLE - MANUAL FLORAL 🌸
+1. REGISTRO: Complete el formulario. Use el catálogo.
+2. CONTROL: Filtre por fechas o estado. Edite, entregue o elimine.
+3. ELIMINADOS: Restaure pedidos desde esa vista.
+4. ESTADÍSTICAS: Calcule totales por período.
+5. CALCULADORA: Botón flotante.
+¡Gracias por usar Clavelle!`;
         const blob = new Blob([manual], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -611,8 +849,7 @@ Se actualiza automáticamente cada 5 minutos
     function calcBorrar() { calcActual = calcActual.length === 1 ? "0" : calcActual.slice(0, -1); actualizarDisplayCalc(); }
     function calcularResultado() {
         if (!calcOperacion) return;
-        let a = parseFloat(calcAnterior), b = parseFloat(calcActual);
-        let r;
+        let a = parseFloat(calcAnterior), b = parseFloat(calcActual), r;
         switch (calcOperacion) { case '+': r = a + b; break; case '-': r = a - b; break; case '*': r = a * b; break; case '/': r = a / b; break; default: return; }
         calcActual = r.toString(); calcAnterior = ""; calcOperacion = null; actualizarDisplayCalc();
     }
@@ -620,7 +857,7 @@ Se actualiza automáticamente cada 5 minutos
     function cerrarCalculadora() { document.getElementById('modalCalculadora').style.display = 'none'; }
     function toggleHelp() { document.getElementById('helpPanel').classList.toggle('open'); }
     
-    // Tooltips
+    // ===== TOOLTIPS =====
     let tooltipTimeout = null;
     function mostrarTooltip(texto, elemento) {
         if (tooltipTimeout) clearTimeout(tooltipTimeout);
@@ -638,20 +875,21 @@ Se actualiza automáticamente cada 5 minutos
     }
     
     function asignarTooltips() {
-        const tooltipsMap = {
-            'button[onclick="aplicarFiltros()"]': 'Aplicar filtro por fechas',
-            'button[onclick="limpiarFiltros()"]': 'Limpiar filtros',
-            'button[onclick="filtrarPor(\'todos\')"]': 'Mostrar todos los pedidos',
-            'button[onclick="filtrarPor(\'Pendiente\')"]': 'Solo pendientes',
-            'button[onclick="filtrarPor(\'En Proceso\')"]': 'Solo proceso finalizado',
-            'button[onclick="filtrarPor(\'Entregado\')"]': 'Solo entregados',
-            'button[onclick="filtrarPor(\'eliminados\')"]': 'Ver eliminados',
-            'button[onclick="cargarEstadisticasPorFecha()"]': 'Calcular estadísticas',
-            '.btn-calc': 'Calculadora básica',
-            '.btn-help': 'Ayuda y guía',
-            '.btn-primary': 'Guardar pedido'
+        const tooltips = {
+            '#btnCatalogo': '📖 Abrir catálogo de productos',
+            '.btn-primary': '💾 Guardar el pedido en el sistema',
+            '.btn-info': '📊 Calcular estadísticas',
+            '.btn-calc': '🧮 Abrir calculadora',
+            '.btn-help': '❓ Abrir ayuda',
+            'button[onclick="aplicarFiltros()"]': '🔍 Aplicar filtro por fechas',
+            'button[onclick="limpiarFiltros()"]': '🗑️ Limpiar filtros',
+            'button[onclick="filtrarPor(\'todos\')"]': '📋 Mostrar todos',
+            'button[onclick="filtrarPor(\'Pendiente\')"]': '🕊️ Ver pendientes',
+            'button[onclick="filtrarPor(\'En Proceso\')"]': '⚙️ Ver proceso finalizado',
+            'button[onclick="filtrarPor(\'Entregado\')"]': '✅ Ver entregados',
+            'button[onclick="filtrarPor(\'eliminados\')"]': '🗑️ Ver eliminados'
         };
-        for (const [sel, txt] of Object.entries(tooltipsMap)) {
+        for (const [sel, txt] of Object.entries(tooltips)) {
             document.querySelectorAll(sel).forEach(el => {
                 el.removeEventListener('mouseenter', (e) => mostrarTooltip(txt, e.target));
                 if (document.querySelector('.panel.active')?.id !== 'panel-registro') {
@@ -659,13 +897,9 @@ Se actualiza automáticamente cada 5 minutos
                 }
             });
         }
-        document.querySelectorAll('.btn-warning').forEach(el => el.addEventListener('mouseenter', (e) => mostrarTooltip('Editar este pedido', e.target)));
-        document.querySelectorAll('.btn-danger').forEach(el => el.addEventListener('mouseenter', (e) => mostrarTooltip('Eliminar este pedido (requiere autorización)', e.target)));
-        document.querySelectorAll('.btn-success').forEach(el => el.addEventListener('mouseenter', (e) => mostrarTooltip('Marcar como entregado', e.target)));
-        document.querySelectorAll('.btn-restaurar').forEach(el => el.addEventListener('mouseenter', (e) => mostrarTooltip('Restaurar este pedido', e.target)));
     }
     
-    // ===== FUNCIONES PRINCIPALES =====
+    // ===== CONFIGURACIÓN GENERAL =====
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkrJgvG8SRDbmbCsy4TOvZE7ObwdbrNeBl_tXivh-tdSTpA6qFVXSfnK-gzjxsNIhPjQ/exec";
     const CLAVE = "piliperezbele";
     let USUARIO = "Pili Pérez";
@@ -707,7 +941,7 @@ Se actualiza automáticamente cada 5 minutos
         let desc = document.getElementById('descripcion').value.trim();
         let monto = document.getElementById('monto').value;
         if (!cliente || !desc || !monto || isNaN(monto) || parseFloat(monto) <= 0) { alert("❌ Completa campos obligatorios"); return; }
-        let btn = event.target, orig = btn.innerHTML; btn.innerHTML = 'Guardando...'; btn.disabled = true;
+        let btn = event.target, orig = btn.innerHTML; btn.innerHTML = '⏳ Guardando...'; btn.disabled = true;
         let pedidos = await leerPedidos();
         let nuevoNum = pedidos.length ? Math.max(...pedidos.map(p => parseInt(p.numero))) + 1 : 1;
         let montoBs = parseFloat(monto), montoUsd = montoBs / tasa;
@@ -735,7 +969,7 @@ Se actualiza automáticamente cada 5 minutos
         for (let p of filtrados) {
             let badge = p.estado === "Pendiente" ? "badge-pendiente" : (p.estado === "En Proceso" ? "badge-proceso" : "badge-entregado");
             let esElim = (filtroActual === "eliminados"), esEnt = (p.estado === "Entregado");
-            html += `<div class="pedido-item"><div class="pedido-header"><div><strong>📋 #${p.numero}</strong> <span class="${badge}">${p.estado}</span></div><div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${(parseFloat(p.monto)/tasa).toFixed(2)})</small></div></div><div class="pedido-detalle"><div>👤 ${escapeHtml(p.cliente)}</div><div>📞 ${escapeHtml(p.telefono)||'—'}</div><div>📦 ${escapeHtml(p.descripcion)}</div><div>📅 Entrega: ${p.fechaEntrega||'—'} ${p.horaEntrega||''}</div><div>📆 Registro: ${p.fechaRegistro||'—'}</div>${p.responsable ? `<div>👤 Responsable: ${escapeHtml(p.responsable)}</div>` : ''}</div><div class="pedido-acciones">${!esElim && !esEnt ? `<button class="btn-warning" onclick="abrirEditar(${JSON.stringify(p).replace(/'/g, "\\'")})">✏️ Editar</button>` : ''}${!esElim && !esEnt ? `<button class="btn-danger" onclick="eliminarPedidoConfirm(${p.numero},'${escapeHtml(p.cliente)}','${p.estado}')">🗑️ Eliminar</button>` : ''}${!esElim && !esEnt ? `<button class="btn-success" onclick="entregarPedido(${p.numero}, this)">✅ Entregar</button>` : ''}${esElim ? `<button class="btn-success" onclick="restaurarPedidoConfirm(${p.numero},'${escapeHtml(p.cliente)}')">♻️ Restaurar</button>` : ''}${esEnt && !esElim ? `<span style="background:#e3f3e4; padding:6px 16px; border-radius:40px;">✅ ENTREGADO</span>` : ''}</div></div>`;
+            html += `<div class="pedido-item"><div class="pedido-header"><div><span class="pedido-numero">📋 #${p.numero}</span> <span class="${badge}">${p.estado}</span></div><div><strong>Bs ${parseFloat(p.monto).toFixed(2)}</strong> <small>($${(parseFloat(p.monto)/tasa).toFixed(2)})</small></div></div><div class="pedido-detalle"><div>👤 <strong>${escapeHtml(p.cliente)}</strong></div><div>📞 ${escapeHtml(p.telefono)||'—'}</div><div>📦 ${escapeHtml(p.descripcion).substring(0,60)}</div><div>📅 Entrega: ${p.fechaEntrega||'—'} ${p.horaEntrega||''}</div><div>📆 Registro: ${p.fechaRegistro||'—'}</div>${p.responsable ? `<div>👤 Responsable: <strong>${escapeHtml(p.responsable)}</strong></div>` : ''}</div><div class="pedido-acciones">${!esElim && !esEnt ? `<button class="btn-warning" onclick="abrirEditar(${JSON.stringify(p).replace(/'/g, "\\'")})">✏️ Editar</button>` : ''}${!esElim && !esEnt ? `<button class="btn-danger" onclick="eliminarPedidoConfirm(${p.numero},'${escapeHtml(p.cliente)}','${p.estado}')">🗑️ Eliminar</button>` : ''}${!esElim && !esEnt ? `<button class="btn-success" onclick="entregarPedido(${p.numero}, this)">✅ Entregar</button>` : ''}${esElim ? `<button class="btn-success" onclick="restaurarPedidoConfirm(${p.numero},'${escapeHtml(p.cliente)}')">♻️ Restaurar</button>` : ''}${esEnt && !esElim ? `<span style="background:#e3f3e4; padding:6px 16px; border-radius:40px; font-weight:700;">✅ ENTREGADO</span>` : ''}</div></div>`;
         }
         container.innerHTML = html;
         setTimeout(asignarTooltips, 100);
@@ -787,7 +1021,7 @@ Se actualiza automáticamente cada 5 minutos
         if (!editandoNumero) return;
         let monto = parseFloat(document.getElementById('editMonto').value) || 0;
         let data = { numero: editandoNumero, cliente: document.getElementById('editCliente').value, telefono: document.getElementById('editTelefono').value, descripcion: document.getElementById('editDescripcion').value, monto: monto.toFixed(2), fechaEntrega: document.getElementById('editFechaEntrega').value, horaEntrega: document.getElementById('editHoraEntrega').value, estado: document.getElementById('editEstado').value, responsable: document.getElementById('editResponsable').value, montoUSD: (monto / tasa).toFixed(2) };
-        let btn = event.target, orig = btn.innerHTML; btn.innerHTML = 'Guardando...'; btn.disabled = true;
+        let btn = event.target, orig = btn.innerHTML; btn.innerHTML = '⏳ Guardando...'; btn.disabled = true;
         let res = await actualizarPedido(data);
         btn.innerHTML = orig; btn.disabled = false;
         if (res.success) { alert(`✅ Pedido #${editandoNumero} actualizado`); cerrarModal(); cargarPedidos(); }
@@ -804,8 +1038,8 @@ Se actualiza automáticamente cada 5 minutos
         let pedidos = await leerPedidos(false, fd, fh);
         let totalBs = pedidos.reduce((s,p) => s + (parseFloat(p.monto)||0), 0);
         let totalUsd = totalBs / tasa;
-        document.getElementById('statsResultado').innerHTML = `<div class="stat-card"><div class="numero">${pedidos.length}</div><div>Pedidos</div></div><div class="stat-card"><div class="monto">Bs ${totalBs.toFixed(2)}</div><div>Total Bolívares</div></div><div class="stat-card"><div class="monto">$ ${totalUsd.toFixed(2)}</div><div>Total Dólares</div></div>`;
-        let detalle = `<div style="background:#fdfbf8; border-radius:24px; padding:16px;"><h3>📋 Detalle</h3>`;
+        document.getElementById('statsResultado').innerHTML = `<div class="stat-card"><div class="numero">${pedidos.length}</div><div style="font-weight:600;">Pedidos</div></div><div class="stat-card"><div class="monto">Bs ${totalBs.toFixed(2)}</div><div style="font-weight:600;">Total Bolívares</div></div><div class="stat-card"><div class="monto">$ ${totalUsd.toFixed(2)}</div><div style="font-weight:600;">Total Dólares</div></div>`;
+        let detalle = `<div style="background:#fdfbf8; border-radius:24px; padding:16px;"><h3 style="font-weight:700;">📋 Detalle</h3>`;
         if (!pedidos.length) detalle += `<p>No hay pedidos</p>`;
         else pedidos.forEach(p => detalle += `<div style="border-bottom:1px solid #efe2d6; padding:12px 0;"><strong>#${p.numero}</strong> - ${p.cliente}<br>📅 ${p.fechaRegistro || '—'} | 💰 Bs ${parseFloat(p.monto).toFixed(2)} | 💵 $${(parseFloat(p.monto)/tasa).toFixed(2)}</div>`);
         detalle += `</div>`;
@@ -833,7 +1067,7 @@ Se actualiza automáticamente cada 5 minutos
         document.getElementById('numeroPedido').value = ultimo;
         await cargarPedidos();
         asignarTooltips();
-        setInterval(async () => { await obtenerTasa(); if (document.getElementById('panel-control').classList.contains('active')) await cargarPedidos(); }, 300000);
+        setInterval(async () => { await obtenerTasa(); }, 300000);
     }
     init();
 </script>
@@ -841,17 +1075,17 @@ Se actualiza automáticamente cada 5 minutos
 <!-- MODAL EDITAR -->
 <div id="modalEditar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); align-items:center; justify-content:center; z-index:1000;">
     <div style="background:white; max-width:500px; width:90%; border-radius:32px; padding:24px;">
-        <h3>✏️ Editar Pedido #<span id="editNumero"></span></h3>
-        <div class="campo"><label>Aplicación/Cliente</label><input type="text" id="editCliente"></div>
-        <div class="campo"><label>Teléfono</label><input type="text" id="editTelefono"></div>
-        <div class="campo"><label>Descripción</label><textarea id="editDescripcion" rows="2"></textarea></div>
-        <div class="campo"><label>Monto Bs</label><input type="number" id="editMonto" step="0.01"></div>
-        <div class="campo"><label>Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
-        <div class="campo"><label>Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
-        <div class="campo"><label>Estado</label>
+        <h3 style="font-weight:700;">✏️ Editar Pedido #<span id="editNumero"></span></h3>
+        <div class="campo"><label>👤 Aplicación/Cliente</label><input type="text" id="editCliente"></div>
+        <div class="campo"><label>📞 Teléfono</label><input type="text" id="editTelefono"></div>
+        <div class="campo"><label>📦 Descripción</label><textarea id="editDescripcion" rows="2"></textarea></div>
+        <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01"></div>
+        <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
+        <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
+        <div class="campo"><label>📌 Estado</label>
             <select id="editEstado"><option>Pendiente</option><option>En Proceso</option><option>Entregado</option></select>
         </div>
-        <div class="campo"><label>Responsable</label><input type="text" id="editResponsable"></div>
+        <div class="campo"><label>👤 Responsable</label><input type="text" id="editResponsable"></div>
         <div style="display:flex; gap:12px; margin-top:20px;"><button onclick="guardarEdicion()">Guardar</button><button onclick="cerrarModal()">Cancelar</button></div>
     </div>
 </div>
