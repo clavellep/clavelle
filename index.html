@@ -665,22 +665,88 @@
     function cerrarTour() { document.getElementById('tourModal').style.display = 'none'; cerrarCalculadora(); }
     
     function descargarManual() {
-        const manual = `🌸 CLAVELLE - MANUAL FLORAL 🌸
-1. REGISTRO: Complete el formulario. Use el catálogo.
-2. CONTROL: Filtre por fechas o estado. Edite, entregue o elimine.
-3. ELIMINADOS: Restaure pedidos desde esa vista.
-4. ESTADÍSTICAS: Calcule totales por período.
-5. CALCULADORA: Botón "Calc" en el encabezado.
-¡Gracias por usar Clavelle!`;
-        const blob = new Blob([manual], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Manual_Clavelle.txt';
-        a.click();
-        URL.revokeObjectURL(url);
-        alert("📥 Manual descargado");
-    }
+    const manual = `🌸 MANUAL CLAVELLE - SISTEMA DE GESTIÓN DE PEDIDOS 🌸
+
+===========================================
+1. REGISTRAR PEDIDO
+===========================================
+- Complete el formulario en la pestaña "Registro"
+- Campos obligatorios: Aplicación/Cliente, Descripción y Monto Bs
+- El número de pedido se genera automáticamente
+- 📖 Use el catálogo floral: haga clic en "Ver catálogo" y seleccione un producto
+- La descripción se cargará automáticamente y podrá editarla libremente
+- Presione "GUARDAR" para registrar
+
+===========================================
+2. CONTROL DE PEDIDOS
+===========================================
+- 📅 Seleccione un rango de fechas para buscar pedidos específicos
+- Filtre por estado: Todos / Pendientes / Proceso Finalizado / Entregados
+- Botón "Eliminados" para ver pedidos eliminados (requiere autorización)
+- Todos los botones están redondeados y de igual tamaño para fácil uso
+
+===========================================
+3. ACCIONES POR PEDIDO
+===========================================
+- ✏️ Editar: Modificar datos (solo si está Pendiente o Proceso Finalizado)
+- ✅ Entregar: Marcar como entregado (solicita nombre del responsable)
+- 🗑️ Eliminar: Mover a eliminados (requiere contraseña de autorización)
+- ♻️ Restaurar: Recuperar pedido eliminado (desde vista "Eliminados")
+
+===========================================
+4. ESTADÍSTICAS
+===========================================
+- 📊 Seleccione un rango de fechas
+- Obtenga totales en Bolívares y Dólares
+- Visualice el detalle de todos los pedidos del período
+
+===========================================
+5. CALCULADORA FLORAL 🌸
+===========================================
+- Botón "🧮 Calc" en el encabezado (junto al precio del dólar)
+- Operaciones: + , - , × , ÷ , %
+- Estilo floral con colores vivos y botones redondeados
+- Soporta hasta 12 dígitos
+
+===========================================
+6. DISEÑO Y NAVEGACIÓN
+===========================================
+- Cada pestaña tiene un color distintivo:
+  📝 Registro → Terracota
+  🔍 Control → Verde salvia
+  📊 Estadísticas → Menta
+- Todos los botones tienen bordes redondeados (sin cuadrados)
+- Interfaz adaptada para computadora y teléfono móvil
+- Tooltips informativos al pasar el cursor sobre botones
+
+===========================================
+💰 TIPO DE CAMBIO BCV
+===========================================
+- Se muestra en el encabezado junto a la fecha actual
+- Se actualiza automáticamente cada 5 minutos
+
+===========================================
+🔐 AUTORIZACIÓN
+===========================================
+- Las acciones de Eliminar y Restaurar requieren autorización especial
+- La contraseña de administrador es privada
+
+===========================================
+📞 SOPORTE
+===========================================
+Para cualquier duda, contacte al administrador del sistema.
+
+¡Gracias por usar Clavelle y hacer florecer tu negocio! 🌸💐`;
+    
+    const blob = new Blob([manual], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Manual_Clavelle.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    alert("📥 Manual descargado");
+}
     
     // ===== CALCULADORA FLORAL =====
     let calcActual = "0", calcAnterior = "", calcOperacion = null;
