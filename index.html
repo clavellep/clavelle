@@ -17,17 +17,17 @@
             padding: 12px;
             color: #2c2b28;
         }
-        /* Contenedor más angosto para mejor legibilidad */
+        /* Contenedor angosto y centrado */
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
         
-        /* HEADER FLORAL */
+        /* HEADER CON BOTONES AYUDA Y CALCULADORA */
         .header {
             background: #ffffff;
             border-radius: 32px;
-            padding: 16px 20px;
+            padding: 14px 18px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
@@ -40,13 +40,13 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .logo-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
         .logo h1 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             background: linear-gradient(135deg, #6b8c7a, #b8876e);
             background-clip: text;
@@ -54,10 +54,34 @@
             color: transparent;
         }
         .logo p {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #b0a088;
             font-weight: 500;
         }
+        /* Botones de ayuda y calculadora en el header */
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-header {
+            background: #ede5dc;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #4a3a2a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-header:hover {
+            background: #ddd0c2;
+            transform: translateY(-1px);
+        }
+        
         .tasa-container {
             background: #f3ede5;
             padding: 6px 14px;
@@ -97,7 +121,6 @@
             background: #ede5dc;
             color: #4a3a2a;
         }
-        /* Colores específicos por pestaña cuando están activas */
         .tab[data-panel="registro"].active {
             background: #b8876e;
             color: white;
@@ -131,57 +154,40 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* FORMULARIO BONITO Y GRANDE */
+        /* CAMPOS DE ENTRADA MÁS OSCUROS Y CONTRASTADOS */
+        .campo input, .campo select, .campo textarea,
+        input[type="date"], input[type="time"] {
+            background: #fef9f4;
+            border: 2px solid #ddd0c2;
+            border-radius: 48px;
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .campo input:focus, .campo select:focus, .campo textarea:focus,
+        input[type="date"]:focus, input[type="time"]:focus {
+            border-color: #b8876e;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(184, 135, 110, 0.1);
+        }
+        .campo label {
+            font-weight: 700;
+            color: #6b5a48;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
         .form-grid {
             display: flex;
             flex-direction: column;
             gap: 18px;
             margin-bottom: 24px;
         }
-        .campo {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .campo label {
-            font-weight: 700;
-            color: #6b5a48;
-            font-size: 0.8rem;
-            letter-spacing: 0.3px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .campo label .label-icon {
-            font-size: 1.1rem;
-        }
-        .campo input, .campo select, .campo textarea {
-            padding: 14px 16px;
-            border: 1.5px solid #efe2d6;
-            border-radius: 48px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: 0.2s;
-            background: #ffffff;
-            width: 100%;
-        }
-        /* FECHAS MÁS GRANDES */
-        input[type="date"], input[type="time"] {
-            padding: 14px 16px;
-            font-size: 0.9rem;
-        }
-        .campo input:focus, .campo select:focus, .campo textarea:focus {
-            outline: none;
-            border-color: #b8876e;
-            box-shadow: 0 0 0 3px rgba(184, 135, 110, 0.1);
-        }
-        textarea {
-            border-radius: 28px !important;
-            resize: vertical;
-        }
         
-        /* BOTÓN GUARDAR PROPORCIONADO */
+        /* BOTÓN GUARDAR */
         .btn-primary {
             background: #b8876e;
             width: 100%;
@@ -205,7 +211,7 @@
         }
         .selector-boton {
             background: transparent;
-            border: 1.5px dashed #b8876e;
+            border: 2px dashed #b8876e;
             color: #b8876e;
             width: auto;
             text-align: center;
@@ -218,17 +224,16 @@
         }
         .selector-boton:hover {
             background: #b8876e10;
-            border: 1.5px solid #b8876e;
+            border: 2px solid #b8876e;
         }
         .lista-catalogo {
             display: none;
             background: white;
-            border: 1px solid #efe2d6;
+            border: 1px solid #ddd0c2;
             border-radius: 24px;
             max-height: 260px;
             overflow-y: auto;
             margin-top: 10px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
         }
         .lista-catalogo.visible {
             display: block;
@@ -237,44 +242,65 @@
             padding: 12px 16px;
             border-bottom: 1px solid #f0e4d8;
             cursor: pointer;
-            transition: 0.1s;
         }
         .item-catalogo:hover {
             background: #fdfbf8;
         }
         .item-catalogo strong {
             color: #6b8c7a;
-            font-size: 0.85rem;
             font-weight: 700;
         }
-        .item-catalogo small {
-            color: #b8876e;
-            font-size: 0.7rem;
-            display: block;
-            margin-top: 4px;
-            font-weight: 500;
+        
+        /* FILTROS DE FECHA */
+        .fecha-filtros {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .fecha-filtros input {
+            flex: 1;
+            min-width: 120px;
+            background: #fef9f4;
+            border: 2px solid #ddd0c2;
+        }
+        
+        /* BOTONES DE CONTROL - TODOS DEL MISMO TAMAÑO */
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .filtros button {
+            flex: 1 1 auto;
+            min-width: 110px;
+            text-align: center;
+            padding: 10px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 60px;
+            background: #ede5dc;
+            color: #4a3a2a;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filtros button:hover {
+            background: #ddd0c2;
+            transform: translateY(-1px);
+        }
+        /* El botón "Eliminados" se ve igual pero centrado */
+        #btnEliminados {
+            background: #cdc2b6;
         }
         
         /* BOTONES GENERALES */
-        button {
-            background: #6b8c7a;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 60px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        button:hover {
-            background: #5b7a68;
-            transform: translateY(-1px);
-        }
-        .btn-success { background: #83a67c; }
-        .btn-danger { background: #cb887a; }
+        .btn-success { background: #83a67c; color: white; }
+        .btn-danger { background: #cb887a; color: white; }
         .btn-warning { background: #e2bc89; color: #4a3a2a; }
-        .btn-info { background: #99b4aa; }
+        .btn-info { background: #99b4aa; color: white; }
         
         /* BADGES */
         .badge-pendiente, .badge-proceso, .badge-entregado {
@@ -288,18 +314,13 @@
         .badge-proceso { background: #fff0e0; color: #c7883c; }
         .badge-entregado { background: #e3f3e4; color: #517a3e; }
         
-        /* TARJETAS DE PEDIDO (MÁS LEGIBLES) */
+        /* TARJETAS DE PEDIDO */
         .pedido-item {
             background: #fff;
             border: 1px solid #f0e4d8;
             border-radius: 28px;
             padding: 18px;
             margin-bottom: 16px;
-            transition: 0.2s;
-        }
-        .pedido-item:hover {
-            border-color: #dfcebe;
-            background: #fefcf9;
         }
         .pedido-header {
             display: flex;
@@ -334,12 +355,8 @@
             padding-top: 14px;
             flex-wrap: wrap;
         }
-        .filtros {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
+        
+        /* ESTADÍSTICAS */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -362,6 +379,7 @@
             font-weight: 700;
             color: #27ae60;
         }
+        
         footer {
             text-align: center;
             margin-top: 30px;
@@ -369,22 +387,6 @@
             font-size: 0.65rem;
             color: #cdbcab;
             font-weight: 500;
-        }
-        
-        /* FILTROS DE FECHA MÁS GRANDES */
-        .fecha-filtros {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        .fecha-filtros input {
-            flex: 1;
-            min-width: 120px;
-            padding: 12px 14px;
-            border-radius: 48px;
-            border: 1.5px solid #efe2d6;
-            font-size: 0.85rem;
         }
         
         /* TOOLTIPS */
@@ -400,34 +402,6 @@
             z-index: 10000;
             pointer-events: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        /* BOTONES FLOTANTES */
-        .btn-calc, .btn-help {
-            position: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            z-index: 1000;
-            padding: 10px 18px;
-            border-radius: 60px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .btn-calc {
-            background: #b8876e;
-            color: white;
-            bottom: 20px;
-            right: 20px;
-        }
-        .btn-help {
-            background: #6b8c7a;
-            color: white;
-            bottom: 20px;
-            left: 20px;
         }
         
         /* MODALES */
@@ -487,9 +461,7 @@
             display: flex;
             flex-direction: column;
         }
-        .help-panel.open {
-            right: 0;
-        }
+        .help-panel.open { right: 0; }
         .help-header {
             background: #6b8c7a;
             color: white;
@@ -538,6 +510,7 @@
             border-radius: 60px;
             font-weight: 700;
             color: white;
+            text-align: center;
         }
         .tour-card {
             background: white;
@@ -556,17 +529,9 @@
         }
         
         @media (max-width: 550px) {
-            body {
-                padding: 8px;
-            }
-            .tab {
-                font-size: 0.75rem;
-                padding: 10px 12px;
-                min-width: 80px;
-            }
-            .pedido-acciones button {
+            .filtros button {
+                min-width: 90px;
                 font-size: 0.7rem;
-                padding: 8px 14px;
             }
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -576,6 +541,7 @@
 </head>
 <body>
 <div class="container">
+    <!-- HEADER CON BOTONES DE AYUDA Y CALCULADORA -->
     <div class="header">
         <div class="logo">
             <div class="logo-icon">🌸</div>
@@ -583,6 +549,10 @@
                 <h1>CLAVELLE</h1>
                 <p>Gestión floral · pedidos</p>
             </div>
+        </div>
+        <div class="header-buttons">
+            <button class="btn-header" onclick="abrirCalculadora()">🧮 Calc</button>
+            <button class="btn-header" onclick="toggleHelp()">❓ Ayuda</button>
         </div>
         <div class="tasa-container">
             <div class="fecha" id="tasaFecha">Precio del dólar para el día:</div>
@@ -612,7 +582,6 @@
                 <label><span class="label-icon">📞</span> Teléfono</label>
                 <input type="text" id="telefono" placeholder="0412-1234567">
             </div>
-            
             <div class="campo">
                 <label><span class="label-icon">🌸</span> Catálogo</label>
                 <div class="catalogo-selector">
@@ -620,12 +589,10 @@
                     <div id="listaCatalogo" class="lista-catalogo"></div>
                 </div>
             </div>
-            
             <div class="campo">
                 <label><span class="label-icon">📦</span> Descripción *</label>
                 <textarea id="descripcion" rows="3" placeholder="Describe el pedido... Al seleccionar un producto del catálogo, se cargará aquí y podrás editarlo."></textarea>
             </div>
-            
             <div class="campo">
                 <label><span class="label-icon">💰</span> Monto (Bs) *</label>
                 <input type="number" id="monto" step="0.01" placeholder="0.00">
@@ -651,26 +618,31 @@
     
     <!-- CONTROL -->
     <div id="panel-control" class="panel">
-        <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">🔍 Control de pedidos</h2>
+        <h2 style="font-size: 1.2rem; margin-bottom: 8px; font-weight: 700; color: #5e4b38;">🔍 Control de pedidos</h2>
+        <p style="font-size: 0.75rem; color: #8b735b; margin-bottom: 18px; font-weight: 500;">📅 Selecciona un rango de fechas</p>
+        
         <div class="fecha-filtros">
             <input type="date" id="fechaDesde" placeholder="Desde">
             <input type="date" id="fechaHasta" placeholder="Hasta">
             <button onclick="aplicarFiltros()">🔍 Filtrar</button>
             <button onclick="limpiarFiltros()" style="background:#cdc2b6;">🗑️ Limpiar</button>
         </div>
+        
+        <!-- 7 botones del mismo tamaño -->
         <div class="filtros">
             <button onclick="filtrarPor('todos')">📋 Todos</button>
             <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
             <button onclick="filtrarPor('En Proceso')">⚙️ Proceso Finalizado</button>
             <button onclick="filtrarPor('Entregado')">✅ Entregados</button>
-            <button onclick="filtrarPor('eliminados')" id="btnEliminados" style="background:#cdc2b6;">🗑️ Eliminados</button>
+            <button onclick="filtrarPor('eliminados')" id="btnEliminados">🗑️ Eliminados</button>
         </div>
         <div id="listaPedidos">Cargando...</div>
     </div>
     
     <!-- ESTADÍSTICAS -->
     <div id="panel-estadisticas" class="panel">
-        <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">📊 Estadísticas</h2>
+        <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">📊 Estadísticas de ventas</h2>
+        <p style="font-size: 0.75rem; color: #8b735b; margin-bottom: 12px; font-weight: 500;">📅 Selecciona un rango de fechas</p>
         <div class="fecha-filtros">
             <input type="date" id="statsFechaDesde" placeholder="Desde">
             <input type="date" id="statsFechaHasta" placeholder="Hasta">
@@ -688,36 +660,17 @@
     <footer>💐 Clavelle · Catálogo integrado · Datos sincronizados</footer>
 </div>
 
-<!-- Botones flotantes -->
-<div class="btn-calc" onclick="abrirCalculadora()">🧮 Calculadora</div>
-<div class="btn-help" onclick="toggleHelp()">❓ Ayuda</div>
-
-<!-- Panel ayuda -->
+<!-- Panel ayuda (flotante) -->
 <div id="helpPanel" class="help-panel">
     <div class="help-header">
         <h3>🌸 Guía Clavelle</h3>
         <button class="help-close" onclick="toggleHelp()">×</button>
     </div>
     <div class="help-content">
-        <div class="help-section">
-            <h4>📝 Registro</h4>
-            <div class="help-step">📌 Completa el formulario. Los campos con * son obligatorios.</div>
-            <div class="help-step">📖 Usa el catálogo para cargar descripciones rápidamente.</div>
-        </div>
-        <div class="help-section">
-            <h4>🔍 Control</h4>
-            <div class="help-step">🔍 Filtra por fechas o estado (Pendiente, Proceso, Entregado).</div>
-            <div class="help-step">✏️ Edita, entrega o elimina pedidos (eliminar requiere autorización).</div>
-            <div class="help-step">🗑️ Los pedidos eliminados se ven en "Eliminados" y se pueden restaurar.</div>
-        </div>
-        <div class="help-section">
-            <h4>📊 Estadísticas</h4>
-            <div class="help-step">Selecciona un rango de fechas y obtén totales y detalle.</div>
-        </div>
-        <div class="help-section">
-            <h4>🧮 Calculadora</h4>
-            <div class="help-step">Botón flotante abajo a la derecha. +, -, ×, ÷, %</div>
-        </div>
+        <div class="help-section"><h4>📝 Registro</h4><div class="help-step">📌 Completa el formulario. Los campos con * son obligatorios.</div><div class="help-step">📖 Usa el catálogo para cargar descripciones rápidamente.</div></div>
+        <div class="help-section"><h4>🔍 Control</h4><div class="help-step">🔍 Filtra por fechas o estado (Pendiente, Proceso, Entregado).</div><div class="help-step">✏️ Edita, entrega o elimina pedidos (eliminar requiere autorización).</div><div class="help-step">🗑️ Los pedidos eliminados se ven en "Eliminados" y se pueden restaurar.</div></div>
+        <div class="help-section"><h4>📊 Estadísticas</h4><div class="help-step">Selecciona un rango de fechas y obtén totales y detalle.</div></div>
+        <div class="help-section"><h4>🧮 Calculadora</h4><div class="help-step">Botón "Calc" en el encabezado. +, -, ×, ÷, %</div></div>
         <button class="tour-btn" onclick="iniciarTour()">🎓 Tour guiado</button>
         <button class="tour-btn" onclick="descargarManual()" style="background:#6b8c7a;">📥 Manual PDF</button>
     </div>
@@ -754,7 +707,7 @@
 </div>
 
 <script>
-    // ===== CATÁLOGO ====
+    // ===== CATÁLOGO =====
     const catalogo = [
         { nombre: "Clavelle Rosas", descripcion: "2 rosas arregladas. Disponibilidad de colores variados." },
         { nombre: "Clavelle doce Rosas", descripcion: "12 rosas arregladas. Disponibilidad de colores variados." },
@@ -783,7 +736,7 @@
         catalogo.forEach(item => {
             const div = document.createElement('div');
             div.className = 'item-catalogo';
-            div.innerHTML = `<strong>${item.nombre}</strong><small>${item.descripcion}</small>`;
+            div.innerHTML = `<strong>${item.nombre}</strong><br><small>${item.descripcion}</small>`;
             div.onclick = () => {
                 const textarea = document.getElementById('descripcion');
                 let actual = textarea.value.trim();
@@ -800,7 +753,7 @@
     
     function toggleCatalogo() { document.getElementById('listaCatalogo').classList.toggle('visible'); }
     
-    // ===== TOUR ====
+    // ===== TOUR =====
     let tourPasoActual = 0;
     const tourPasos = [
         { texto: "🌸 ¡Bienvenida a Clavelle! Sistema fácil para gestionar pedidos florales.", img: "🌸", accion: null },
@@ -808,7 +761,7 @@
         { texto: "🔍 CONTROL: Filtra por fechas o estado. Edita, entrega o elimina pedidos.", img: "🔍", accion: () => mostrarPanel('control') },
         { texto: "🗑️ ELIMINADOS: Haz clic en 'Eliminados' para ver pedidos eliminados y restaurarlos.", img: "♻️", accion: null },
         { texto: "📊 ESTADÍSTICAS: Selecciona fechas y calcula totales.", img: "📊", accion: () => mostrarPanel('estadisticas') },
-        { texto: "🧮 CALCULADORA: Botón flotante abajo a la derecha.", img: "🧮", accion: () => abrirCalculadora() }
+        { texto: "🧮 CALCULADORA: Botón 'Calc' en el encabezado.", img: "🧮", accion: () => abrirCalculadora() }
     ];
     
     function iniciarTour() { tourPasoActual = 0; document.getElementById('tourModal').style.display = 'flex'; actualizarTour(); }
@@ -823,7 +776,7 @@
 2. CONTROL: Filtre por fechas o estado. Edite, entregue o elimine.
 3. ELIMINADOS: Restaure pedidos desde esa vista.
 4. ESTADÍSTICAS: Calcule totales por período.
-5. CALCULADORA: Botón flotante.
+5. CALCULADORA: Botón "Calc" en el encabezado.
 ¡Gracias por usar Clavelle!`;
         const blob = new Blob([manual], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
