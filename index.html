@@ -17,13 +17,12 @@
             padding: 12px;
             color: #2c2b28;
         }
-        /* Contenedor angosto y centrado */
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
         
-        /* HEADER CON BOTONES AYUDA Y CALCULADORA */
+        /* HEADER */
         .header {
             background: #ffffff;
             border-radius: 32px;
@@ -42,9 +41,7 @@
             align-items: center;
             gap: 8px;
         }
-        .logo-icon {
-            font-size: 1.8rem;
-        }
+        .logo-icon { font-size: 1.8rem; }
         .logo h1 {
             font-size: 1.3rem;
             font-weight: 700;
@@ -53,16 +50,9 @@
             -webkit-background-clip: text;
             color: transparent;
         }
-        .logo p {
-            font-size: 0.6rem;
-            color: #b0a088;
-            font-weight: 500;
-        }
-        /* Botones de ayuda y calculadora en el header */
-        .header-buttons {
-            display: flex;
-            gap: 8px;
-        }
+        .logo p { font-size: 0.6rem; color: #b0a088; font-weight: 500; }
+        
+        .header-buttons { display: flex; gap: 8px; }
         .btn-header {
             background: #ede5dc;
             border: none;
@@ -77,10 +67,7 @@
             align-items: center;
             gap: 6px;
         }
-        .btn-header:hover {
-            background: #ddd0c2;
-            transform: translateY(-1px);
-        }
+        .btn-header:hover { background: #ddd0c2; transform: translateY(-1px); }
         
         .tasa-container {
             background: #f3ede5;
@@ -90,23 +77,11 @@
             font-size: 0.7rem;
             font-weight: 600;
         }
-        .tasa-container .fecha {
-            font-size: 0.55rem;
-            color: #8b735b;
-            font-weight: 400;
-        }
-        .tasa-container .valor {
-            font-weight: 700;
-            color: #6b8c7a;
-        }
+        .tasa-container .fecha { font-size: 0.55rem; color: #8b735b; font-weight: 400; }
+        .tasa-container .valor { font-weight: 700; color: #6b8c7a; }
         
-        /* TABS CON COLORES DIFERENTES */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
+        /* TABS */
+        .tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
         .tab {
             border: none;
             padding: 12px 16px;
@@ -121,21 +96,10 @@
             background: #ede5dc;
             color: #4a3a2a;
         }
-        .tab[data-panel="registro"].active {
-            background: #b8876e;
-            color: white;
-        }
-        .tab[data-panel="control"].active {
-            background: #6b8c7a;
-            color: white;
-        }
-        .tab[data-panel="estadisticas"].active {
-            background: #99b4aa;
-            color: white;
-        }
-        .tab:hover:not(.active) {
-            background: #ddd0c2;
-        }
+        .tab[data-panel="registro"].active { background: #b8876e; color: white; }
+        .tab[data-panel="control"].active { background: #6b8c7a; color: white; }
+        .tab[data-panel="estadisticas"].active { background: #99b4aa; color: white; }
+        .tab:hover:not(.active) { background: #ddd0c2; }
         
         /* PANELES */
         .panel {
@@ -145,16 +109,10 @@
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
-        .panel.active {
-            display: block;
-            animation: fade 0.2s ease;
-        }
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .panel.active { display: block; animation: fade 0.2s ease; }
+        @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* CAMPOS DE ENTRADA MÁS OSCUROS Y CONTRASTADOS */
+        /* CAMPOS DE ENTRADA */
         .campo input, .campo select, .campo textarea,
         input[type="date"], input[type="time"] {
             background: #fef9f4;
@@ -166,8 +124,7 @@
             width: 100%;
             transition: 0.2s;
         }
-        .campo input:focus, .campo select:focus, .campo textarea:focus,
-        input[type="date"]:focus, input[type="time"]:focus {
+        .campo input:focus, .campo select:focus, .campo textarea:focus {
             border-color: #b8876e;
             outline: none;
             box-shadow: 0 0 0 3px rgba(184, 135, 110, 0.1);
@@ -180,12 +137,7 @@
             align-items: center;
             gap: 6px;
         }
-        .form-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            margin-bottom: 24px;
-        }
+        .form-grid { display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
         
         /* BOTÓN GUARDAR */
         .btn-primary {
@@ -200,15 +152,10 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .btn-primary:hover {
-            background: #a5735b;
-            transform: translateY(-1px);
-        }
+        .btn-primary:hover { background: #a5735b; transform: translateY(-1px); }
         
         /* CATÁLOGO */
-        .catalogo-selector {
-            margin-bottom: 4px;
-        }
+        .catalogo-selector { margin-bottom: 4px; }
         .selector-boton {
             background: transparent;
             border: 2px dashed #b8876e;
@@ -222,10 +169,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .selector-boton:hover {
-            background: #b8876e10;
-            border: 2px solid #b8876e;
-        }
+        .selector-boton:hover { background: #b8876e10; border: 2px solid #b8876e; }
         .lista-catalogo {
             display: none;
             background: white;
@@ -235,21 +179,14 @@
             overflow-y: auto;
             margin-top: 10px;
         }
-        .lista-catalogo.visible {
-            display: block;
-        }
+        .lista-catalogo.visible { display: block; }
         .item-catalogo {
             padding: 12px 16px;
             border-bottom: 1px solid #f0e4d8;
             cursor: pointer;
         }
-        .item-catalogo:hover {
-            background: #fdfbf8;
-        }
-        .item-catalogo strong {
-            color: #6b8c7a;
-            font-weight: 700;
-        }
+        .item-catalogo:hover { background: #fdfbf8; }
+        .item-catalogo strong { color: #6b8c7a; font-weight: 700; }
         
         /* FILTROS DE FECHA */
         .fecha-filtros {
@@ -257,15 +194,25 @@
             gap: 12px;
             flex-wrap: wrap;
             margin-bottom: 20px;
+            justify-content: center;
         }
         .fecha-filtros input {
             flex: 1;
             min-width: 120px;
             background: #fef9f4;
             border: 2px solid #ddd0c2;
+            border-radius: 60px;
+            padding: 12px 16px;
+        }
+        .fecha-filtros button {
+            border-radius: 60px;
+            border: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
         }
         
-        /* BOTONES DE CONTROL - TODOS DEL MISMO TAMAÑO */
+        /* BOTONES DE CONTROL - TODOS REDONDEADOS */
         .filtros {
             display: flex;
             flex-wrap: wrap;
@@ -287,20 +234,21 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .filtros button:hover {
-            background: #ddd0c2;
-            transform: translateY(-1px);
-        }
-        /* El botón "Eliminados" se ve igual pero centrado */
-        #btnEliminados {
-            background: #cdc2b6;
-        }
+        .filtros button:hover { background: #ddd0c2; transform: translateY(-1px); }
+        #btnEliminados { background: #cdc2b6; }
         
-        /* BOTONES GENERALES */
-        .btn-success { background: #83a67c; color: white; }
-        .btn-danger { background: #cb887a; color: white; }
+        /* BOTONES DE ACCIONES EN PEDIDOS (redondeados) */
+        .pedido-acciones button {
+            border-radius: 60px !important;
+            padding: 8px 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
         .btn-warning { background: #e2bc89; color: #4a3a2a; }
-        .btn-info { background: #99b4aa; color: white; }
+        .btn-danger { background: #cb887a; color: white; }
+        .btn-success { background: #83a67c; color: white; }
         
         /* BADGES */
         .badge-pendiente, .badge-proceso, .badge-entregado {
@@ -330,11 +278,7 @@
             gap: 12px;
             margin-bottom: 14px;
         }
-        .pedido-numero {
-            font-weight: 800;
-            font-size: 1rem;
-            color: #4a6f5e;
-        }
+        .pedido-numero { font-weight: 800; font-size: 1rem; color: #4a6f5e; }
         .pedido-detalle {
             display: flex;
             flex-wrap: wrap;
@@ -347,21 +291,9 @@
             border-radius: 24px;
             margin-bottom: 14px;
         }
-        .pedido-acciones {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            border-top: 1px solid #f0e4d8;
-            padding-top: 14px;
-            flex-wrap: wrap;
-        }
         
         /* ESTADÍSTICAS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .stat-card {
             background: #fdfbf8;
             border-radius: 24px;
@@ -369,25 +301,10 @@
             text-align: center;
             border: 1px solid #efe2d6;
         }
-        .stat-card .numero {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #4f6b5c;
-        }
-        .stat-card .monto {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #27ae60;
-        }
+        .stat-card .numero { font-size: 1.8rem; font-weight: 800; color: #4f6b5c; }
+        .stat-card .monto { font-size: 1rem; font-weight: 700; color: #27ae60; }
         
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            padding: 16px;
-            font-size: 0.65rem;
-            color: #cdbcab;
-            font-weight: 500;
-        }
+        footer { text-align: center; margin-top: 30px; padding: 16px; font-size: 0.65rem; color: #cdbcab; font-weight: 500; }
         
         /* TOOLTIPS */
         .custom-tooltip {
@@ -417,34 +334,64 @@
             align-items: center;
             justify-content: center;
         }
+        
+        /* CALCULADORA FLORAL - COLORES VIVOS */
         .calc-container {
-            background: #2c3e50;
-            border-radius: 32px;
+            background: #fff5ed;
+            border-radius: 48px;
             padding: 20px;
-            width: 300px;
+            width: 320px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border: 1px solid #f0e4d8;
         }
         .calc-display {
-            background: #1a2a3a;
-            color: white;
-            font-size: 1.8rem;
+            background: #ffffff;
+            color: #4a3a2a;
+            font-size: 2rem;
             text-align: right;
-            padding: 16px;
-            border-radius: 24px;
-            margin-bottom: 16px;
+            padding: 20px;
+            border-radius: 40px;
+            margin-bottom: 20px;
             font-family: monospace;
             font-weight: 700;
+            border: 2px solid #e2bc89;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
         .calc-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 10px;
         }
         .calc-buttons button {
-            background: #34495e;
-            padding: 14px;
-            border-radius: 20px;
-            font-size: 1rem;
+            padding: 16px;
+            border-radius: 60px;
+            font-size: 1.2rem;
             font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.1s;
+            background: #fdf1e6;
+            color: #5a4a3a;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .calc-buttons button:active { transform: scale(0.96); }
+        .calc-buttons .op { background: #e2bc89; color: #4a3a2a; }
+        .calc-buttons .op:active { background: #d6ab72; }
+        .calc-buttons .clear { background: #cb887a; color: white; }
+        .calc-buttons .equal {
+            background: #83a67c;
+            color: white;
+            grid-column: span 2;
+        }
+        .calc-close {
+            background: #cdc2b6;
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
         }
         
         /* PANEL AYUDA */
@@ -471,28 +418,10 @@
             align-items: center;
             font-weight: 700;
         }
-        .help-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-        }
-        .help-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .help-section {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #f0e4d8;
-            padding-bottom: 14px;
-        }
-        .help-section h4 {
-            color: #6b8c7a;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
+        .help-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+        .help-content { flex: 1; overflow-y: auto; padding: 20px; }
+        .help-section { margin-bottom: 20px; border-bottom: 1px solid #f0e4d8; padding-bottom: 14px; }
+        .help-section h4 { color: #6b8c7a; margin-bottom: 12px; font-weight: 700; }
         .help-step {
             background: #fdfbf8;
             border-radius: 20px;
@@ -529,19 +458,13 @@
         }
         
         @media (max-width: 550px) {
-            .filtros button {
-                min-width: 90px;
-                font-size: 0.7rem;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+            .filtros button { min-width: 90px; font-size: 0.7rem; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- HEADER CON BOTONES DE AYUDA Y CALCULADORA -->
     <div class="header">
         <div class="logo">
             <div class="logo-icon">🌸</div>
@@ -570,43 +493,21 @@
     <div id="panel-registro" class="panel active">
         <h2 style="font-size: 1.2rem; margin-bottom: 18px; font-weight: 700; color: #5e4b38;">📝 Nuevo pedido</h2>
         <div class="form-grid">
+            <div class="campo"><label>📋 Número</label><input type="text" id="numeroPedido" readonly style="background:#f8f2ec;"></div>
+            <div class="campo"><label>👤 Aplicación/Cliente *</label><input type="text" id="clienteNombre" placeholder="Nombre del cliente o aplicación"></div>
+            <div class="campo"><label>📞 Teléfono</label><input type="text" id="telefono" placeholder="0412-1234567"></div>
             <div class="campo">
-                <label><span class="label-icon">📋</span> Número</label>
-                <input type="text" id="numeroPedido" readonly style="background:#f8f2ec;">
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">👤</span> Aplicación/Cliente *</label>
-                <input type="text" id="clienteNombre" placeholder="Nombre del cliente o aplicación">
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">📞</span> Teléfono</label>
-                <input type="text" id="telefono" placeholder="0412-1234567">
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">🌸</span> Catálogo</label>
+                <label>🌸 Catálogo</label>
                 <div class="catalogo-selector">
                     <button type="button" class="selector-boton" id="btnCatalogo">📖 Ver catálogo ▼</button>
                     <div id="listaCatalogo" class="lista-catalogo"></div>
                 </div>
             </div>
-            <div class="campo">
-                <label><span class="label-icon">📦</span> Descripción *</label>
-                <textarea id="descripcion" rows="3" placeholder="Describe el pedido... Al seleccionar un producto del catálogo, se cargará aquí y podrás editarlo."></textarea>
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">💰</span> Monto (Bs) *</label>
-                <input type="number" id="monto" step="0.01" placeholder="0.00">
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">📅</span> Fecha Entrega</label>
-                <input type="date" id="fechaEntrega">
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">⏰</span> Hora Entrega</label>
-                <input type="time" id="horaEntrega">
-            </div>
-            <div class="campo">
-                <label><span class="label-icon">📌</span> Estado</label>
+            <div class="campo"><label>📦 Descripción *</label><textarea id="descripcion" rows="3" placeholder="Describe el pedido... Al seleccionar un producto del catálogo, se cargará aquí y podrás editarlo."></textarea></div>
+            <div class="campo"><label>💰 Monto (Bs) *</label><input type="number" id="monto" step="0.01" placeholder="0.00"></div>
+            <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="fechaEntrega"></div>
+            <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="horaEntrega"></div>
+            <div class="campo"><label>📌 Estado</label>
                 <select id="estadoRegistro">
                     <option value="Pendiente">🕊️ Pendiente</option>
                     <option value="En Proceso">⚙️ Proceso Finalizado</option>
@@ -620,15 +521,12 @@
     <div id="panel-control" class="panel">
         <h2 style="font-size: 1.2rem; margin-bottom: 8px; font-weight: 700; color: #5e4b38;">🔍 Control de pedidos</h2>
         <p style="font-size: 0.75rem; color: #8b735b; margin-bottom: 18px; font-weight: 500;">📅 Selecciona un rango de fechas</p>
-        
         <div class="fecha-filtros">
             <input type="date" id="fechaDesde" placeholder="Desde">
             <input type="date" id="fechaHasta" placeholder="Hasta">
             <button onclick="aplicarFiltros()">🔍 Filtrar</button>
             <button onclick="limpiarFiltros()" style="background:#cdc2b6;">🗑️ Limpiar</button>
         </div>
-        
-        <!-- 7 botones del mismo tamaño -->
         <div class="filtros">
             <button onclick="filtrarPor('todos')">📋 Todos</button>
             <button onclick="filtrarPor('Pendiente')">🕊️ Pendientes</button>
@@ -660,12 +558,9 @@
     <footer>💐 Clavelle · Catálogo integrado · Datos sincronizados</footer>
 </div>
 
-<!-- Panel ayuda (flotante) -->
+<!-- Panel ayuda -->
 <div id="helpPanel" class="help-panel">
-    <div class="help-header">
-        <h3>🌸 Guía Clavelle</h3>
-        <button class="help-close" onclick="toggleHelp()">×</button>
-    </div>
+    <div class="help-header"><h3>🌸 Guía Clavelle</h3><button class="help-close" onclick="toggleHelp()">×</button></div>
     <div class="help-content">
         <div class="help-section"><h4>📝 Registro</h4><div class="help-step">📌 Completa el formulario. Los campos con * son obligatorios.</div><div class="help-step">📖 Usa el catálogo para cargar descripciones rápidamente.</div></div>
         <div class="help-section"><h4>🔍 Control</h4><div class="help-step">🔍 Filtra por fechas o estado (Pendiente, Proceso, Entregado).</div><div class="help-step">✏️ Edita, entrega o elimina pedidos (eliminar requiere autorización).</div><div class="help-step">🗑️ Los pedidos eliminados se ven en "Eliminados" y se pueden restaurar.</div></div>
@@ -676,7 +571,7 @@
     </div>
 </div>
 
-<!-- Modal calculadora -->
+<!-- Modal calculadora FLORAL -->
 <div id="modalCalculadora" class="modal-calc">
     <div class="calc-container">
         <div class="calc-display" id="calcDisplay">0</div>
@@ -702,7 +597,7 @@
             <button onclick="tourSiguiente()">Siguiente ▶</button>
             <button onclick="cerrarTour()" style="background:#cb887a;">Cerrar</button>
         </div>
-        <div style="margin-top: 12px; font-size: 0.7rem;">Paso <span id="tourPaso">1</span> de <span id="tourTotal">7</span></div>
+        <div style="margin-top: 12px; font-size: 0.7rem;">Paso <span id="tourPaso">1</span> de <span id="tourTotal">6</span></div>
     </div>
 </div>
 
@@ -725,8 +620,7 @@
         { nombre: "Clavelle girasoles gigante", descripcion: "14 Girasoles." },
         { nombre: "Clavelle Astromelias", descripcion: "Astromelias, eucalipto." },
         { nombre: "Clavelle Lírios", descripcion: "Ramo de Lírios." },
-        { nombre: "Clavelle Brillante", descripcion: "Hortensias, astromelias." },
-        { nombre: "Clavelle Luz", descripcion: "2 paquetes de azucena." }
+        { nombre: "Clavelle Brillante", descripcion: "Hortensias, astromelias." }
     ];
     
     function cargarCatalogo() {
@@ -761,7 +655,7 @@
         { texto: "🔍 CONTROL: Filtra por fechas o estado. Edita, entrega o elimina pedidos.", img: "🔍", accion: () => mostrarPanel('control') },
         { texto: "🗑️ ELIMINADOS: Haz clic en 'Eliminados' para ver pedidos eliminados y restaurarlos.", img: "♻️", accion: null },
         { texto: "📊 ESTADÍSTICAS: Selecciona fechas y calcula totales.", img: "📊", accion: () => mostrarPanel('estadisticas') },
-        { texto: "🧮 CALCULADORA: Botón 'Calc' en el encabezado.", img: "🧮", accion: () => abrirCalculadora() }
+        { texto: "🧮 CALCULADORA FLORAL: Botón 'Calc' en el encabezado.", img: "🧮", accion: () => abrirCalculadora() }
     ];
     
     function iniciarTour() { tourPasoActual = 0; document.getElementById('tourModal').style.display = 'flex'; actualizarTour(); }
@@ -788,7 +682,7 @@
         alert("📥 Manual descargado");
     }
     
-    // ===== CALCULADORA =====
+    // ===== CALCULADORA FLORAL =====
     let calcActual = "0", calcAnterior = "", calcOperacion = null;
     function actualizarDisplayCalc() { document.getElementById('calcDisplay').innerText = calcActual; }
     function calcAgregar(valor) {
@@ -832,7 +726,7 @@
             '#btnCatalogo': '📖 Abrir catálogo de productos',
             '.btn-primary': '💾 Guardar el pedido en el sistema',
             '.btn-info': '📊 Calcular estadísticas',
-            '.btn-calc': '🧮 Abrir calculadora',
+            '.btn-calc': '🧮 Abrir calculadora floral',
             '.btn-help': '❓ Abrir ayuda',
             'button[onclick="aplicarFiltros()"]': '🔍 Aplicar filtro por fechas',
             'button[onclick="limpiarFiltros()"]': '🗑️ Limpiar filtros',
@@ -1035,9 +929,7 @@
         <div class="campo"><label>💰 Monto Bs</label><input type="number" id="editMonto" step="0.01"></div>
         <div class="campo"><label>📅 Fecha Entrega</label><input type="date" id="editFechaEntrega"></div>
         <div class="campo"><label>⏰ Hora Entrega</label><input type="time" id="editHoraEntrega"></div>
-        <div class="campo"><label>📌 Estado</label>
-            <select id="editEstado"><option>Pendiente</option><option>En Proceso</option><option>Entregado</option></select>
-        </div>
+        <div class="campo"><label>📌 Estado</label><select id="editEstado"><option>Pendiente</option><option>En Proceso</option><option>Entregado</option></select></div>
         <div class="campo"><label>👤 Responsable</label><input type="text" id="editResponsable"></div>
         <div style="display:flex; gap:12px; margin-top:20px;"><button onclick="guardarEdicion()">Guardar</button><button onclick="cerrarModal()">Cancelar</button></div>
     </div>
